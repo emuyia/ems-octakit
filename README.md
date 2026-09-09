@@ -7,7 +7,7 @@ No Octatrack firmware is hosted or distributed here or on my website. This repo 
 
 Current changes:
 
-- 64 Parts (4 per Bank) have been replaced with 256 Kits per Project (untethered from Banks).
+- 64 Parts (4 per Bank) have been replaced with 256 Kits per Project (untethered from Banks). To allow this, Octakit currently shaves off 18.4s (16-bit) / 12.3s (24-bit) from the flex pool (3.6%).
 - Old Projects that contain Parts should be automatically migrated to the first 64 Kit slots, with patterns assigned accordingly. (Downgrading firmware back to stock may result in losing Kit data).
 - OS version number changed to date based versioning (e.g. 26512), and splash animation removed.
 
