@@ -221,6 +221,24 @@ gk_pattern_queue_commit_prepare:
         jsr     gk_workspace_prepare
         tst.l   %d0
         bmi.w   .Lgk_queue_prepare_restore
+        .global gk_pattern_queue_mirror_sync_start
+gk_pattern_queue_mirror_sync_start:
+        lea     -12(%sp),%sp
+        movem.l %d0/%a0-%a1,(%sp)
+        cmp.b   GK_STOCK_CURRENT_BANK_PRIMARY,%d4
+        bne.s   .Lgk_queue_mirror_sync_restore
+        cmp.b   GK_STOCK_CURRENT_BANK_MIRROR,%d4
+        bne.s   .Lgk_queue_mirror_sync_restore
+        move.l  %d1,%d0
+        mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
+        lea     GK_STOCK_WORKING_PART_MIRROR_BASE,%a1
+        adda.l  %d0,%a1
+        jsr     gk_copy_payload_interruptible
+.Lgk_queue_mirror_sync_restore:
+        movem.l (%sp),%d0/%a0-%a1
+        lea     12(%sp),%sp
+        .global gk_pattern_queue_mirror_sync_end
+gk_pattern_queue_mirror_sync_end:
         jsr     gk_ui_transition_prepare
         tst.l   %d0
         bmi.w   .Lgk_queue_prepare_abort
