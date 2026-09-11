@@ -634,6 +634,7 @@ gk_machine_transition_stock_call:
         lsl.l   #2,%d0
         adda.l  %d0,%sp
         bsr.w   gk_machine_transition_finish
+gk_machine_transition_restore:
         movem.l (%a6),%d2-%d7/%a2-%a6
         move.l  GK_MT_OUT_D0(%sp),%d0
         move.l  GK_MT_OUT_D1(%sp),%d1

@@ -317,8 +317,8 @@ gk_stock_staged_audio_handoff_validate:
         beq.w gk_arranger_fatal_playback_exit_guard
         tst.w   GK_DESC_ROOTS(%a0)
         beq.w gk_arranger_fatal_active_scene_release
-        tst.w   GK_DESC_READERS(%a0)
-        beq.w gk_arranger_fatal_abort_owner
+        tst.l   GK_DESC_CANDIDATE(%a0)
+        bne.w gk_arranger_fatal_abort_owner
         moveq   #0,%d1
         move.b  GK_DESC_PHYSICAL(%a0),%d1
         move.l  %d1,%d0

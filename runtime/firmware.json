@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "kind": "octatrack-local-build-recipe",
-  "id": "ot-26905-141307",
+  "id": "ot-26911-232000",
   "source": {
     "container": {
       "sha256": "1412b10f4dad76287081cf547933b97d3a56f731ef7c851a0c7656ac0face88a",
@@ -30,13 +30,13 @@
     "version": "1.40C"
   },
   "build": {
-    "filename": "ot-26905-141307-dev.syx",
+    "filename": "ot-26911-232000-dev.syx",
     "flavor": "dev",
     "max_candidates": 4096,
     "max_container_size": 1048576,
     "prefix": "ot",
-    "stamp": "26905-141307",
-    "version": "26905"
+    "stamp": "26911-232000",
+    "version": "26911"
   },
   "format": {
     "operations": "sparse-public-write-v3",
@@ -44,20 +44,20 @@
   },
   "output": {
     "container": {
-      "sha256": "b7331df2dccc5a595a86b8c82778dcd312418abe2f3e73bfa7026c4ea2952532",
-      "size": 603658
+      "sha256": "77397a66fcfbb565bf47873497868489fd964ca6efeda151b5ab459842b7d576",
+      "size": 603674
     },
     "os": {
-      "sha256": "813903c8216e23a34fb952bc0db509dab778b845582820237e7229ef34ccef3c",
+      "sha256": "2ed5fec297fef5bb8479f8f6aec112686255d67a56d905a2bd762e932c6971ca",
       "size": 1185671
     },
     "packed": {
-      "sha256": "ba2952020d7e67767fa0ac9a06d5e7a7dfbcef88de969248e82b069f407e2751",
-      "size": 603629
+      "sha256": "848387ce0deac4be3849e1b9b657369bd1317ea1ae578696cdded28bc400d454",
+      "size": 603648
     },
     "sysex": {
-      "sha256": "3252ad0b378f51435ac672c479be4be6d790ec2a796939539fd362f0fc301e65",
-      "size": 843229
+      "sha256": "57697af32db7162a54aac93301c63c35fce11a5ef9bbcd16bc99ee3de972469f",
+      "size": 843264
     }
   },
   "append": {
@@ -65,7 +65,7 @@
     "length": 73111,
     "loader": {
       "length": 160,
-      "sha256": "f205a4120e9c87960f450c48c0ef7d90556a06513a3c694446b4e31c1df1dab1",
+      "sha256": "f28fa7c604642be521616f798b32674ab2fd7fb5ef23f70fddbea13a05319571",
       "size": 160,
       "target_offset": 0
     },
@@ -73,11 +73,11 @@
     "runtime": {
       "load_address": 1171316192,
       "packed": {
-        "sha256": "7f28547d09ea487fde11d19d7a9c02d9db29efa7541d3eca08ba281958a2219d",
+        "sha256": "3834ca129868a6c3691f65e7d469db62cdf5d8e14bb1099bc3559d35cb9e5d68",
         "size": 72947
       },
       "raw": {
-        "sha256": "dda11acaac3b8b0a569882bbba70fffd333118f3a9b6c751f3ee7d24b6519ab7",
+        "sha256": "d5321c2f2112e0cb02af4f1a3289777a6e1c5c4bba26872c77d4ee6b6d6f5ad9",
         "size": 149653
       },
       "stock_operations": [
@@ -5011,7 +5011,7 @@
       ],
       "target_offset": 164
     },
-    "sha256": "6ddc6db4026a6946bdf3ad01314f4053a4e39cca6ca8e7640a681bf61cbc3b2d",
+    "sha256": "29d99d972667d5320d031ce88051ad10b5d90b21e09a7c29197330c2119c39e5",
     "stage_header": {
       "length": 4,
       "sha256": "b26ec5b8f2cd76d4eb54db5bb9f273a8e0bfc624150fe09a39316754a4122b05",
@@ -5088,7 +5088,7 @@
       "writes": [
         {
           "offset": 77572,
-          "data": "4eb940002f4441f94ffc7414203c00011cf34eb9400144240c815924648f662a48794e"
+          "data": "4eb940002f4441f94ffc7414203c00011cf34eb9400144240c817afa391d662a48794e"
         },
         {
           "offset": 77608,
@@ -5108,7 +5108,7 @@
       "writes": [
         {
           "offset": 81944,
-          "data": "41f94dd0dde0203c0002489572002601eb89d28374001418d282538066f00c81b5b173b14e75"
+          "data": "41f94dd0dde0203c0002489572002601eb89d28374001418d282538066f00c81f097faea4e75"
         }
       ]
     },
@@ -12522,7 +12522,7 @@
     ]
   },
   "source_hashes": {
-    "abi.inc": "35104cac8894205803a43bc1374e5dcca8d67788e3f144a40641b8760c7d6494",
+    "abi.inc": "cada95f2b72f49bf37904dd63af9afac19e03f0a80fd02d1207e6665fd08f2b2",
     "activation_slot.S": "0142c241cbb7f10a0d7d7322c778fdd479a3bc49f5089f4986caacc350bd5278",
     "allocator.S": "b72bdb7a0a04e80cc7099e05bee0bc39fae28097bcb1ee178ddbd89ecd552064",
     "arranger.S": "1ca4974e34ca21d19e4c6a2872f7ef161bf088e486bfbe61c2052fce5fb1c08c",
@@ -12546,7 +12546,7 @@
     "link.ld": "ba1b77828c7d1c5bfc2eda2a7a2f5a6adc68e5fbee9f9bedd1923fcbf939f3da",
     "loader.S": "a5ec8bd633bc69e7de5f4b7bff500647631121ea296b37eba31483bcd15e4b02",
     "machine_selection.S": "541a232193d9e2097053cdecad182642b28c4aa6c67e7840b45019c1cb8320c5",
-    "machine_transition_operations.S": "38afb58026505205d59dd3fb81590c2bcd65d22c7cb0a00bf28145e632894fb5",
+    "machine_transition_operations.S": "07e0e12cb7ecc30dc18c12934f6622476e851dd8fe95f5f0c70728ed08f93749",
     "manager.S": "32b4f646c8aad656826a39d97719a609f6b2d52ee0e7ab8a7b86979645c70d74",
     "midi_arp_operation.S": "4c2dc4327fad998bdcc7c05806f2dcce09a5c95b57c73a6370088658c6e5feef",
     "midi_bit_toggle.S": "3cf1a0c9a197782ee5b4a04cc871406b38c84a8db1bad7074065b382bd027781",
@@ -12582,7 +12582,7 @@
     "slice_lock_operations.S": "d90547572e9752a45e4bdaa9443d4b9a40fab5e726afe094a7796bb1228bb021",
     "stock_dirty.S": "cb89634556d77c86fb7f75fc43ff9147f68297b532c627589a1a6beb4fca6c98",
     "stock_source_transition.S": "ba70ecf469b029abe6799c1587c3b10c4f2ebfd9b2ca8d9b1b5b28a227775486",
-    "stock_ui.S": "ee8294ba568587eff144b6983dc3363f6fee5dd48e23a68b1c65a1b7c89b4683",
+    "stock_ui.S": "38e4e0c2475013ee52b122f1faf8da488546737b1dc05d9675fae59c74a2e096",
     "storage_gate.S": "3e10ce26486bf856f89dea0b5cccf616ccf6a869b5d546c6bc64ac2841bc5056",
     "track_pair_byte0.S": "b65dc30009de8f44b3932cf7d710345a4410ef08717cad24dcc8836b30032025",
     "track_pair_byte1.S": "ca76026a027895490179d150cc8ff24218ae581cc2979e7804ce36ff31165359",
