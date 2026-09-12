@@ -1,7 +1,7 @@
 {
   "schema_version": 3,
   "kind": "octatrack-local-build-recipe",
-  "id": "ot-26912-014929",
+  "id": "ot-26912-145814",
   "source": {
     "container": {
       "sha256": "1412b10f4dad76287081cf547933b97d3a56f731ef7c851a0c7656ac0face88a",
@@ -30,12 +30,12 @@
     "version": "1.40C"
   },
   "build": {
-    "filename": "ot-26912-014929-dev.syx",
+    "filename": "ot-26912-145814-dev.syx",
     "flavor": "dev",
     "max_candidates": 4096,
     "max_container_size": 1048576,
     "prefix": "ot",
-    "stamp": "26912-014929",
+    "stamp": "26912-145814",
     "version": "26912"
   },
   "format": {
@@ -44,28 +44,28 @@
   },
   "output": {
     "container": {
-      "sha256": "5d4ac9ae1d84967b0e8a7fe15c9963cfe7082a9c4f42ca680192394c97923b04",
-      "size": 603830
+      "sha256": "c7f4a8f0479896ee9f727c9e249d76e2a6eda529dfecea4c32f8911efa1858d8",
+      "size": 603914
     },
     "os": {
-      "sha256": "a1d446b08fdd0df1e40dd8aa5f1b39f91de6ac77ec69b9ebc4ef4cd759292cd8",
-      "size": 1185845
+      "sha256": "9140bd0f09f6ee49ae6f0e53762bd3cf8155b7a6d5e9e26009e962e54c79e3f9",
+      "size": 1185897
     },
     "packed": {
-      "sha256": "0e9672175d8556f8b94567970f4840f0eb69f6d72d64ec31f46253251a558006",
-      "size": 603803
+      "sha256": "fccfb582af220fd519445a7030358e57905ec05916b9802971f79530994511d5",
+      "size": 603885
     },
     "sysex": {
-      "sha256": "0943881b224f391537e938d5a59109e81a80a0fabaefedad0425bbc96e345c72",
-      "size": 843474
+      "sha256": "4352ca5f3c8b1a9d89789c80c24e01bd0c6fbf07bb7fa6d864ef6af216f277cf",
+      "size": 843586
     }
   },
   "append": {
     "encoding": "sparse-runtime-local-stock-v1",
-    "length": 73285,
+    "length": 73337,
     "loader": {
       "length": 160,
-      "sha256": "7b5958eadac2d94f1c7fe4fc02e3cc24c782a3e41c65e1bf17390d6930199aff",
+      "sha256": "a5ad5613e18c15dae0236ca0e0c3bebc08bde733699374e6bcc8f3ce7e632783",
       "size": 160,
       "target_offset": 0
     },
@@ -73,12 +73,12 @@
     "runtime": {
       "load_address": 1171316192,
       "packed": {
-        "sha256": "4bf7746bd2393588a6e8795779881808e12b2cbac46021d7c1a4d92605d9e8d4",
-        "size": 73121
+        "sha256": "3384cc119d345f72baa0dfdbf96fcdd1c4e17e2bc4b7fcd6cfc7e356b9610660",
+        "size": 73173
       },
       "raw": {
-        "sha256": "b4a4e94a8d543bc1b1b5f21425de75aeb782bb4ed92e40440b38a862b625da65",
-        "size": 149889
+        "sha256": "707e7f6f1102cf2a255ef8099a0a3d837e7f52dcafddfb1ca5c99fae1384869e",
+        "size": 149942
       },
       "stock_operations": [
         {
@@ -5011,7 +5011,7 @@
       ],
       "target_offset": 164
     },
-    "sha256": "a4aa3c3de8454826b020909a44c50d45b6be2ebc50086a8323179aabd677ed38",
+    "sha256": "9e33cb3b578366ecab12c61437566d0d3bce619e3ee55756f8c3cd698dcf8a6d",
     "stage_header": {
       "length": 4,
       "sha256": "b26ec5b8f2cd76d4eb54db5bb9f273a8e0bfc624150fe09a39316754a4122b05",
@@ -5056,7 +5056,7 @@
       "writes": [
         {
           "offset": 83156,
-          "data": "41f94e00145f43f94dd0dde0203c0002498112d8538066fa4e754e714e714e71"
+          "data": "41f94e00142a43f94dd0dde0203c000249b612d8538066fa4e754e714e714e71"
         },
         {
           "offset": 83189,
@@ -5088,11 +5088,11 @@
       "writes": [
         {
           "offset": 77572,
-          "data": "4eb940002f4441f94ffc7414203c00011da14eb9400144240c81aebdbead662a48794e"
+          "data": "4eb940002f4441f94ffc7414203c00011dd54eb9400144240c81fbb0be23662a48794e"
         },
         {
           "offset": 77608,
-          "data": "145f48794ffc74144eb9400e0aca4fef00084eb9400148d44eb94000f97c4eb9400090284e7560fe"
+          "data": "142a48794ffc74144eb9400e0aca4fef00084eb9400148d44eb94000f97c4eb9400090284e7560fe"
         },
         {
           "offset": 77649,
@@ -5108,7 +5108,7 @@
       "writes": [
         {
           "offset": 81944,
-          "data": "41f94dd0dde0203c0002498172002601eb89d28374001418d282538066f00c81e617ad004e75"
+          "data": "41f94dd0dde0203c000249b672002601eb89d28374001418d282538066f00c81e5eb50534e75"
         }
       ]
     },
@@ -12403,6 +12403,70 @@
           "data": "6000029c"
         }
       ]
+    },
+    {
+      "name": "exception-reporter-expand-frame",
+      "offset": 240532,
+      "length": 4,
+      "sha256": "3f2a7a23497cd06e30629c3e1ea8ba643f614ea616aba5feafae54b013ae9750",
+      "writes": [
+        {
+          "offset": 240535,
+          "data": "b8"
+        }
+      ]
+    },
+    {
+      "name": "exception-reporter-callback-argument",
+      "offset": 240540,
+      "length": 4,
+      "sha256": "2277c21e8028ba1ba9639fd05dc33a2c69f97dcc56994cef41493c5253d9ed04",
+      "writes": [
+        {
+          "offset": 240543,
+          "data": "4c"
+        }
+      ]
+    },
+    {
+      "name": "exception-reporter-diagnostics",
+      "offset": 240824,
+      "length": 26,
+      "sha256": "2a571da26c42f5d1ed2071c23a66dc46ec7e04c7b5a582982851674b47810b88",
+      "writes": [
+        {
+          "offset": 240824,
+          "data": "77b946c8d18f52"
+        },
+        {
+          "offset": 240834,
+          "data": "2f0a2f2afff0487945d327622f024e71"
+        }
+      ]
+    },
+    {
+      "name": "exception-reporter-format-cleanup",
+      "offset": 240858,
+      "length": 4,
+      "sha256": "a48998cd9825641e921b00243186d78a9246c1fda55703863b3ee0ca512625c5",
+      "writes": [
+        {
+          "offset": 240861,
+          "data": "14"
+        }
+      ]
+    },
+    {
+      "name": "exception-reporter-restore-frame",
+      "offset": 240910,
+      "length": 4,
+      "sha256": "bc1d5c760e77be05ef06bc670f199c9bc38bedf824c4fb07e9b45ced69b7fc54",
+      "writes": [
+        {
+          "offset": 240913,
+          "data": "48"
+        }
+      ]
     }
   ],
   "sources": [
@@ -12417,6 +12481,7 @@
     "current_setter.S",
     "engine_load.S",
     "events.S",
+    "exception_reporter.S",
     "manager.S",
     "midi_refresh.S",
     "pair_invalidate.S",
@@ -12537,13 +12602,14 @@
     "current_setter.S": "8f3a5703d018ac575cd0b7a3994083d737979965907ba5f7762abfcc262fb5d3",
     "engine_load.S": "8d253f1a4c2a5da7d1bcfb29164c938bd52ce7bcc0c213a08ad557b505b49636",
     "events.S": "06ca236f580384e62ef0121557a66d835bf5c0b15bd6510ff02bad6dc395d64b",
+    "exception_reporter.S": "e5424da0ce8cce7b5b3db12d90ee545aa60016495471b52750ac6934155097a8",
     "identity_compare.S": "1da07569be60970dc5f9db0147187dc95d15545f09c0c72c7a91146276c83f23",
     "lfo_designer_editor.S": "e362ff930245ceadb00e969ec0d8d27e543828e62ce5ad635fba38c7ba76a69d",
     "lfo_designer_operations.S": "0530684a663325c377ff4b63951bd9c4c5f0d55c14f41d5754a6bf2bbf994867",
     "lfo_parameters.S": "b16cc246ddd6e7b61c1e7f20f2e994d050eb85e305df92e3e74231406a67a10d",
     "lfo_store.S": "58d60ca47885179fad64519e368a5c4c4cf530482ecafe7bf1b91b9e2796fe06",
     "lifecycle.S": "375147b1b4821487676f3405c2553dca668866bb6d1b4a9ea868785c6ecdaf09",
-    "link.ld": "ba1b77828c7d1c5bfc2eda2a7a2f5a6adc68e5fbee9f9bedd1923fcbf939f3da",
+    "link.ld": "1dfe5c33212347334cb0dcabf930bd591e5ef46c30d2618c923a10f5b9bfd902",
     "loader.S": "a5ec8bd633bc69e7de5f4b7bff500647631121ea296b37eba31483bcd15e4b02",
     "machine_selection.S": "541a232193d9e2097053cdecad182642b28c4aa6c67e7840b45019c1cb8320c5",
     "machine_transition_operations.S": "07e0e12cb7ecc30dc18c12934f6622476e851dd8fe95f5f0c70728ed08f93749",

@@ -82,6 +82,8 @@ SECTIONS
         __gk_runtime_start = .;
         KEEP(*(.runtime))
         KEEP(*(.runtime.*))
+        /* Keep build identity last so it cannot move executable routines. */
+        KEEP(*(.exception_report))
         __gk_runtime_end = .;
     }
     __gk_runtime_size = SIZEOF(.runtime);
