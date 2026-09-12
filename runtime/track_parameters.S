@@ -199,8 +199,8 @@ gk_stock_track_parameter_absolute:
         beq.w   .Lgk_track_parameter_absolute_busy_early
         bra.w gk_track_pair_byte0_fatal_entry_lifecycle
 .Lgk_track_parameter_absolute_lifecycle_active:
-        .incbin "stock/0281.bin", 0, 4
-        .incbin "stock/0281.bin", 4, 4
+        .incbin "stock/0282.bin", 0, 4
+        .incbin "stock/0282.bin", 4, 4
         move.l  48(%sp),%d0
         cmpi.l  #GK_STOCK_TRACK_PARAMETER_ABSOLUTE_RETURN_0,%d0
         beq.s   .Lgk_track_parameter_absolute_caller_ok
@@ -243,7 +243,7 @@ gk_stock_track_parameter_absolute:
         move.l  %d0,-(%sp)
         .global gk_track_parameter_absolute_stock_call
 gk_track_parameter_absolute_stock_call:
-        .incbin "stock/0282.bin", 0, 6
+        .incbin "stock/0283.bin", 0, 6
         move.l  %d0,60(%sp)
         move.l  12(%sp),%d0
         lea     16(%sp),%sp
@@ -269,8 +269,8 @@ gk_stock_track_parameter_relative:
         beq.w   .Lgk_track_parameter_relative_busy_early
         bra.w gk_track_pair_byte0_fatal_entry_lifecycle
 .Lgk_track_parameter_relative_lifecycle_active:
-        .incbin "stock/0283.bin", 0, 4
-        .incbin "stock/0283.bin", 4, 4
+        .incbin "stock/0284.bin", 0, 4
+        .incbin "stock/0284.bin", 4, 4
         move.l  52(%sp),%d0
         cmpi.l  #5,%d0
         bhi.w gk_track_pair_byte0_fatal_entry_id
@@ -324,7 +324,7 @@ gk_track_parameter_absolute_write_marker:
         move.l (%sp)+,%d0
         .global gk_track_parameter_absolute_stock_dirty_store
 gk_track_parameter_absolute_stock_dirty_store:
-        .incbin "stock/0284.bin", 0, 6
+        .incbin "stock/0285.bin", 0, 6
         rts
         .size gk_track_parameter_absolute_write_marker,.-gk_track_parameter_absolute_write_marker
         .global gk_track_parameter_relative_write_marker
@@ -347,7 +347,7 @@ gk_track_parameter_relative_write_marker:
         move.l (%sp)+,%d0
         .global gk_track_parameter_relative_stock_dirty_store
 gk_track_parameter_relative_stock_dirty_store:
-        .incbin "stock/0285.bin", 0, 6
+        .incbin "stock/0286.bin", 0, 6
         rts
         .size gk_track_parameter_relative_write_marker,.-gk_track_parameter_relative_write_marker
         .global gk_track_parameter_identity_match

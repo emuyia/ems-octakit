@@ -4,8 +4,8 @@
         .global gk_selector_acquire_pair
         .type   gk_selector_acquire_pair,@function
 gk_selector_acquire_pair:
-        .incbin "stock/0221.bin", 0, 4
-        .incbin "stock/0221.bin", 4, 4
+        .incbin "stock/0222.bin", 0, 4
+        .incbin "stock/0222.bin", 4, 4
         movea.l %a1,%a3
         move.w  %sr,%d4
         move.w  #0x2700,%sr
@@ -101,8 +101,8 @@ gk_selector_publish_pair_pinned:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         bhi.w   .Lgk_pair_publish_range
         move.l  %d1,-(%sp)
-        .incbin "stock/0222.bin", 0, 4
-        .incbin "stock/0222.bin", 4, 4
+        .incbin "stock/0223.bin", 0, 4
+        .incbin "stock/0223.bin", 4, 4
         move.l  %d0,%d6
         move.l  36(%sp),%d7
         movea.l %a1,%a3
@@ -228,8 +228,8 @@ gk_selector_pair_stable_publication:
         moveq   #GK_ERR_RANGE,%d0
 .Lgk_pair_publish_restore:
         move.w  %d5,%sr
-        .incbin "stock/0223.bin", 0, 4
-        .incbin "stock/0223.bin", 4, 4
+        .incbin "stock/0224.bin", 0, 4
+        .incbin "stock/0224.bin", 4, 4
         move.l  (%sp)+,%d1
         rts
 .Lgk_pair_publish_range:
@@ -243,11 +243,11 @@ gk_stock_sequencer_tick_engine_snapshot:
         move.l  __gk_lifecycle_state,%d0
         beq.s   .Lgk_tick_engine_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_sequencer_tick_fatal
-        .incbin "stock/0224.bin", 0, 6
-        .incbin "stock/0224.bin", 6, 4
-        .incbin "stock/0224.bin", 10, 6
-        .incbin "stock/0224.bin", 16, 4
+        bne.w   gk_stock_sequencer_tick_engine_snapshot_report_fatal
+        .incbin "stock/0225.bin", 0, 6
+        .incbin "stock/0225.bin", 6, 4
+        .incbin "stock/0225.bin", 10, 6
+        .incbin "stock/0225.bin", 16, 4
         jmp     GK_STOCK_SEQUENCER_TICK_ENGINE_CONTINUE
 .Lgk_tick_engine_active:
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
@@ -259,7 +259,7 @@ gk_stock_sequencer_tick_engine_snapshot:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.s   .Lgk_tick_engine_unavailable
         tst.l   %d0
-        bmi.w   gk_sequencer_tick_fatal
+        bmi.w   gk_stock_sequencer_tick_engine_snapshot_report_fatal
         move.b  %d0,GK_TICK_ENGINE_DESCRIPTOR_SP(%sp)
         move.b  %d1,%d7
         move.b  %d7,129(%sp)
@@ -290,7 +290,7 @@ gk_stock_sequencer_tick_track_source:
 .Lgk_tick_track_raw:
         move.b  #GK_TICK_SOURCE_RAW,GK_TICK_SOURCE_KIND_SP(%sp)
 .Lgk_tick_track_continue:
-        .incbin "stock/0225.bin", 0, 6
+        .incbin "stock/0226.bin", 0, 6
         jmp     GK_STOCK_SEQUENCER_TICK_TRACK_CONTINUE
 .Lgk_tick_track_destination_busy:
         jmp     GK_STOCK_SEQUENCER_TICK_TRACK_SKIP
@@ -317,7 +317,7 @@ gk_stock_sequencer_tick_pending_snapshot:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.s   .Lgk_tick_pending_unavailable
         tst.l   %d0
-        bmi.w   gk_sequencer_tick_fatal
+        bmi.w   gk_stock_sequencer_tick_pending_snapshot_report_fatal
         move.b  %d0,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         movea.l %d5,%a0
         adda.l  %a0,%a0
@@ -342,17 +342,17 @@ gk_stock_sequencer_tick_pending_snapshot:
         move.b  GK_TICK_SELECTED_DESCRIPTOR_SP(%sp),%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_pending_snapshot_report_fatal
         move.b  #GK_ID_NONE,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         move.b  #GK_TICK_SOURCE_RAW,GK_TICK_SOURCE_KIND_SP(%sp)
         jmp     GK_STOCK_SEQUENCER_TICK_TRACK_SKIP
 .Lgk_tick_pending_raw:
-        .incbin "stock/0226.bin", 0, 4
-        .incbin "stock/0226.bin", 4, 4
-        .incbin "stock/0226.bin", 8, 2
-        .incbin "stock/0226.bin", 10, 4
-        .incbin "stock/0226.bin", 14, 4
-        .incbin "stock/0226.bin", 18, 2
+        .incbin "stock/0227.bin", 0, 4
+        .incbin "stock/0227.bin", 4, 4
+        .incbin "stock/0227.bin", 8, 2
+        .incbin "stock/0227.bin", 10, 4
+        .incbin "stock/0227.bin", 14, 4
+        .incbin "stock/0227.bin", 18, 2
         move.b  #GK_ID_NONE,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         move.b  #GK_TICK_SOURCE_RAW,GK_TICK_SOURCE_KIND_SP(%sp)
         jmp     GK_STOCK_SEQUENCER_TICK_PENDING_CONTINUE
@@ -368,7 +368,7 @@ gk_stock_sequencer_tick_repeat_publish:
         moveq   #0,%d1
         move.b  GK_TICK_SOURCE_KIND_SP(%sp),%d1
         cmpi.l  #GK_TICK_SOURCE_PENDING,%d1
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_repeat_publish_report_fatal
         move.l  %d5,%d1
         lsl.l   #1,%d1
         lea     __gk_lease_sidecars + GK_SIDECAR_VOICE_REPEAT_OFFSET,%a0
@@ -387,15 +387,15 @@ gk_stock_sequencer_tick_repeat_publish:
         or.l    %d2,%d1
         jsr     gk_selector_publish_pair_pinned
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_repeat_publish_report_fatal
         jmp     GK_STOCK_SEQUENCER_TICK_REPEAT_PUBLISH_CONTINUE
 .Lgk_tick_repeat_publish_raw:
-        .incbin "stock/0227.bin", 0, 2
-        .incbin "stock/0227.bin", 2, 6
-        .incbin "stock/0227.bin", 8, 4
-        .incbin "stock/0227.bin", 12, 6
-        .incbin "stock/0227.bin", 18, 2
-        .incbin "stock/0227.bin", 20, 4
+        .incbin "stock/0228.bin", 0, 2
+        .incbin "stock/0228.bin", 2, 6
+        .incbin "stock/0228.bin", 8, 4
+        .incbin "stock/0228.bin", 12, 6
+        .incbin "stock/0228.bin", 18, 2
+        .incbin "stock/0228.bin", 20, 4
         jmp     GK_STOCK_SEQUENCER_TICK_REPEAT_PUBLISH_CONTINUE
         .size   gk_stock_sequencer_tick_repeat_publish,.-gk_stock_sequencer_tick_repeat_publish
         .global gk_stock_sequencer_tick_repeat_snapshot
@@ -418,7 +418,7 @@ gk_stock_sequencer_tick_repeat_snapshot:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.s   .Lgk_tick_repeat_unavailable
         tst.l   %d0
-        bmi.w   gk_sequencer_tick_fatal
+        bmi.w   gk_stock_sequencer_tick_repeat_snapshot_report_fatal
         move.b  %d0,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         move.b  #GK_TICK_SOURCE_REPEAT,GK_TICK_SOURCE_KIND_SP(%sp)
         move.l  %d1,%d0
@@ -431,12 +431,12 @@ gk_stock_sequencer_tick_repeat_snapshot:
 .Lgk_tick_repeat_unavailable:
         jmp     GK_STOCK_SEQUENCER_TICK_TRACK_SKIP
 .Lgk_tick_repeat_raw:
-        .incbin "stock/0228.bin", 0, 6
-        .incbin "stock/0228.bin", 6, 4
-        .incbin "stock/0228.bin", 10, 2
-        .incbin "stock/0228.bin", 12, 6
-        .incbin "stock/0228.bin", 18, 4
-        .incbin "stock/0228.bin", 22, 2
+        .incbin "stock/0229.bin", 0, 6
+        .incbin "stock/0229.bin", 6, 4
+        .incbin "stock/0229.bin", 10, 2
+        .incbin "stock/0229.bin", 12, 6
+        .incbin "stock/0229.bin", 18, 4
+        .incbin "stock/0229.bin", 22, 2
         move.b  #GK_ID_NONE,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         move.b  #GK_TICK_SOURCE_RAW,GK_TICK_SOURCE_KIND_SP(%sp)
         jmp     GK_STOCK_SEQUENCER_TICK_REPEAT_CONTINUE
@@ -450,7 +450,7 @@ gk_stock_sequencer_tick_selected_publish:
         moveq   #0,%d1
         move.b  GK_TICK_SOURCE_KIND_SP(%sp),%d1
         cmpi.l  #GK_TICK_SOURCE_RAW,%d1
-        beq.w   gk_sequencer_tick_fatal
+        beq.w   gk_stock_sequencer_tick_selected_publish_report_fatal
         move.l  %d5,%d1
         lsl.l   #1,%d1
         lea     __gk_lease_sidecars + GK_SIDECAR_SEQUENCER_TRACK_OFFSET,%a0
@@ -473,7 +473,7 @@ gk_stock_sequencer_tick_selected_publish:
         cmpi.l  #GK_ERR_BUSY,%d0
         beq.w   .Lgk_tick_selected_busy
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_selected_publish_report_fatal
         move.l  %d1,%d0
         mvs.b   %a6,%d7
         mvs.b   %a3,%d6
@@ -483,29 +483,29 @@ gk_stock_sequencer_tick_selected_publish:
         moveq   #0,%d1
         move.b  GK_TICK_SOURCE_KIND_SP(%sp),%d1
         cmpi.l  #GK_TICK_SOURCE_RAW,%d1
-        bne.w   gk_sequencer_tick_fatal
-        .incbin "stock/0229.bin", 0, 2
-        .incbin "stock/0229.bin", 2, 6
-        .incbin "stock/0229.bin", 8, 4
-        .incbin "stock/0229.bin", 12, 2
-        .incbin "stock/0229.bin", 14, 2
-        .incbin "stock/0229.bin", 16, 2
-        .incbin "stock/0229.bin", 18, 2
-        .incbin "stock/0229.bin", 20, 2
+        bne.w   gk_stock_sequencer_tick_selected_publish_report_fatal
+        .incbin "stock/0230.bin", 0, 2
+        .incbin "stock/0230.bin", 2, 6
+        .incbin "stock/0230.bin", 8, 4
+        .incbin "stock/0230.bin", 12, 2
+        .incbin "stock/0230.bin", 14, 2
+        .incbin "stock/0230.bin", 16, 2
+        .incbin "stock/0230.bin", 18, 2
+        .incbin "stock/0230.bin", 20, 2
 .Lgk_tick_raw_bank_same:
-        .incbin "stock/0229.bin", 22, 4
-        .incbin "stock/0229.bin", 26, 2
-        .incbin "stock/0229.bin", 28, 2
-        .incbin "stock/0229.bin", 30, 2
-        .incbin "stock/0229.bin", 32, 2
-        .incbin "stock/0229.bin", 34, 2
+        .incbin "stock/0230.bin", 22, 4
+        .incbin "stock/0230.bin", 26, 2
+        .incbin "stock/0230.bin", 28, 2
+        .incbin "stock/0230.bin", 30, 2
+        .incbin "stock/0230.bin", 32, 2
+        .incbin "stock/0230.bin", 34, 2
 .Lgk_tick_raw_change_known:
-        .incbin "stock/0229.bin", 36, 2
-        .incbin "stock/0229.bin", 38, 4
-        .incbin "stock/0229.bin", 42, 2
-        .incbin "stock/0229.bin", 44, 4
-        .incbin "stock/0229.bin", 48, 2
-        .incbin "stock/0229.bin", 50, 2
+        .incbin "stock/0230.bin", 36, 2
+        .incbin "stock/0230.bin", 38, 4
+        .incbin "stock/0230.bin", 42, 2
+        .incbin "stock/0230.bin", 44, 4
+        .incbin "stock/0230.bin", 48, 2
+        .incbin "stock/0230.bin", 50, 2
         move.l  %d0,-(%sp)
         move.l  %d7,%d0
         move.l  #GK_STOCK_BANK_STRIDE,%d1
@@ -526,16 +526,16 @@ gk_stock_sequencer_tick_selected_publish:
         cmpi.l  #GK_TICK_SOURCE_REPEAT,%d1
         beq.s   .Lgk_tick_selected_busy_release
         cmpi.l  #GK_TICK_SOURCE_ENGINE,%d1
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_selected_publish_report_fatal
         bra.s   .Lgk_tick_selected_busy_skip
 .Lgk_tick_selected_busy_release:
         moveq   #0,%d0
         move.b  GK_TICK_SELECTED_DESCRIPTOR_SP(%sp),%d0
         cmpi.l  #GK_ID_NONE,%d0
-        beq.w   gk_sequencer_tick_fatal
+        beq.w   gk_stock_sequencer_tick_selected_publish_report_fatal
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_selected_publish_report_fatal
 .Lgk_tick_selected_busy_skip:
         move.b  #GK_ID_NONE,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
         move.b  #GK_TICK_SOURCE_RAW,GK_TICK_SOURCE_KIND_SP(%sp)
@@ -554,14 +554,14 @@ gk_stock_sequencer_tick_selected_release:
         moveq   #0,%d0
         move.b  GK_TICK_SELECTED_DESCRIPTOR_SP(%sp),%d0
         cmpi.l  #GK_ID_NONE,%d0
-        beq.w   gk_sequencer_tick_fatal
+        beq.w   gk_stock_sequencer_tick_selected_release_report_fatal
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_stock_sequencer_tick_selected_release_report_fatal
         move.b  #GK_ID_NONE,GK_TICK_SELECTED_DESCRIPTOR_SP(%sp)
 .Lgk_tick_release_stock:
-        .incbin "stock/0230.bin", 0, 4
-        .incbin "stock/0230.bin", 4, 4
+        .incbin "stock/0231.bin", 0, 4
+        .incbin "stock/0231.bin", 4, 4
         jmp     GK_STOCK_SEQUENCER_TICK_RELEASE_CONTINUE
         .size   gk_stock_sequencer_tick_selected_release,.-gk_stock_sequencer_tick_selected_release
         .global gk_stock_sequencer_tick_return
@@ -601,7 +601,7 @@ gk_sequencer_tick_return_active:
         beq.s   .Lgk_tick_return_restore
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_sequencer_tick_fatal
+        bne.w   gk_sequencer_tick_return_active_report_fatal
 .Lgk_tick_return_restore:
         movem.l (%sp),%d0-%d1/%a0-%a1
         move.w  16(%sp),%d2
@@ -665,9 +665,9 @@ gk_sequencer_tick_return_active:
         lea     20(%sp),%sp
         .global gk_sequencer_tick_return_stock_exact
 gk_sequencer_tick_return_stock_exact:
-        .incbin "stock/0231.bin", 0, 4
-        .incbin "stock/0231.bin", 4, 4
-        .incbin "stock/0231.bin", 8, 2
+        .incbin "stock/0232.bin", 0, 4
+        .incbin "stock/0232.bin", 4, 4
+        .incbin "stock/0232.bin", 8, 2
         .balign 4
         .global gk_sequencer_tick_return_table
 gk_sequencer_tick_return_table:
@@ -931,6 +931,41 @@ gk_sequencer_tick_return_table:
 gk_sequencer_tick_return_table_end:
         .size   gk_stock_sequencer_tick_return,.-gk_stock_sequencer_tick_return
         .global gk_sequencer_tick_fatal
+        .global gk_sequencer_tick_return_active_report_fatal
+        .type gk_sequencer_tick_return_active_report_fatal,@function
+gk_sequencer_tick_return_active_report_fatal:
+        illegal
+        .size gk_sequencer_tick_return_active_report_fatal,.-gk_sequencer_tick_return_active_report_fatal
+        .global gk_stock_sequencer_tick_engine_snapshot_report_fatal
+        .type gk_stock_sequencer_tick_engine_snapshot_report_fatal,@function
+gk_stock_sequencer_tick_engine_snapshot_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_engine_snapshot_report_fatal,.-gk_stock_sequencer_tick_engine_snapshot_report_fatal
+        .global gk_stock_sequencer_tick_pending_snapshot_report_fatal
+        .type gk_stock_sequencer_tick_pending_snapshot_report_fatal,@function
+gk_stock_sequencer_tick_pending_snapshot_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_pending_snapshot_report_fatal,.-gk_stock_sequencer_tick_pending_snapshot_report_fatal
+        .global gk_stock_sequencer_tick_repeat_publish_report_fatal
+        .type gk_stock_sequencer_tick_repeat_publish_report_fatal,@function
+gk_stock_sequencer_tick_repeat_publish_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_repeat_publish_report_fatal,.-gk_stock_sequencer_tick_repeat_publish_report_fatal
+        .global gk_stock_sequencer_tick_repeat_snapshot_report_fatal
+        .type gk_stock_sequencer_tick_repeat_snapshot_report_fatal,@function
+gk_stock_sequencer_tick_repeat_snapshot_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_repeat_snapshot_report_fatal,.-gk_stock_sequencer_tick_repeat_snapshot_report_fatal
+        .global gk_stock_sequencer_tick_selected_publish_report_fatal
+        .type gk_stock_sequencer_tick_selected_publish_report_fatal,@function
+gk_stock_sequencer_tick_selected_publish_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_selected_publish_report_fatal,.-gk_stock_sequencer_tick_selected_publish_report_fatal
+        .global gk_stock_sequencer_tick_selected_release_report_fatal
+        .type gk_stock_sequencer_tick_selected_release_report_fatal,@function
+gk_stock_sequencer_tick_selected_release_report_fatal:
+        illegal
+        .size gk_stock_sequencer_tick_selected_release_report_fatal,.-gk_stock_sequencer_tick_selected_release_report_fatal
 gk_sequencer_tick_fatal:
         illegal
         bra.s   gk_sequencer_tick_fatal

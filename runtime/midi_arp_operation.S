@@ -350,7 +350,7 @@ gk_midi_arp_validate_pending_context:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0318.bin", 0, 6
+        .incbin "stock/0319.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w   .Lgk_ma_pending_context_corrupt
         move.l  %d6,%d0
@@ -986,8 +986,8 @@ gk_midi_arp_writer_post_commit_check:
         .global gk_stock_midi_arp_store_trampoline
         .type   gk_stock_midi_arp_store_trampoline,@function
 gk_stock_midi_arp_store_trampoline:
-        .incbin "stock/0319.bin", 0, 4
-        .incbin "stock/0319.bin", 4, 4
+        .incbin "stock/0320.bin", 0, 4
+        .incbin "stock/0320.bin", 4, 4
         jmp     GK_MA_STORE_CONTINUE
         .size   gk_stock_midi_arp_store_trampoline,.-gk_stock_midi_arp_store_trampoline
         .type   gk_midi_arp_clear_release_abort_fatal,@function
@@ -1105,8 +1105,8 @@ gk_stock_midi_arp_clear:
         .global gk_stock_midi_arp_clear_trampoline
         .type   gk_stock_midi_arp_clear_trampoline,@function
 gk_stock_midi_arp_clear_trampoline:
-        .incbin "stock/0320.bin", 0, 4
-        .incbin "stock/0320.bin", 4, 4
+        .incbin "stock/0321.bin", 0, 4
+        .incbin "stock/0321.bin", 4, 4
         jmp     GK_MA_CLEAR_CONTINUE
         .size   gk_stock_midi_arp_clear_trampoline,.-gk_stock_midi_arp_clear_trampoline
         .global gk_stock_midi_arp_clear_finish
@@ -1226,10 +1226,10 @@ gk_midi_arp_clear_post_commit_check:
         lea     GK_MAC_REBUILT_STOCK_FRAME(%a6),%sp
         movem.l GK_MAC_SAVED_D2(%a6),%d2-%d7/%a2-%a6
         movem.l %d2-%d7/%a2-%a6,(%sp)
-        .incbin "stock/0321.bin", 0, 4
-        .incbin "stock/0321.bin", 4, 4
-        .incbin "stock/0321.bin", 8, 4
         .incbin "stock/0322.bin", 0, 4
+        .incbin "stock/0322.bin", 4, 4
+        .incbin "stock/0322.bin", 8, 4
+        .incbin "stock/0323.bin", 0, 4
         .byte 0xaf,0x1e
         .size   gk_stock_midi_arp_clear_finish,.-gk_stock_midi_arp_clear_finish
         .global gk_midi_arp_fatal

@@ -24,8 +24,8 @@ gk_stock_midi_track_part_store:
         beq.s   .Lgk_midi_track_store_active
         bra.w   gk_track_store_fatal
 .Lgk_midi_track_store_active:
-        .incbin "stock/0192.bin", 0, 4
-        .incbin "stock/0192.bin", 4, 4
+        .incbin "stock/0193.bin", 0, 4
+        .incbin "stock/0193.bin", 4, 4
         movea.l 48(%sp),%a2
         move.l  52(%sp),%d5
         move.l  56(%sp),%d6
@@ -112,15 +112,15 @@ gk_midi_track_store_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_track_store_fatal
-        .incbin "stock/0193.bin", 0, 4
-        .incbin "stock/0193.bin", 4, 4
-        .incbin "stock/0193.bin", 8, 2
+        .incbin "stock/0194.bin", 0, 4
+        .incbin "stock/0194.bin", 4, 4
+        .incbin "stock/0194.bin", 8, 2
         .size   gk_stock_midi_track_part_store,.-gk_stock_midi_track_part_store
         .global gk_stock_midi_track_part_store_trampoline
         .type   gk_stock_midi_track_part_store_trampoline,@function
 gk_stock_midi_track_part_store_trampoline:
-        .incbin "stock/0194.bin", 0, 4
-        .incbin "stock/0194.bin", 4, 4
+        .incbin "stock/0195.bin", 0, 4
+        .incbin "stock/0195.bin", 4, 4
         .global gk_stock_midi_track_part_store_trampoline_jump
 gk_stock_midi_track_part_store_trampoline_jump:
         jmp     GK_STOCK_MIDI_TRACK_PART_STORE_CONTINUE
@@ -133,8 +133,8 @@ gk_stock_audio_track_part_store:
         beq.s   .Lgk_audio_track_store_active
         bra.w   gk_track_store_fatal
 .Lgk_audio_track_store_active:
-        .incbin "stock/0195.bin", 0, 4
-        .incbin "stock/0195.bin", 4, 4
+        .incbin "stock/0196.bin", 0, 4
+        .incbin "stock/0196.bin", 4, 4
         movea.l 48(%sp),%a2
         move.l  52(%sp),%d5
         move.l  56(%sp),%d6
@@ -221,15 +221,15 @@ gk_audio_track_store_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_track_store_fatal
-        .incbin "stock/0196.bin", 0, 4
-        .incbin "stock/0196.bin", 4, 4
-        .incbin "stock/0196.bin", 8, 2
+        .incbin "stock/0197.bin", 0, 4
+        .incbin "stock/0197.bin", 4, 4
+        .incbin "stock/0197.bin", 8, 2
         .size   gk_stock_audio_track_part_store,.-gk_stock_audio_track_part_store
         .global gk_stock_audio_track_part_store_trampoline
         .type   gk_stock_audio_track_part_store_trampoline,@function
 gk_stock_audio_track_part_store_trampoline:
-        .incbin "stock/0197.bin", 0, 4
-        .incbin "stock/0197.bin", 4, 4
+        .incbin "stock/0198.bin", 0, 4
+        .incbin "stock/0198.bin", 4, 4
         .global gk_stock_audio_track_part_store_trampoline_jump
 gk_stock_audio_track_part_store_trampoline_jump:
         jmp     GK_STOCK_AUDIO_TRACK_PART_STORE_CONTINUE

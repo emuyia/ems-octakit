@@ -56,7 +56,7 @@ gk_stock_audio_pattern_primary_begin:
         beq.s   .Lgk_audio_pattern_primary_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_primary_begin_report_fatal
 .Lgk_audio_pattern_primary_begin_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -68,7 +68,7 @@ gk_stock_audio_pattern_primary_begin:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_pattern_primary_begin_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_stock_audio_pattern_primary_begin_report_fatal
         .size   gk_stock_audio_pattern_primary_begin,.-gk_stock_audio_pattern_primary_begin
         .global gk_stock_audio_pattern_primary_commit
         .type   gk_stock_audio_pattern_primary_commit,@function
@@ -96,7 +96,7 @@ gk_stock_audio_pattern_primary_commit:
         beq.s   .Lgk_audio_pattern_primary_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_primary_commit_report_fatal
 .Lgk_audio_pattern_primary_commit_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -119,7 +119,7 @@ gk_audio_pattern_primary_ccr_replay:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_pattern_primary_commit_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_audio_pattern_primary_ccr_replay_report_fatal
         .size   gk_stock_audio_pattern_primary_commit,.-gk_stock_audio_pattern_primary_commit
         .global gk_stock_audio_pattern_secondary_begin
         .type   gk_stock_audio_pattern_secondary_begin,@function
@@ -180,7 +180,7 @@ gk_stock_audio_pattern_secondary_begin:
         beq.s   .Lgk_audio_pattern_secondary_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_secondary_begin_report_fatal
 .Lgk_audio_pattern_secondary_begin_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -192,7 +192,7 @@ gk_stock_audio_pattern_secondary_begin:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_pattern_secondary_begin_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_stock_audio_pattern_secondary_begin_report_fatal
         .size   gk_stock_audio_pattern_secondary_begin,.-gk_stock_audio_pattern_secondary_begin
         .global gk_stock_audio_pattern_secondary_commit
         .type   gk_stock_audio_pattern_secondary_commit,@function
@@ -220,7 +220,7 @@ gk_stock_audio_pattern_secondary_commit:
         beq.s   .Lgk_audio_pattern_secondary_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_secondary_commit_report_fatal
 .Lgk_audio_pattern_secondary_commit_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -242,7 +242,7 @@ gk_audio_pattern_secondary_ccr_replay:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_pattern_secondary_commit_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_audio_pattern_secondary_ccr_replay_report_fatal
         .size   gk_stock_audio_pattern_secondary_commit,.-gk_stock_audio_pattern_secondary_commit
         .global gk_stock_audio_pattern_special_begin
         .type   gk_stock_audio_pattern_special_begin,@function
@@ -297,7 +297,7 @@ gk_stock_audio_pattern_special_begin:
         beq.s   .Lgk_audio_pattern_special_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_special_begin_report_fatal
 .Lgk_audio_pattern_special_begin_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -309,7 +309,7 @@ gk_stock_audio_pattern_special_begin:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_pattern_special_begin_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_stock_audio_pattern_special_begin_report_fatal
         .size   gk_stock_audio_pattern_special_begin,.-gk_stock_audio_pattern_special_begin
         .global gk_stock_audio_pattern_special_commit
         .type   gk_stock_audio_pattern_special_commit,@function
@@ -368,7 +368,7 @@ gk_stock_audio_pattern_special_commit:
         beq.s   .Lgk_audio_pattern_special_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_pattern_special_commit_report_fatal
 .Lgk_audio_pattern_special_commit_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -391,7 +391,7 @@ gk_audio_pattern_special_ccr_replay:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.w   .Lgk_audio_pattern_special_commit_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_audio_pattern_special_ccr_replay_report_fatal
         .size   gk_stock_audio_pattern_special_commit,.-gk_stock_audio_pattern_special_commit
         .global gk_stock_audio_periodic_primary_begin
         .type   gk_stock_audio_periodic_primary_begin,@function
@@ -453,7 +453,7 @@ gk_stock_audio_periodic_primary_begin:
         beq.s   .Lgk_audio_periodic_primary_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_periodic_primary_begin_report_fatal
 .Lgk_audio_periodic_primary_begin_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -465,7 +465,7 @@ gk_stock_audio_periodic_primary_begin:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_periodic_primary_begin_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_stock_audio_periodic_primary_begin_report_fatal
         .size   gk_stock_audio_periodic_primary_begin,.-gk_stock_audio_periodic_primary_begin
         .global gk_stock_audio_periodic_primary_commit
         .type   gk_stock_audio_periodic_primary_commit,@function
@@ -533,7 +533,7 @@ gk_stock_audio_periodic_primary_commit:
         beq.s   .Lgk_audio_periodic_primary_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_periodic_primary_commit_report_fatal
 .Lgk_audio_periodic_primary_commit_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -555,7 +555,7 @@ gk_audio_periodic_primary_ccr_replay:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.w   .Lgk_audio_periodic_primary_commit_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_audio_periodic_primary_ccr_replay_report_fatal
         .size   gk_stock_audio_periodic_primary_commit,.-gk_stock_audio_periodic_primary_commit
         .global gk_stock_audio_periodic_secondary_begin
         .type   gk_stock_audio_periodic_secondary_begin,@function
@@ -615,7 +615,7 @@ gk_stock_audio_periodic_secondary_begin:
         beq.s   .Lgk_audio_periodic_secondary_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_periodic_secondary_begin_report_fatal
 .Lgk_audio_periodic_secondary_begin_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -627,7 +627,7 @@ gk_stock_audio_periodic_secondary_begin:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_audio_periodic_secondary_begin_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_stock_audio_periodic_secondary_begin_report_fatal
         .size   gk_stock_audio_periodic_secondary_begin,.-gk_stock_audio_periodic_secondary_begin
         .global gk_stock_audio_periodic_secondary_commit
         .type   gk_stock_audio_periodic_secondary_commit,@function
@@ -693,7 +693,7 @@ gk_stock_audio_periodic_secondary_commit:
         beq.s   .Lgk_audio_periodic_secondary_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_audio_publisher_fatal
+        bne.w   gk_stock_audio_periodic_secondary_commit_report_fatal
 .Lgk_audio_periodic_secondary_commit_stock:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -715,9 +715,86 @@ gk_audio_periodic_secondary_ccr_replay:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.w   .Lgk_audio_periodic_secondary_commit_stock
-        bra.w   gk_audio_publisher_fatal
+        bra.w   gk_audio_periodic_secondary_ccr_replay_report_fatal
         .size   gk_stock_audio_periodic_secondary_commit,.-gk_stock_audio_periodic_secondary_commit
         .global gk_audio_publisher_fatal
+        .global gk_audio_pattern_primary_ccr_replay_report_fatal
+        .type gk_audio_pattern_primary_ccr_replay_report_fatal,@function
+gk_audio_pattern_primary_ccr_replay_report_fatal:
+        illegal
+        .size gk_audio_pattern_primary_ccr_replay_report_fatal,.-gk_audio_pattern_primary_ccr_replay_report_fatal
+        .global gk_audio_pattern_secondary_ccr_replay_report_fatal
+        .type gk_audio_pattern_secondary_ccr_replay_report_fatal,@function
+gk_audio_pattern_secondary_ccr_replay_report_fatal:
+        illegal
+        .size gk_audio_pattern_secondary_ccr_replay_report_fatal,.-gk_audio_pattern_secondary_ccr_replay_report_fatal
+        .global gk_audio_pattern_special_ccr_replay_report_fatal
+        .type gk_audio_pattern_special_ccr_replay_report_fatal,@function
+gk_audio_pattern_special_ccr_replay_report_fatal:
+        illegal
+        .size gk_audio_pattern_special_ccr_replay_report_fatal,.-gk_audio_pattern_special_ccr_replay_report_fatal
+        .global gk_audio_periodic_primary_ccr_replay_report_fatal
+        .type gk_audio_periodic_primary_ccr_replay_report_fatal,@function
+gk_audio_periodic_primary_ccr_replay_report_fatal:
+        illegal
+        .size gk_audio_periodic_primary_ccr_replay_report_fatal,.-gk_audio_periodic_primary_ccr_replay_report_fatal
+        .global gk_audio_periodic_secondary_ccr_replay_report_fatal
+        .type gk_audio_periodic_secondary_ccr_replay_report_fatal,@function
+gk_audio_periodic_secondary_ccr_replay_report_fatal:
+        illegal
+        .size gk_audio_periodic_secondary_ccr_replay_report_fatal,.-gk_audio_periodic_secondary_ccr_replay_report_fatal
+        .global gk_stock_audio_pattern_primary_begin_report_fatal
+        .type gk_stock_audio_pattern_primary_begin_report_fatal,@function
+gk_stock_audio_pattern_primary_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_primary_begin_report_fatal,.-gk_stock_audio_pattern_primary_begin_report_fatal
+        .global gk_stock_audio_pattern_primary_commit_report_fatal
+        .type gk_stock_audio_pattern_primary_commit_report_fatal,@function
+gk_stock_audio_pattern_primary_commit_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_primary_commit_report_fatal,.-gk_stock_audio_pattern_primary_commit_report_fatal
+        .global gk_stock_audio_pattern_secondary_begin_report_fatal
+        .type gk_stock_audio_pattern_secondary_begin_report_fatal,@function
+gk_stock_audio_pattern_secondary_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_secondary_begin_report_fatal,.-gk_stock_audio_pattern_secondary_begin_report_fatal
+        .global gk_stock_audio_pattern_secondary_commit_report_fatal
+        .type gk_stock_audio_pattern_secondary_commit_report_fatal,@function
+gk_stock_audio_pattern_secondary_commit_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_secondary_commit_report_fatal,.-gk_stock_audio_pattern_secondary_commit_report_fatal
+        .global gk_stock_audio_pattern_special_begin_report_fatal
+        .type gk_stock_audio_pattern_special_begin_report_fatal,@function
+gk_stock_audio_pattern_special_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_special_begin_report_fatal,.-gk_stock_audio_pattern_special_begin_report_fatal
+        .global gk_stock_audio_pattern_special_commit_report_fatal
+        .type gk_stock_audio_pattern_special_commit_report_fatal,@function
+gk_stock_audio_pattern_special_commit_report_fatal:
+        illegal
+        .size gk_stock_audio_pattern_special_commit_report_fatal,.-gk_stock_audio_pattern_special_commit_report_fatal
+        .global gk_stock_audio_periodic_primary_begin_report_fatal
+        .type gk_stock_audio_periodic_primary_begin_report_fatal,@function
+gk_stock_audio_periodic_primary_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_periodic_primary_begin_report_fatal,.-gk_stock_audio_periodic_primary_begin_report_fatal
+        .global gk_stock_audio_periodic_primary_commit_report_fatal
+        .type gk_stock_audio_periodic_primary_commit_report_fatal,@function
+gk_stock_audio_periodic_primary_commit_report_fatal:
+        illegal
+        .size gk_stock_audio_periodic_primary_commit_report_fatal,.-gk_stock_audio_periodic_primary_commit_report_fatal
+        .global gk_stock_audio_periodic_secondary_begin_report_fatal
+        .type gk_stock_audio_periodic_secondary_begin_report_fatal,@function
+gk_stock_audio_periodic_secondary_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_periodic_secondary_begin_report_fatal,.-gk_stock_audio_periodic_secondary_begin_report_fatal
+        .global gk_stock_audio_periodic_secondary_commit_report_fatal
+        .type gk_stock_audio_periodic_secondary_commit_report_fatal,@function
+gk_stock_audio_periodic_secondary_commit_report_fatal:
+        illegal
+        .size gk_stock_audio_periodic_secondary_commit_report_fatal,.-gk_stock_audio_periodic_secondary_commit_report_fatal
 gk_audio_publisher_fatal:
         illegal
         bra.s   gk_audio_publisher_fatal
+        .byte 0x00
+        .incbin "stock/0026.bin", 0, 1

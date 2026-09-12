@@ -56,20 +56,20 @@ gk_stock_voice_pending_pattern_begin:
         beq.s   .Lgk_voice_pattern_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_voice_pending_fatal
+        bne.w   gk_stock_voice_pending_pattern_begin_report_fatal
 .Lgk_voice_pattern_begin_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0201.bin", 0, 2
-        .incbin "stock/0201.bin", 2, 4
-        .incbin "stock/0201.bin", 6, 2
+        .incbin "stock/0202.bin", 0, 2
+        .incbin "stock/0202.bin", 2, 4
+        .incbin "stock/0202.bin", 6, 2
         jmp     GK_STOCK_VOICE_PENDING_PATTERN_BEGIN_CONTINUE
 .Lgk_voice_pattern_begin_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_voice_pattern_begin_stock
-        bra.w   gk_voice_pending_fatal
+        bra.w   gk_stock_voice_pending_pattern_begin_report_fatal
         .size   gk_stock_voice_pending_pattern_begin,.-gk_stock_voice_pending_pattern_begin
         .global gk_stock_voice_pending_pattern_commit
         .type   gk_stock_voice_pending_pattern_commit,@function
@@ -94,12 +94,12 @@ gk_stock_voice_pending_pattern_commit:
         beq.s   .Lgk_voice_pattern_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_voice_pending_fatal
+        bne.w   gk_stock_voice_pending_pattern_commit_report_fatal
 .Lgk_voice_pattern_commit_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0202.bin", 0, 4
-        .incbin "stock/0202.bin", 4, 6
+        .incbin "stock/0203.bin", 0, 4
+        .incbin "stock/0203.bin", 4, 6
         jmp     GK_STOCK_VOICE_PENDING_PATTERN_COMMIT_CONTINUE
 .Lgk_voice_pattern_commit_success:
         movem.l (%sp),%d0-%d7/%a0-%a6
@@ -112,7 +112,7 @@ gk_stock_voice_pending_pattern_commit:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.w   .Lgk_voice_pattern_commit_stock
-        bra.w   gk_voice_pending_fatal
+        bra.w   gk_stock_voice_pending_pattern_commit_report_fatal
         .size   gk_stock_voice_pending_pattern_commit,.-gk_stock_voice_pending_pattern_commit
         .global gk_stock_voice_pending_periodic_begin
         .type   gk_stock_voice_pending_periodic_begin,@function
@@ -160,21 +160,21 @@ gk_stock_voice_pending_periodic_begin:
         beq.s   .Lgk_voice_periodic_begin_stock
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_voice_pending_fatal
+        bne.w   gk_stock_voice_pending_periodic_begin_report_fatal
 .Lgk_voice_periodic_begin_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0203.bin", 0, 2
-        .incbin "stock/0203.bin", 2, 2
-        .incbin "stock/0203.bin", 4, 2
-        .incbin "stock/0203.bin", 6, 2
+        .incbin "stock/0204.bin", 0, 2
+        .incbin "stock/0204.bin", 2, 2
+        .incbin "stock/0204.bin", 4, 2
+        .incbin "stock/0204.bin", 6, 2
         jmp     GK_STOCK_VOICE_PENDING_PERIODIC_BEGIN_CONTINUE
 .Lgk_voice_periodic_begin_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.s   .Lgk_voice_periodic_begin_stock
-        bra.w   gk_voice_pending_fatal
+        bra.w   gk_stock_voice_pending_periodic_begin_report_fatal
         .size   gk_stock_voice_pending_periodic_begin,.-gk_stock_voice_pending_periodic_begin
         .global gk_stock_voice_pending_periodic_commit
         .type   gk_stock_voice_pending_periodic_commit,@function
@@ -202,12 +202,12 @@ gk_stock_voice_pending_periodic_commit:
         beq.s   .Lgk_voice_periodic_commit_success
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_voice_pending_fatal
+        bne.w   gk_stock_voice_pending_periodic_commit_report_fatal
 .Lgk_voice_periodic_commit_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0204.bin", 0, 4
-        .incbin "stock/0204.bin", 4, 4
+        .incbin "stock/0205.bin", 0, 4
+        .incbin "stock/0205.bin", 4, 4
         jmp     GK_STOCK_VOICE_PENDING_PERIODIC_COMMIT_CONTINUE
 .Lgk_voice_periodic_commit_success:
         movem.l (%sp),%d0-%d7/%a0-%a6
@@ -220,9 +220,29 @@ gk_stock_voice_pending_periodic_commit:
         move.l  __gk_lifecycle_state,%d1
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
         beq.w   .Lgk_voice_periodic_commit_stock
-        bra.w   gk_voice_pending_fatal
+        bra.w   gk_stock_voice_pending_periodic_commit_report_fatal
         .size   gk_stock_voice_pending_periodic_commit,.-gk_stock_voice_pending_periodic_commit
         .global gk_voice_pending_fatal
+        .global gk_stock_voice_pending_pattern_begin_report_fatal
+        .type gk_stock_voice_pending_pattern_begin_report_fatal,@function
+gk_stock_voice_pending_pattern_begin_report_fatal:
+        illegal
+        .size gk_stock_voice_pending_pattern_begin_report_fatal,.-gk_stock_voice_pending_pattern_begin_report_fatal
+        .global gk_stock_voice_pending_pattern_commit_report_fatal
+        .type gk_stock_voice_pending_pattern_commit_report_fatal,@function
+gk_stock_voice_pending_pattern_commit_report_fatal:
+        illegal
+        .size gk_stock_voice_pending_pattern_commit_report_fatal,.-gk_stock_voice_pending_pattern_commit_report_fatal
+        .global gk_stock_voice_pending_periodic_begin_report_fatal
+        .type gk_stock_voice_pending_periodic_begin_report_fatal,@function
+gk_stock_voice_pending_periodic_begin_report_fatal:
+        illegal
+        .size gk_stock_voice_pending_periodic_begin_report_fatal,.-gk_stock_voice_pending_periodic_begin_report_fatal
+        .global gk_stock_voice_pending_periodic_commit_report_fatal
+        .type gk_stock_voice_pending_periodic_commit_report_fatal,@function
+gk_stock_voice_pending_periodic_commit_report_fatal:
+        illegal
+        .size gk_stock_voice_pending_periodic_commit_report_fatal,.-gk_stock_voice_pending_periodic_commit_report_fatal
 gk_voice_pending_fatal:
         illegal
         bra.s   gk_voice_pending_fatal

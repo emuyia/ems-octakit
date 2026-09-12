@@ -176,8 +176,8 @@ gk_ui_carried_pattern_lag_publish:
         .global gk_stock_carried_pattern_lag_validate
         .type   gk_stock_carried_pattern_lag_validate,@function
 gk_stock_carried_pattern_lag_validate:
-        .incbin "stock/0382.bin", 0, 4
-        .incbin "stock/0382.bin", 4, 4
+        .incbin "stock/0383.bin", 0, 4
+        .incbin "stock/0383.bin", 4, 4
         move.l  %d0,%d3
         cmpi.l  #15,%d3
         bhi.w gk_lfo_designer_fatal_token_pattern

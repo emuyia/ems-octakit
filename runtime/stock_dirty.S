@@ -45,7 +45,7 @@ gk_stock_dirty_mark_bank_mask:
         btst    %d3,%d2
         beq.s   .Lgk_dirty_mask_ok
         moveq   #1,%d0
-        .incbin "stock/0170.bin", 0, 6
+        .incbin "stock/0171.bin", 0, 6
 .Lgk_dirty_mask_ok:
         moveq   #GK_OK,%d0
         bra.s   .Lgk_dirty_mask_restore

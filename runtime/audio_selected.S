@@ -4,10 +4,10 @@
         .global gk_stock_audio_source_engine_current
         .type   gk_stock_audio_source_engine_current,@function
 gk_stock_audio_source_engine_current:
-        .incbin "stock/0026.bin", 0, 6
-        .incbin "stock/0026.bin", 6, 4
-        .incbin "stock/0026.bin", 10, 6
-        .incbin "stock/0026.bin", 16, 4
+        .incbin "stock/0027.bin", 0, 6
+        .incbin "stock/0027.bin", 6, 4
+        .incbin "stock/0027.bin", 10, 6
+        .incbin "stock/0027.bin", 16, 4
         .global gk_audio_source_engine_stock_end
 gk_audio_source_engine_stock_end:
         lea -4(%sp),%sp
@@ -22,14 +22,14 @@ gk_audio_source_engine_stock_end:
         .global gk_stock_audio_source_primary
         .type   gk_stock_audio_source_primary,@function
 gk_stock_audio_source_primary:
-        .incbin "stock/0027.bin", 0, 6
-        .incbin "stock/0027.bin", 6, 4
-        .incbin "stock/0027.bin", 10, 4
-        .incbin "stock/0027.bin", 14, 4
-        .incbin "stock/0027.bin", 18, 6
-        .incbin "stock/0027.bin", 24, 4
-        .incbin "stock/0027.bin", 28, 4
-        .incbin "stock/0027.bin", 32, 4
+        .incbin "stock/0028.bin", 0, 6
+        .incbin "stock/0028.bin", 6, 4
+        .incbin "stock/0028.bin", 10, 4
+        .incbin "stock/0028.bin", 14, 4
+        .incbin "stock/0028.bin", 18, 6
+        .incbin "stock/0028.bin", 24, 4
+        .incbin "stock/0028.bin", 28, 4
+        .incbin "stock/0028.bin", 32, 4
         .global gk_audio_source_primary_stock_end
 gk_audio_source_primary_stock_end:
         lea -4(%sp),%sp
@@ -44,13 +44,13 @@ gk_audio_source_primary_stock_end:
         .global gk_stock_audio_source_snapshot_chain
         .type   gk_stock_audio_source_snapshot_chain,@function
 gk_stock_audio_source_snapshot_chain:
-        .incbin "stock/0028.bin", 0, 6
-        .incbin "stock/0028.bin", 6, 4
-        .incbin "stock/0028.bin", 10, 4
-        .incbin "stock/0028.bin", 14, 4
-        .incbin "stock/0028.bin", 18, 4
-        .incbin "stock/0028.bin", 22, 4
-        .incbin "stock/0028.bin", 26, 4
+        .incbin "stock/0029.bin", 0, 6
+        .incbin "stock/0029.bin", 6, 4
+        .incbin "stock/0029.bin", 10, 4
+        .incbin "stock/0029.bin", 14, 4
+        .incbin "stock/0029.bin", 18, 4
+        .incbin "stock/0029.bin", 22, 4
+        .incbin "stock/0029.bin", 26, 4
         .global gk_audio_source_snapshot_chain_stock_end
 gk_audio_source_snapshot_chain_stock_end:
         lea -4(%sp),%sp
@@ -65,13 +65,13 @@ gk_audio_source_snapshot_chain_stock_end:
         .global gk_stock_audio_source_snapshot_consume
         .type   gk_stock_audio_source_snapshot_consume,@function
 gk_stock_audio_source_snapshot_consume:
-        .incbin "stock/0029.bin", 0, 6
-        .incbin "stock/0029.bin", 6, 4
-        .incbin "stock/0029.bin", 10, 4
-        .incbin "stock/0029.bin", 14, 4
-        .incbin "stock/0029.bin", 18, 4
-        .incbin "stock/0029.bin", 22, 4
-        .incbin "stock/0029.bin", 26, 4
+        .incbin "stock/0030.bin", 0, 6
+        .incbin "stock/0030.bin", 6, 4
+        .incbin "stock/0030.bin", 10, 4
+        .incbin "stock/0030.bin", 14, 4
+        .incbin "stock/0030.bin", 18, 4
+        .incbin "stock/0030.bin", 22, 4
+        .incbin "stock/0030.bin", 26, 4
         .global gk_audio_source_snapshot_consume_stock_end
 gk_audio_source_snapshot_consume_stock_end:
         lea -4(%sp),%sp
@@ -86,12 +86,12 @@ gk_audio_source_snapshot_consume_stock_end:
         .global gk_stock_audio_source_active
         .type   gk_stock_audio_source_active,@function
 gk_stock_audio_source_active:
-        .incbin "stock/0030.bin", 0, 6
-        .incbin "stock/0030.bin", 6, 4
-        .incbin "stock/0030.bin", 10, 4
-        .incbin "stock/0030.bin", 14, 6
-        .incbin "stock/0030.bin", 20, 4
-        .incbin "stock/0030.bin", 24, 4
+        .incbin "stock/0031.bin", 0, 6
+        .incbin "stock/0031.bin", 6, 4
+        .incbin "stock/0031.bin", 10, 4
+        .incbin "stock/0031.bin", 14, 6
+        .incbin "stock/0031.bin", 20, 4
+        .incbin "stock/0031.bin", 24, 4
         .global gk_audio_source_active_stock_end
 gk_audio_source_active_stock_end:
         lea -4(%sp),%sp
@@ -106,20 +106,20 @@ gk_audio_source_active_stock_end:
         .global gk_stock_audio_selected_pair
         .type   gk_stock_audio_selected_pair,@function
 gk_stock_audio_selected_pair:
-        .incbin "stock/0031.bin", 0, 4
-        .incbin "stock/0031.bin", 4, 4
-        .incbin "stock/0031.bin", 8, 2
-        .incbin "stock/0031.bin", 10, 2
-        .incbin "stock/0031.bin", 12, 2
-        .incbin "stock/0031.bin", 14, 2
+        .incbin "stock/0032.bin", 0, 4
+        .incbin "stock/0032.bin", 4, 4
+        .incbin "stock/0032.bin", 8, 2
+        .incbin "stock/0032.bin", 10, 2
+        .incbin "stock/0032.bin", 12, 2
+        .incbin "stock/0032.bin", 14, 2
 .Lgk_audio_selected_compare_part:
-        .incbin "stock/0031.bin", 16, 4
-        .incbin "stock/0031.bin", 20, 4
-        .incbin "stock/0031.bin", 24, 4
-        .incbin "stock/0031.bin", 28, 2
-        .incbin "stock/0031.bin", 30, 2
-        .incbin "stock/0031.bin", 32, 2
-        .incbin "stock/0031.bin", 34, 2
+        .incbin "stock/0032.bin", 16, 4
+        .incbin "stock/0032.bin", 20, 4
+        .incbin "stock/0032.bin", 24, 4
+        .incbin "stock/0032.bin", 28, 2
+        .incbin "stock/0032.bin", 30, 2
+        .incbin "stock/0032.bin", 32, 2
+        .incbin "stock/0032.bin", 34, 2
 .Lgk_audio_selected_compare_done:
         .global gk_audio_selected_pair_stock_compare_end
 gk_audio_selected_pair_stock_compare_end:
@@ -132,17 +132,17 @@ gk_audio_selected_pair_stock_compare_end:
         beq.s   .Lgk_audio_selected_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_audio_selected_stock_tail_restore
-        bra.w   gk_audio_selected_fatal
+        bra.w   gk_audio_selected_pair_stock_compare_end_report_fatal
 .Lgk_audio_selected_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_SELECTED_DESCRIPTOR_SP(%sp)
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #7,%d5
-        bhi.w   gk_audio_selected_fatal
+        bhi.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         move.l  64 + 0xa4(%sp),%d0
         subi.l  #GK_STOCK_ENGINE_OBJECT_BASE,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         moveq   #0,%d4
         move.b  64 + GK_AUDIO_SOURCE_KIND_SP(%sp),%d4
         cmpi.l  #GK_AUDIO_SOURCE_ENGINE_CURRENT,%d4
@@ -153,7 +153,7 @@ gk_audio_selected_pair_stock_compare_end:
         beq.w   .Lgk_audio_selected_source_snapshot
         cmpi.l  #GK_AUDIO_SOURCE_ACTIVE,%d4
         beq.w   .Lgk_audio_selected_source_active
-        bra.w   gk_audio_selected_fatal
+        bra.w   gk_audio_selected_pair_stock_compare_end_report_fatal
 .Lgk_audio_selected_source_engine:
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
         lea     GK_STOCK_ENGINE_BANK,%a1
@@ -163,11 +163,11 @@ gk_audio_selected_pair_stock_compare_end:
         moveq   #0,%d4
         move.l  64 + 0x48(%sp),%d4
         cmpi.l  #GK_SIDECAR_AUDIO_PRIMARY_COUNT - 1,%d4
-        bhi.w   gk_audio_selected_fatal
+        bhi.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         move.l  %d4,%d0
         andi.l  #7,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         move.l  %d4,%d0
         lsl.l   #1,%d0
         lea     __gk_lease_sidecars + GK_SIDECAR_AUDIO_PRIMARY_OFFSET,%a0
@@ -204,7 +204,7 @@ gk_audio_selected_pair_stock_compare_end:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.w   .Lgk_audio_selected_unavailable_restore
         tst.l   %d0
-        bmi.w   gk_audio_selected_fatal
+        bmi.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         move.l  %d0,%d6
         move.l  %d1,%d7
         movea.l %a0,%a6
@@ -252,14 +252,14 @@ gk_audio_selected_pair_stock_compare_end:
         move.l  %d6,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_audio_selected_pair_stock_compare_end_report_fatal
         bra.s   .Lgk_audio_selected_unavailable_restore
 .Lgk_audio_selected_release_fatal:
         move.l  %d6,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_audio_selected_fatal
-        bra.w   gk_audio_selected_fatal
+        bne.w   gk_audio_selected_pair_stock_compare_end_report_fatal
+        bra.w   gk_audio_selected_pair_stock_compare_end_report_fatal
 .Lgk_audio_selected_unavailable_restore:
         move.w (%sp),%d0
         move.w %d0,%sr
@@ -273,11 +273,11 @@ gk_audio_selected_pair_stock_compare_end:
         lea 64(%sp),%sp
         .global gk_audio_selected_pair_stock_tail
 gk_audio_selected_pair_stock_tail:
-        .incbin "stock/0032.bin", 0, 4
-        .incbin "stock/0032.bin", 4, 4
-        .incbin "stock/0032.bin", 8, 4
-        .incbin "stock/0032.bin", 12, 4
-        .incbin "stock/0032.bin", 16, 4
+        .incbin "stock/0033.bin", 0, 4
+        .incbin "stock/0033.bin", 4, 4
+        .incbin "stock/0033.bin", 8, 4
+        .incbin "stock/0033.bin", 12, 4
+        .incbin "stock/0033.bin", 16, 4
         jmp     GK_STOCK_AUDIO_SELECTED_PAIR_CONTINUE
         .size   gk_stock_audio_selected_pair,.-gk_stock_audio_selected_pair
         .global gk_stock_audio_selected_release
@@ -292,16 +292,16 @@ gk_stock_audio_selected_release:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_audio_selected_release_restore
         tst.l   %d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_stock_audio_selected_release_report_fatal
         moveq   #0,%d0
         move.b  64 + GK_AUDIO_SELECTED_DESCRIPTOR_SP(%sp),%d0
         cmpi.l  #GK_ID_NONE,%d0
         beq.s   .Lgk_audio_selected_restore_engine
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
-        bhi.w   gk_audio_selected_fatal
+        bhi.w   gk_stock_audio_selected_release_report_fatal
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_stock_audio_selected_release_report_fatal
         move.b  #GK_ID_NONE,64 + GK_AUDIO_SELECTED_DESCRIPTOR_SP(%sp)
 .Lgk_audio_selected_restore_engine:
         moveq   #0,%d0
@@ -310,7 +310,7 @@ gk_stock_audio_selected_release:
         beq.s   .Lgk_audio_selected_release_restore
         jsr     gk_audio_current_resolve_delta
         tst.l   %d0
-        bne.w   gk_audio_selected_fatal
+        bne.w   gk_stock_audio_selected_release_report_fatal
         move.l  %a0,60(%sp)
 .Lgk_audio_selected_release_restore:
         move.w (%sp),%d0
@@ -319,29 +319,29 @@ gk_stock_audio_selected_release:
         lea 64(%sp),%sp
         .global gk_audio_selected_release_stock
 gk_audio_selected_release_stock:
-        .incbin "stock/0033.bin", 0, 4
-        .incbin "stock/0033.bin", 4, 4
+        .incbin "stock/0034.bin", 0, 4
+        .incbin "stock/0034.bin", 4, 4
         jmp     GK_STOCK_AUDIO_SELECTED_RELEASE_CONTINUE
         .size   gk_stock_audio_selected_release,.-gk_stock_audio_selected_release
         .global gk_stock_audio_redirect_type
 gk_stock_audio_redirect_type:
-        .incbin "stock/0034.bin", 0, 6
+        .incbin "stock/0035.bin", 0, 6
         adda.l  %a6,%a0
         jmp     GK_STOCK_AUDIO_REDIRECT_TYPE_CONTINUE
         .global gk_stock_audio_redirect_mode
 gk_stock_audio_redirect_mode:
-        .incbin "stock/0035.bin", 0, 6
+        .incbin "stock/0036.bin", 0, 6
         adda.l  %a6,%a0
         jmp     GK_STOCK_AUDIO_REDIRECT_MODE_CONTINUE
         .global gk_stock_audio_redirect_scene_pair
 gk_stock_audio_redirect_scene_pair:
-        .incbin "stock/0036.bin", 0, 6
+        .incbin "stock/0037.bin", 0, 6
         adda.l  %a6,%a1
         adda.l  %a6,%a0
         jmp     GK_STOCK_AUDIO_REDIRECT_SCENE_PAIR_CONTINUE
         .global gk_stock_audio_redirect_full_header
 gk_stock_audio_redirect_full_header:
-        .incbin "stock/0037.bin", 0, 6
+        .incbin "stock/0038.bin", 0, 6
         adda.l  %a6,%a0
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
@@ -353,7 +353,7 @@ gk_stock_audio_redirect_full_header:
         jmp     GK_STOCK_AUDIO_REDIRECT_FULL_HEADER_CONTINUE
         .global gk_stock_audio_redirect_full_thirty
 gk_stock_audio_redirect_full_thirty:
-        .incbin "stock/0038.bin", 0, 6
+        .incbin "stock/0039.bin", 0, 6
         adda.l  %a6,%a2
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
@@ -365,12 +365,12 @@ gk_stock_audio_redirect_full_thirty:
         jmp     GK_STOCK_AUDIO_REDIRECT_FULL_THIRTY_CONTINUE
         .global gk_stock_audio_redirect_full_tail
 gk_stock_audio_redirect_full_tail:
-        .incbin "stock/0039.bin", 0, 6
+        .incbin "stock/0040.bin", 0, 6
         adda.l  %a6,%a1
         jmp     GK_STOCK_AUDIO_REDIRECT_FULL_TAIL_CONTINUE
         .global gk_stock_audio_redirect_scene_matrix
 gk_stock_audio_redirect_scene_matrix:
-        .incbin "stock/0040.bin", 0, 6
+        .incbin "stock/0041.bin", 0, 6
         adda.l  %a6,%a0
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
@@ -382,8 +382,8 @@ gk_stock_audio_redirect_scene_matrix:
         jmp     GK_STOCK_AUDIO_REDIRECT_SCENE_MATRIX_CONTINUE
         .global gk_stock_audio_redirect_indexed_tail
 gk_stock_audio_redirect_indexed_tail:
-        .incbin "stock/0041.bin", 0, 6
-        .incbin "stock/0041.bin", 6, 4
+        .incbin "stock/0042.bin", 0, 6
+        .incbin "stock/0042.bin", 6, 4
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
         move.w %sr,%d0
@@ -394,12 +394,12 @@ gk_stock_audio_redirect_indexed_tail:
         jmp     GK_STOCK_AUDIO_REDIRECT_INDEXED_TAIL_CONTINUE
         .global gk_stock_audio_redirect_derived_first
 gk_stock_audio_redirect_derived_first:
-        .incbin "stock/0042.bin", 0, 6
+        .incbin "stock/0043.bin", 0, 6
         adda.l  %a6,%a3
         jmp     GK_STOCK_AUDIO_REDIRECT_DERIVED_FIRST_CONTINUE
         .global gk_stock_audio_redirect_derived_rest
 gk_stock_audio_redirect_derived_rest:
-        .incbin "stock/0043.bin", 0, 6
+        .incbin "stock/0044.bin", 0, 6
         adda.l  %a6,%a0
         suba.l  %a6,%a3
         adda.l  %a6,%a1
@@ -413,7 +413,7 @@ gk_stock_audio_redirect_derived_rest:
         jmp     GK_STOCK_AUDIO_REDIRECT_DERIVED_REST_CONTINUE
         .global gk_stock_audio_redirect_partial_header
 gk_stock_audio_redirect_partial_header:
-        .incbin "stock/0044.bin", 0, 6
+        .incbin "stock/0045.bin", 0, 6
         adda.l  %a6,%a0
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
@@ -425,7 +425,7 @@ gk_stock_audio_redirect_partial_header:
         jmp     GK_STOCK_AUDIO_REDIRECT_PARTIAL_HEADER_CONTINUE
         .global gk_stock_audio_redirect_partial_thirty
 gk_stock_audio_redirect_partial_thirty:
-        .incbin "stock/0045.bin", 0, 6
+        .incbin "stock/0046.bin", 0, 6
         adda.l  %a6,%a2
         lea -4(%sp),%sp
         movem.l %d0,(%sp)
@@ -437,16 +437,26 @@ gk_stock_audio_redirect_partial_thirty:
         jmp     GK_STOCK_AUDIO_REDIRECT_PARTIAL_THIRTY_CONTINUE
         .global gk_stock_audio_redirect_partial_scene
 gk_stock_audio_redirect_partial_scene:
-        .incbin "stock/0046.bin", 0, 6
+        .incbin "stock/0047.bin", 0, 6
         adda.l  %a6,%a0
         jmp     GK_STOCK_AUDIO_REDIRECT_PARTIAL_SCENE_CONTINUE
         .global gk_stock_audio_redirect_late_type
 gk_stock_audio_redirect_late_type:
-        .incbin "stock/0047.bin", 0, 6
+        .incbin "stock/0048.bin", 0, 6
         adda.l  %a6,%a0
         jmp     GK_STOCK_AUDIO_REDIRECT_LATE_TYPE_CONTINUE
         .global gk_audio_selected_fatal
         .type   gk_audio_selected_fatal,@function
+        .global gk_audio_selected_pair_stock_compare_end_report_fatal
+        .type gk_audio_selected_pair_stock_compare_end_report_fatal,@function
+gk_audio_selected_pair_stock_compare_end_report_fatal:
+        illegal
+        .size gk_audio_selected_pair_stock_compare_end_report_fatal,.-gk_audio_selected_pair_stock_compare_end_report_fatal
+        .global gk_stock_audio_selected_release_report_fatal
+        .type gk_stock_audio_selected_release_report_fatal,@function
+gk_stock_audio_selected_release_report_fatal:
+        illegal
+        .size gk_stock_audio_selected_release_report_fatal,.-gk_stock_audio_selected_release_report_fatal
 gk_audio_selected_fatal:
         illegal
         .size   gk_audio_selected_fatal,.-gk_audio_selected_fatal

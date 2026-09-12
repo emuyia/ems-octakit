@@ -174,7 +174,7 @@ gk_stock_audio_current_begin:
         beq.s   .Lgk_audio_current_begin_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_audio_current_begin_stock_restore
-        bra.w   gk_audio_current_fatal
+        bra.w   gk_stock_audio_current_begin_report_fatal
 .Lgk_audio_current_begin_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_ENGINE_DESCRIPTOR_SP(%sp)
         move.b  #GK_ID_NONE,64 + GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
@@ -187,7 +187,7 @@ gk_stock_audio_current_begin:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.w   .Lgk_audio_current_begin_unavailable
         tst.l   %d0
-        bmi.w   gk_audio_current_fatal
+        bmi.w   gk_stock_audio_current_begin_report_fatal
         move.l  %d0,%d6
         jsr     gk_audio_current_resolve_delta
         tst.l   %d0
@@ -202,7 +202,7 @@ gk_stock_audio_current_begin:
         lea 64(%sp),%sp
         .global gk_audio_current_begin_stock
 gk_audio_current_begin_stock:
-        .incbin "stock/0232.bin", 0, 6
+        .incbin "stock/0233.bin", 0, 6
         .global gk_audio_current_begin_stock_end
 gk_audio_current_begin_stock_end:
         jmp     GK_STOCK_AUDIO_CURRENT_BEGIN_CONTINUE
@@ -210,8 +210,8 @@ gk_audio_current_begin_stock_end:
         move.l  %d6,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_audio_current_fatal
-        bra.w   gk_audio_current_fatal
+        bne.w   gk_audio_current_begin_stock_end_report_fatal
+        bra.w   gk_audio_current_begin_stock_end_report_fatal
 .Lgk_audio_current_begin_unavailable:
         move.b  #GK_AUDIO_CURRENT_SKIP_MARKER,64 + GK_AUDIO_SOURCE_KIND_SP(%sp)
         move.w (%sp),%d0
@@ -225,7 +225,7 @@ gk_audio_current_begin_stock_end:
 gk_stock_audio_current_redirect_first:
         .global gk_audio_current_redirect_first_stock
 gk_audio_current_redirect_first_stock:
-        .incbin "stock/0233.bin", 0, 6
+        .incbin "stock/0234.bin", 0, 6
         .global gk_audio_current_redirect_first_stock_end
 gk_audio_current_redirect_first_stock_end:
         adda.l  %a6,%a0
@@ -236,7 +236,7 @@ gk_audio_current_redirect_first_stock_end:
 gk_stock_audio_current_redirect_second:
         .global gk_audio_current_redirect_second_stock
 gk_audio_current_redirect_second_stock:
-        .incbin "stock/0234.bin", 0, 6
+        .incbin "stock/0235.bin", 0, 6
         .global gk_audio_current_redirect_second_stock_end
 gk_audio_current_redirect_second_stock_end:
         adda.l  %a6,%a0
@@ -254,7 +254,7 @@ gk_stock_audio_current_gate:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_audio_current_gate_stock_restore
         tst.l   %d0
-        bne.w   gk_audio_current_fatal
+        bne.w   gk_stock_audio_current_gate_report_fatal
         moveq   #0,%d0
         move.b  64 + GK_AUDIO_ENGINE_DESCRIPTOR_SP(%sp),%d0
         cmpi.l  #GK_ID_NONE,%d0
@@ -262,7 +262,7 @@ gk_stock_audio_current_gate:
         moveq   #0,%d0
         move.b  64 + GK_AUDIO_SOURCE_KIND_SP(%sp),%d0
         cmpi.l  #GK_AUDIO_CURRENT_SKIP_MARKER,%d0
-        bne.w   gk_audio_current_fatal
+        bne.w   gk_stock_audio_current_gate_report_fatal
         move.w (%sp),%d0
         move.w %d0,%sr
         movem.l 4(%sp),%d0-%d7/%a0-%a6
@@ -275,7 +275,7 @@ gk_stock_audio_current_gate:
         lea 64(%sp),%sp
         .global gk_audio_current_gate_stock
 gk_audio_current_gate_stock:
-        .incbin "stock/0235.bin", 0, 6
+        .incbin "stock/0236.bin", 0, 6
         .global gk_audio_current_gate_stock_end
 gk_audio_current_gate_stock_end:
         jmp     GK_STOCK_AUDIO_CURRENT_GATE_CONTINUE
@@ -285,7 +285,7 @@ gk_audio_current_gate_stock_end:
 gk_stock_audio_current_redirect_track:
         .global gk_audio_current_redirect_track_stock
 gk_audio_current_redirect_track_stock:
-        .incbin "stock/0236.bin", 0, 6
+        .incbin "stock/0237.bin", 0, 6
         .global gk_audio_current_redirect_track_stock_end
 gk_audio_current_redirect_track_stock_end:
         adda.l  %a6,%a0
@@ -311,7 +311,7 @@ gk_audio_current_release_stock_compare_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_audio_current_release_restore
         tst.l   %d0
-        bne.w   gk_audio_current_fatal
+        bne.w   gk_audio_current_release_stock_compare_end_report_fatal
         moveq   #0,%d0
         move.b  64 + GK_AUDIO_ENGINE_DESCRIPTOR_SP(%sp),%d0
         cmpi.l  #GK_ID_NONE,%d0
@@ -319,15 +319,15 @@ gk_audio_current_release_stock_compare_end:
         moveq   #0,%d0
         move.b  64 + GK_AUDIO_SOURCE_KIND_SP(%sp),%d0
         cmpi.l  #GK_AUDIO_CURRENT_SKIP_MARKER,%d0
-        bne.w   gk_audio_current_fatal
+        bne.w   gk_audio_current_release_stock_compare_end_report_fatal
         clr.b   64 + GK_AUDIO_SOURCE_KIND_SP(%sp)
         bra.s   .Lgk_audio_current_release_restore
 .Lgk_audio_current_release_descriptor:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
-        bhi.w   gk_audio_current_fatal
+        bhi.w   gk_audio_current_release_stock_compare_end_report_fatal
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_audio_current_fatal
+        bne.w   gk_audio_current_release_stock_compare_end_report_fatal
         move.b  #GK_ID_NONE,64 + GK_AUDIO_ENGINE_DESCRIPTOR_SP(%sp)
 .Lgk_audio_current_release_restore:
         move.w (%sp),%d0
@@ -338,6 +338,26 @@ gk_audio_current_release_stock_compare_end:
         .size   gk_stock_audio_current_release,.-gk_stock_audio_current_release
         .global gk_audio_current_fatal
         .type   gk_audio_current_fatal,@function
+        .global gk_audio_current_begin_stock_end_report_fatal
+        .type gk_audio_current_begin_stock_end_report_fatal,@function
+gk_audio_current_begin_stock_end_report_fatal:
+        illegal
+        .size gk_audio_current_begin_stock_end_report_fatal,.-gk_audio_current_begin_stock_end_report_fatal
+        .global gk_audio_current_release_stock_compare_end_report_fatal
+        .type gk_audio_current_release_stock_compare_end_report_fatal,@function
+gk_audio_current_release_stock_compare_end_report_fatal:
+        illegal
+        .size gk_audio_current_release_stock_compare_end_report_fatal,.-gk_audio_current_release_stock_compare_end_report_fatal
+        .global gk_stock_audio_current_begin_report_fatal
+        .type gk_stock_audio_current_begin_report_fatal,@function
+gk_stock_audio_current_begin_report_fatal:
+        illegal
+        .size gk_stock_audio_current_begin_report_fatal,.-gk_stock_audio_current_begin_report_fatal
+        .global gk_stock_audio_current_gate_report_fatal
+        .type gk_stock_audio_current_gate_report_fatal,@function
+gk_stock_audio_current_gate_report_fatal:
+        illegal
+        .size gk_stock_audio_current_gate_report_fatal,.-gk_stock_audio_current_gate_report_fatal
 gk_audio_current_fatal:
         illegal
         .size   gk_audio_current_fatal,.-gk_audio_current_fatal

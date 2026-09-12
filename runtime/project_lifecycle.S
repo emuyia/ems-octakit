@@ -7,7 +7,7 @@ gk_stock_background_save_request_decision:
         move.l  %d0,-(%sp)
         move.l  4(%sp),%d0
         cmpi.l  #GK_STOCK_BACKGROUND_SAVE_REQUEST_CONTINUE,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_stock_background_save_request_decision_report_fatal
         move.l  (%sp)+,%d0
         and.l   %d1,%d0
         bne.s   .Lgk_background_request_true
@@ -54,7 +54,7 @@ gk_stock_background_banks_save_work:
         move.l  24(%sp),-(%sp)
         .global gk_background_stock_banks_save_call
 gk_background_stock_banks_save_call:
-        .incbin "stock/0149.bin", 0, 6
+        .incbin "stock/0150.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -147,7 +147,7 @@ gk_stock_current_project_card_sync:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_card_sync_call
 gk_lifecycle_stock_card_sync_call:
-        .incbin "stock/0150.bin", 0, 6
+        .incbin "stock/0151.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -179,7 +179,7 @@ gk_stock_project_store_work_to_strd:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_project_store_call
 gk_lifecycle_stock_project_store_call:
-        .incbin "stock/0151.bin", 0, 6
+        .incbin "stock/0152.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -209,7 +209,7 @@ gk_stock_banks_store_work_to_strd:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_bank_store_call
 gk_lifecycle_stock_bank_store_call:
-        .incbin "stock/0152.bin", 0, 6
+        .incbin "stock/0153.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -235,7 +235,7 @@ gk_stock_project_restore_strd_to_work:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_project_reload_call
 gk_lifecycle_stock_project_reload_call:
-        .incbin "stock/0153.bin", 0, 6
+        .incbin "stock/0154.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -262,7 +262,7 @@ gk_stock_banks_restore_strd_to_work:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_bank_reload_call
 gk_lifecycle_stock_bank_reload_call:
-        .incbin "stock/0154.bin", 0, 6
+        .incbin "stock/0155.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -283,12 +283,12 @@ gk_lifecycle_stock_bank_reload_call:
 gk_stock_boot_resident_banks_initialize_all:
         bsr.w   gk_lifecycle_boot_quiesce_reset
         tst.l   %d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_stock_boot_resident_banks_initialize_all_report_fatal
         move.l  4(%sp),%d0
         move.l  %d0,-(%sp)
         .global gk_lifecycle_stock_boot_banks_init_call
 gk_lifecycle_stock_boot_banks_init_call:
-        .incbin "stock/0155.bin", 0, 6
+        .incbin "stock/0156.bin", 0, 6
         addq.l  #4,%sp
         rts
         .size   gk_stock_boot_resident_banks_initialize_all,.-gk_stock_boot_resident_banks_initialize_all
@@ -297,19 +297,19 @@ gk_lifecycle_stock_boot_banks_init_call:
 gk_stock_empty_project_runtime_initialize:
         bsr.w   gk_lifecycle_quiesce_reset
         tst.l   %d0
-        bne.w   gk_project_lifecycle_fatal
-        .incbin "stock/0156.bin", 0, 2
-        .incbin "stock/0156.bin", 2, 2
+        bne.w   gk_stock_empty_project_runtime_initialize_report_fatal
+        .incbin "stock/0157.bin", 0, 2
+        .incbin "stock/0157.bin", 2, 2
         .global gk_lifecycle_stock_empty_banks_init_call
 gk_lifecycle_stock_empty_banks_init_call:
-        .incbin "stock/0156.bin", 4, 6
+        .incbin "stock/0157.bin", 4, 6
         jmp     GK_STOCK_EMPTY_PROJECT_RUNTIME_INITIALIZE_CONTINUE
         .size   gk_stock_empty_project_runtime_initialize,.-gk_stock_empty_project_runtime_initialize
         .global gk_stock_banks_load_work_trampoline
         .type   gk_stock_banks_load_work_trampoline,@function
 gk_stock_banks_load_work_trampoline:
-        .incbin "stock/0157.bin", 0, 4
-        .incbin "stock/0157.bin", 4, 4
+        .incbin "stock/0158.bin", 0, 4
+        .incbin "stock/0158.bin", 4, 4
         .global gk_lifecycle_stock_banks_load_trampoline_jump
 gk_lifecycle_stock_banks_load_trampoline_jump:
         jmp     GK_STOCK_BANKS_LOAD_WORK_CONTINUE
@@ -349,8 +349,8 @@ gk_lifecycle_partial_load_restore:
         .global gk_lifecycle_activate_current
         .type   gk_lifecycle_activate_current,@function
 gk_lifecycle_activate_current:
-        .incbin "stock/0158.bin", 0, 4
-        .incbin "stock/0158.bin", 4, 4
+        .incbin "stock/0159.bin", 0, 4
+        .incbin "stock/0159.bin", 4, 4
         move.w  %sr,%d0
         move.w  %d0,44(%sp)
         move.l  __gk_lifecycle_state,%d0
@@ -482,7 +482,7 @@ gk_lifecycle_activate_current:
         move.w  #0x2700,%sr
         move.l  __gk_lifecycle_state,%d0
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activate_current_report_fatal
         .global gk_lifecycle_activation_publication
 gk_lifecycle_activation_publication:
         clr.l   __gk_lifecycle_state
@@ -492,14 +492,14 @@ gk_lifecycle_activation_publication:
         move.l  %a6,%d3
         bsr.w   gk_workspace_prepare
         tst.l   %d0
-        bmi.w   gk_project_lifecycle_fatal
+        bmi.w   gk_lifecycle_activation_publication_report_fatal
         move.l  %d0,%d2
         move.l  %d1,%d3
         movea.l %a0,%a2
         move.l  %d2,%d0
         bsr.w   gk_ui_transition_prepare
         tst.l   %d0
-        bmi.w   gk_project_lifecycle_fatal
+        bmi.w   gk_lifecycle_activation_publication_report_fatal
         btst    #2,%d7
         beq.w   .Lgk_activate_setter
         moveq   #0,%d0
@@ -519,7 +519,7 @@ gk_lifecycle_activation_publication:
         moveq   #0,%d1
         move.b  __gk_pending_workspace_bound,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activation_publication_report_fatal
         lea     __gk_lifecycle_scratch_payload,%a0
         movea.l %a2,%a1
         move.l  #(GK_PART_PAYLOAD_SIZE / 4),%d0
@@ -534,21 +534,21 @@ gk_lifecycle_activation_publication:
         lea __gk_descriptors,%a3
         adda.l %d0,%a3
         cmpa.l  GK_DESC_PAYLOAD(%a3),%a2
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activation_publication_report_fatal
         moveq   #0,%d0
         move.b  GK_DESC_FLAGS(%a3),%d0
         btst    #0,%d0
-        beq.w   gk_project_lifecycle_fatal
+        beq.w   gk_lifecycle_activation_publication_report_fatal
         btst    #3,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activation_publication_report_fatal
         btst    #4,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activation_publication_report_fatal
         ori.l   #GK_DESC_DIRTY,%d0
         move.b  %d0,GK_DESC_FLAGS(%a3)
         moveq   #0,%d0
         move.b  __gk_pending_transition_flags,%d0
         cmpi.l  #(GK_TRANSITION_NEW_DESCRIPTOR + GK_TRANSITION_PRESERVE_NAME),%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_activation_publication_report_fatal
         ori.l   #GK_TRANSITION_PENDING_DIRTY,%d0
         move.b  %d0,__gk_pending_transition_flags
 .Lgk_activate_setter:
@@ -563,13 +563,13 @@ gk_lifecycle_stock_setter_return:
         addq.l  #4,%sp
         bsr.w   gk_workspace_commit_update
         tst.l   %d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_stock_setter_return_report_fatal
         move.l  %d4,%d0
         move.l  %d5,%d1
         move.l  %d3,%d2
         bsr.w   gk_stock_engine_context_validate
         tst.l   %d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_lifecycle_stock_setter_return_report_fatal
         bsr.w   gk_lifecycle_scratch_clear
         .global gk_lifecycle_activation_scratch_return
 gk_lifecycle_activation_scratch_return:
@@ -596,7 +596,7 @@ gk_stock_banks_load_work:
         cmpi.l  #GK_STOCK_BANKS_LOAD_BACKGROUND_RETURN,%d0
         beq.s   .Lgk_banks_load_partial_pre
         cmpi.l  #GK_STOCK_BANKS_LOAD_PARTIAL_RETURN,%d0
-        bne.w   gk_project_lifecycle_fatal
+        bne.w   gk_stock_banks_load_work_report_fatal
 .Lgk_banks_load_partial_pre:
         move.l  __gk_lifecycle_state,%d0
         tst.l   %d0
@@ -619,10 +619,10 @@ gk_stock_banks_load_work:
         tst.l   %d0
         bmi.w   .Lgk_banks_load_return
 .Lgk_banks_load_call_stock:
-        .incbin "stock/0159.bin", 0, 4
-        .incbin "stock/0159.bin", 4, 4
-        .incbin "stock/0159.bin", 8, 4
-        .incbin "stock/0159.bin", 12, 4
+        .incbin "stock/0160.bin", 0, 4
+        .incbin "stock/0160.bin", 4, 4
+        .incbin "stock/0160.bin", 8, 4
+        .incbin "stock/0160.bin", 12, 4
         bsr.w   gk_stock_banks_load_work_trampoline
         lea     16(%sp),%sp
         tst.l   %d0
@@ -670,7 +670,7 @@ gk_stock_create_empty_banks_save_work:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_destination_banks_save_call
 gk_lifecycle_stock_destination_banks_save_call:
-        .incbin "stock/0160.bin", 0, 6
+        .incbin "stock/0161.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -696,6 +696,41 @@ gk_lifecycle_stock_destination_banks_save_call:
         .size   gk_stock_save_as_new_banks_save_work,.-gk_stock_save_as_new_banks_save_work
         .size   gk_stock_create_empty_banks_save_work,.-gk_stock_create_empty_banks_save_work
         .global gk_project_lifecycle_fatal
+        .global gk_lifecycle_activate_current_report_fatal
+        .type gk_lifecycle_activate_current_report_fatal,@function
+gk_lifecycle_activate_current_report_fatal:
+        illegal
+        .size gk_lifecycle_activate_current_report_fatal,.-gk_lifecycle_activate_current_report_fatal
+        .global gk_lifecycle_activation_publication_report_fatal
+        .type gk_lifecycle_activation_publication_report_fatal,@function
+gk_lifecycle_activation_publication_report_fatal:
+        illegal
+        .size gk_lifecycle_activation_publication_report_fatal,.-gk_lifecycle_activation_publication_report_fatal
+        .global gk_lifecycle_stock_setter_return_report_fatal
+        .type gk_lifecycle_stock_setter_return_report_fatal,@function
+gk_lifecycle_stock_setter_return_report_fatal:
+        illegal
+        .size gk_lifecycle_stock_setter_return_report_fatal,.-gk_lifecycle_stock_setter_return_report_fatal
+        .global gk_stock_background_save_request_decision_report_fatal
+        .type gk_stock_background_save_request_decision_report_fatal,@function
+gk_stock_background_save_request_decision_report_fatal:
+        illegal
+        .size gk_stock_background_save_request_decision_report_fatal,.-gk_stock_background_save_request_decision_report_fatal
+        .global gk_stock_banks_load_work_report_fatal
+        .type gk_stock_banks_load_work_report_fatal,@function
+gk_stock_banks_load_work_report_fatal:
+        illegal
+        .size gk_stock_banks_load_work_report_fatal,.-gk_stock_banks_load_work_report_fatal
+        .global gk_stock_boot_resident_banks_initialize_all_report_fatal
+        .type gk_stock_boot_resident_banks_initialize_all_report_fatal,@function
+gk_stock_boot_resident_banks_initialize_all_report_fatal:
+        illegal
+        .size gk_stock_boot_resident_banks_initialize_all_report_fatal,.-gk_stock_boot_resident_banks_initialize_all_report_fatal
+        .global gk_stock_empty_project_runtime_initialize_report_fatal
+        .type gk_stock_empty_project_runtime_initialize_report_fatal,@function
+gk_stock_empty_project_runtime_initialize_report_fatal:
+        illegal
+        .size gk_stock_empty_project_runtime_initialize_report_fatal,.-gk_stock_empty_project_runtime_initialize_report_fatal
 gk_project_lifecycle_fatal:
         illegal
         bra.s   gk_project_lifecycle_fatal

@@ -1059,8 +1059,8 @@ gk_pattern_assignment_v3_dirty_call:
         .global gk_workspace_abort_update
         .type   gk_workspace_abort_update,@function
 gk_workspace_abort_update:
-        .incbin "stock/0205.bin", 0, 4
-        .incbin "stock/0205.bin", 4, 4
+        .incbin "stock/0206.bin", 0, 4
+        .incbin "stock/0206.bin", 4, 4
         moveq   #0,%d2
         move.b  __gk_pending_workspace_descriptor,%d2
         moveq   #0,%d3
@@ -1344,8 +1344,8 @@ gk_workspace_abort_update:
 .Lgk_workspace_abort_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_workspace_abort_restore:
-        .incbin "stock/0206.bin", 0, 4
-        .incbin "stock/0206.bin", 4, 4
+        .incbin "stock/0207.bin", 0, 4
+        .incbin "stock/0207.bin", 4, 4
         rts
         .size   gk_workspace_abort_update,.-gk_workspace_abort_update
         .global gk_workspace_prepare
@@ -1362,8 +1362,8 @@ gk_workspace_prepare:
         andi.l  #0xffffffe0,%d0
         tst.l   %d0
         bne.w   .Lgk_workspace_prepare_range
-        .incbin "stock/0207.bin", 0, 4
-        .incbin "stock/0207.bin", 4, 4
+        .incbin "stock/0208.bin", 0, 4
+        .incbin "stock/0208.bin", 4, 4
         move.l  %a0,%d4
         move.l  %d1,%d5
         move.l  %d2,%d6
@@ -1784,8 +1784,8 @@ gk_workspace_prepare:
 .Lgk_workspace_prepare_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_workspace_prepare_restore:
-        .incbin "stock/0208.bin", 0, 4
-        .incbin "stock/0208.bin", 4, 4
+        .incbin "stock/0209.bin", 0, 4
+        .incbin "stock/0209.bin", 4, 4
         rts
 .Lgk_workspace_prepare_range:
         moveq   #GK_ERR_RANGE,%d0

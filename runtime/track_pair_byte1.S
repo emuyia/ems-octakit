@@ -30,8 +30,8 @@ gk_stock_track_pair_byte1:
         beq.w   .Lgk_track_pair_byte1_busy_early
         bra.w   gk_track_pair_byte1_fatal_entry_lifecycle
 .Lgk_track_pair_byte1_lifecycle_active:
-        .incbin "stock/0362.bin", 0, 4
-        .incbin "stock/0362.bin", 4, 4
+        .incbin "stock/0363.bin", 0, 4
+        .incbin "stock/0363.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         jsr     gk_track_pair_byte0_prepare
@@ -86,7 +86,7 @@ gk_track_pair_byte1_write_marker:
         move.l  (%sp)+,%d0
         .global gk_track_pair_byte1_stock_dirty_store
 gk_track_pair_byte1_stock_dirty_store:
-        .incbin "stock/0363.bin", 0, 6
+        .incbin "stock/0364.bin", 0, 6
         rts
         .size   gk_track_pair_byte1_write_marker,.-gk_track_pair_byte1_write_marker
         .global gk_track_pair_byte1_fatal_runtime_image

@@ -13,28 +13,28 @@ gk_stock_engine_track_reset_pair:
         move.l  %a0,%d2
         subi.l  #GK_STOCK_ENGINE_TRACK_BANKS,%d2
         cmpi.l  #GK_SIDECAR_ENGINE_AUDIO_COUNT - 1,%d2
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_stock_engine_track_reset_pair_report_fatal
         move.l  %d2,%d0
         lsl.l   #2,%d0
         cmp.l   (%sp),%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_engine_track_reset_pair_report_fatal
         move.l  %d2,%d0
         add.l   %d0,%d0
         lea     0x80001850,%a2
         adda.l  %d0,%a2
         cmpa.l  20(%sp),%a2
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_engine_track_reset_pair_report_fatal
         movea.l 24(%sp),%a2
         cmpa.l  #0x400d61f0,%a2
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_engine_track_reset_pair_report_fatal
         movea.l 28(%sp),%a3
         cmpa.l  #0x400d61d0,%a3
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_engine_track_reset_pair_report_fatal
         move.l  __gk_lifecycle_state,%d0
         tst.l   %d0
         beq.s   .Lgk_engine_reset_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_engine_track_reset_pair_report_fatal
         move.l  #GK_ID_NONE,%d3
         bra.w   .Lgk_engine_reset_stock
 .Lgk_engine_reset_active:
@@ -45,36 +45,36 @@ gk_stock_engine_track_reset_pair:
 gk_engine_track_reset_atomic_begin:
         move.w  #0x2700,%sr
         tst.l   __gk_lifecycle_state
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_engine_track_reset_atomic_begin_report_fatal
         moveq   #0,%d0
         move.b  GK_SIDECAR_PENDING(%a2),%d0
         cmpi.l  #GK_ID_NONE,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_engine_track_reset_atomic_begin_report_fatal
         moveq   #0,%d3
         move.b  GK_SIDECAR_CURRENT(%a2),%d3
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_engine_reset_stock
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d3
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_engine_track_reset_atomic_begin_report_fatal
         move.l %d3,%d0
         andi.l #0xff,%d0
         lsl.l #4,%d0
         lea __gk_descriptors,%a3
         adda.l %d0,%a3
         btst    #0,GK_DESC_FLAGS(%a3)
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_engine_track_reset_atomic_begin_report_fatal
         moveq   #0,%d2
         move.w  GK_DESC_ROOTS(%a3),%d2
         tst.l   %d2
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_engine_track_reset_atomic_begin_report_fatal
 .Lgk_engine_reset_stock:
         .global gk_engine_track_reset_stock_bank
 gk_engine_track_reset_stock_bank:
-        .incbin "stock/0110.bin", 0, 4
-        .incbin "stock/0110.bin", 4, 2
+        .incbin "stock/0111.bin", 0, 4
+        .incbin "stock/0111.bin", 4, 2
         .global gk_engine_track_reset_stock_part
 gk_engine_track_reset_stock_part:
-        .incbin "stock/0110.bin", 6, 4
+        .incbin "stock/0111.bin", 6, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_engine_reset_restore
         movea.l %a2,%a0
@@ -104,12 +104,12 @@ gk_stock_audio_command_track_reset_pair:
         move.l  %a0,%d2
         subi.l  #GK_STOCK_ENGINE_TRACK_BANKS,%d2
         cmpi.l  #GK_SIDECAR_ENGINE_AUDIO_COUNT - 1,%d2
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_stock_audio_command_track_reset_pair_report_fatal
         move.l  __gk_lifecycle_state,%d0
         tst.l   %d0
         beq.s   .Lgk_audio_command_reset_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_audio_command_track_reset_pair_report_fatal
         move.l  #GK_ID_NONE,%d3
         bra.w   .Lgk_audio_command_reset_stock
 .Lgk_audio_command_reset_active:
@@ -120,36 +120,36 @@ gk_stock_audio_command_track_reset_pair:
 gk_audio_command_track_reset_atomic_begin:
         move.w  #0x2700,%sr
         tst.l   __gk_lifecycle_state
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_audio_command_track_reset_atomic_begin_report_fatal
         moveq   #0,%d0
         move.b  GK_SIDECAR_PENDING(%a2),%d0
         cmpi.l  #GK_ID_NONE,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_audio_command_track_reset_atomic_begin_report_fatal
         moveq   #0,%d3
         move.b  GK_SIDECAR_CURRENT(%a2),%d3
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_audio_command_reset_stock
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d3
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_audio_command_track_reset_atomic_begin_report_fatal
         move.l %d3,%d0
         andi.l #0xff,%d0
         lsl.l #4,%d0
         lea __gk_descriptors,%a3
         adda.l %d0,%a3
         btst    #0,GK_DESC_FLAGS(%a3)
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_audio_command_track_reset_atomic_begin_report_fatal
         moveq   #0,%d1
         move.w  GK_DESC_ROOTS(%a3),%d1
         tst.l   %d1
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_audio_command_track_reset_atomic_begin_report_fatal
 .Lgk_audio_command_reset_stock:
         .global gk_audio_command_track_reset_stock_bank
 gk_audio_command_track_reset_stock_bank:
-        .incbin "stock/0111.bin", 0, 4
-        .incbin "stock/0111.bin", 4, 2
+        .incbin "stock/0112.bin", 0, 4
+        .incbin "stock/0112.bin", 4, 2
         .global gk_audio_command_track_reset_stock_part
 gk_audio_command_track_reset_stock_part:
-        .incbin "stock/0111.bin", 6, 4
+        .incbin "stock/0112.bin", 6, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_audio_command_reset_restore
         movea.l %a2,%a0
@@ -177,20 +177,20 @@ gk_stock_sequencer_track_reset_pair:
         move.w  %d0,GK_RESET_FRAME_SR(%sp)
         move.l  (%sp),%d3
         cmpi.b  #0xff,%d3
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_sequencer_track_reset_pair_report_fatal
         cmpi.l  #32,%d2
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_sequencer_track_reset_pair_report_fatal
         move.l  %a1,%d2
         subi.l  #GK_STOCK_SEQUENCER_TRACK_STATE_BASE,%d2
         cmpi.l  #GK_SIDECAR_SEQUENCER_TRACK_COUNT - 1,%d2
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_stock_sequencer_track_reset_pair_report_fatal
         cmp.l   %d1,%d2
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_sequencer_track_reset_pair_report_fatal
         move.l  __gk_lifecycle_state,%d0
         tst.l   %d0
         beq.s   .Lgk_sequencer_reset_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_stock_sequencer_track_reset_pair_report_fatal
         move.l  #GK_ID_NONE,%d3
         bra.w   .Lgk_sequencer_reset_stock
 .Lgk_sequencer_reset_active:
@@ -201,36 +201,36 @@ gk_stock_sequencer_track_reset_pair:
 gk_sequencer_track_reset_atomic_begin:
         move.w  #0x2700,%sr
         tst.l   __gk_lifecycle_state
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_sequencer_track_reset_atomic_begin_report_fatal
         moveq   #0,%d0
         move.b  GK_SIDECAR_PENDING(%a2),%d0
         cmpi.l  #GK_ID_NONE,%d0
-        bne.w   gk_pair_invalidate_fatal
+        bne.w   gk_sequencer_track_reset_atomic_begin_report_fatal
         moveq   #0,%d3
         move.b  GK_SIDECAR_CURRENT(%a2),%d3
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_sequencer_reset_stock
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d3
-        bhi.w   gk_pair_invalidate_fatal
+        bhi.w   gk_sequencer_track_reset_atomic_begin_report_fatal
         move.l %d3,%d0
         andi.l #0xff,%d0
         lsl.l #4,%d0
         lea __gk_descriptors,%a3
         adda.l %d0,%a3
         btst    #0,GK_DESC_FLAGS(%a3)
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_sequencer_track_reset_atomic_begin_report_fatal
         moveq   #0,%d2
         move.w  GK_DESC_ROOTS(%a3),%d2
         tst.l   %d2
-        beq.w   gk_pair_invalidate_fatal
+        beq.w   gk_sequencer_track_reset_atomic_begin_report_fatal
 .Lgk_sequencer_reset_stock:
         move.l  (%sp),%d0
         .global gk_sequencer_track_reset_stock_bank
 gk_sequencer_track_reset_stock_bank:
-        .incbin "stock/0112.bin", 0, 4
+        .incbin "stock/0113.bin", 0, 4
         .global gk_sequencer_track_reset_stock_part
 gk_sequencer_track_reset_stock_part:
-        .incbin "stock/0112.bin", 4, 4
+        .incbin "stock/0113.bin", 4, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_sequencer_reset_restore
         movea.l %a2,%a0
@@ -250,6 +250,36 @@ gk_stock_sequencer_track_reset_pair_jump:
         jmp     GK_STOCK_SEQUENCER_TRACK_RESET_PAIR_CONTINUE
         .size   gk_stock_sequencer_track_reset_pair,.-gk_stock_sequencer_track_reset_pair
         .global gk_pair_invalidate_fatal
+        .global gk_audio_command_track_reset_atomic_begin_report_fatal
+        .type gk_audio_command_track_reset_atomic_begin_report_fatal,@function
+gk_audio_command_track_reset_atomic_begin_report_fatal:
+        illegal
+        .size gk_audio_command_track_reset_atomic_begin_report_fatal,.-gk_audio_command_track_reset_atomic_begin_report_fatal
+        .global gk_engine_track_reset_atomic_begin_report_fatal
+        .type gk_engine_track_reset_atomic_begin_report_fatal,@function
+gk_engine_track_reset_atomic_begin_report_fatal:
+        illegal
+        .size gk_engine_track_reset_atomic_begin_report_fatal,.-gk_engine_track_reset_atomic_begin_report_fatal
+        .global gk_sequencer_track_reset_atomic_begin_report_fatal
+        .type gk_sequencer_track_reset_atomic_begin_report_fatal,@function
+gk_sequencer_track_reset_atomic_begin_report_fatal:
+        illegal
+        .size gk_sequencer_track_reset_atomic_begin_report_fatal,.-gk_sequencer_track_reset_atomic_begin_report_fatal
+        .global gk_stock_audio_command_track_reset_pair_report_fatal
+        .type gk_stock_audio_command_track_reset_pair_report_fatal,@function
+gk_stock_audio_command_track_reset_pair_report_fatal:
+        illegal
+        .size gk_stock_audio_command_track_reset_pair_report_fatal,.-gk_stock_audio_command_track_reset_pair_report_fatal
+        .global gk_stock_engine_track_reset_pair_report_fatal
+        .type gk_stock_engine_track_reset_pair_report_fatal,@function
+gk_stock_engine_track_reset_pair_report_fatal:
+        illegal
+        .size gk_stock_engine_track_reset_pair_report_fatal,.-gk_stock_engine_track_reset_pair_report_fatal
+        .global gk_stock_sequencer_track_reset_pair_report_fatal
+        .type gk_stock_sequencer_track_reset_pair_report_fatal,@function
+gk_stock_sequencer_track_reset_pair_report_fatal:
+        illegal
+        .size gk_stock_sequencer_track_reset_pair_report_fatal,.-gk_stock_sequencer_track_reset_pair_report_fatal
 gk_pair_invalidate_fatal:
         illegal
         bra.s   gk_pair_invalidate_fatal

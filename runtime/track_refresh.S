@@ -187,8 +187,8 @@ gk_stock_current_tuple_refresh:
         .global gk_stock_current_tuple_refresh_trampoline
         .type   gk_stock_current_tuple_refresh_trampoline,@function
 gk_stock_current_tuple_refresh_trampoline:
-        .incbin "stock/0190.bin", 0, 4
-        .incbin "stock/0190.bin", 4, 4
+        .incbin "stock/0191.bin", 0, 4
+        .incbin "stock/0191.bin", 4, 4
         .global gk_stock_current_tuple_refresh_trampoline_jump
 gk_stock_current_tuple_refresh_trampoline_jump:
         jmp     GK_STOCK_CURRENT_TUPLE_REFRESH_CONTINUE
@@ -309,16 +309,16 @@ gk_current_tuple_refresh_atomic_begin:
         tst.l   %d0
         bne.w   gk_current_tuple_refresh_fatal
 .Lgk_refresh_pair_stock_writes:
-        .incbin "stock/0191.bin", 0, 6
-        .incbin "stock/0191.bin", 6, 6
+        .incbin "stock/0192.bin", 0, 6
+        .incbin "stock/0192.bin", 6, 6
         .global gk_current_tuple_refresh_stock_bank_publication
 gk_current_tuple_refresh_stock_bank_publication:
-        .incbin "stock/0191.bin", 12, 4
-        .incbin "stock/0191.bin", 16, 6
-        .incbin "stock/0191.bin", 22, 6
+        .incbin "stock/0192.bin", 12, 4
+        .incbin "stock/0192.bin", 16, 6
+        .incbin "stock/0192.bin", 22, 6
         .global gk_current_tuple_refresh_stock_part_publication
 gk_current_tuple_refresh_stock_part_publication:
-        .incbin "stock/0191.bin", 28, 4
+        .incbin "stock/0192.bin", 28, 4
         cmpi.l  #GK_ID_NONE,%d7
         beq.s   .Lgk_refresh_pair_token_commit
         movea.l %a2,%a0

@@ -256,7 +256,7 @@ gk_mcp_validate_frame:
         bne.w   .Lgk_mcp_validate_frame_corrupt
         move.l  GK_MCP_PATTERN(%a6),%d0
         mulu.w  #GK_STOCK_PATTERN_STRIDE,%d0
-        .incbin "stock/0292.bin", 0, 6
+        .incbin "stock/0293.bin", 0, 6
         adda.l  %d0,%a0
         adda.l  #GK_STOCK_PATTERN_PART_OFFSET,%a0
         moveq   #0,%d1
@@ -297,7 +297,7 @@ gk_mcp_validate_frame:
         bne.w   .Lgk_mcp_validate_frame_corrupt
         move.l  GK_MCP_PART(%a6),%d0
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
-        .incbin "stock/0293.bin", 0, 6
+        .incbin "stock/0294.bin", 0, 6
         adda.l  #GK_STOCK_BANK_WORKING_OFFSET,%a0
         adda.l  %d0,%a0
         cmpa.l  GK_MCP_PAYLOAD(%a6),%a0
@@ -376,7 +376,7 @@ gk_mcp_capture_baseline:
         subq.l  #1,%d0
         bne.s   .Lgk_mcp_capture_next
 .Lgk_mcp_capture_dirty:
-        .incbin "stock/0294.bin", 0, 6
+        .incbin "stock/0295.bin", 0, 6
         adda.l  #GK_MCP_BANK_WORKING_EDITED_OFFSET,%a0
         moveq   #0,%d0
         move.b  (%a0),%d0
@@ -384,7 +384,7 @@ gk_mcp_capture_baseline:
         moveq   #0,%d0
         move.b  GK_MCP_WORKING_EDITED,%d0
         move.l  %d0,GK_MCP_BASELINE_MIRROR_EDITED(%a6)
-        .incbin "stock/0295.bin", 0, 6
+        .incbin "stock/0296.bin", 0, 6
         move.l  #GK_STOCK_BANK_DIRTY_OFFSET,%d0
         move.l  (%a0,%d0.l),%d0
         move.l  %d0,GK_MCP_BASELINE_BANK_DIRTY(%a6)
@@ -448,7 +448,7 @@ gk_mcp_validate_no_write:
         subq.l  #1,%d0
         bne.s   .Lgk_mcp_no_write_next
 .Lgk_mcp_no_write_dirty:
-        .incbin "stock/0296.bin", 0, 6
+        .incbin "stock/0297.bin", 0, 6
         adda.l  #GK_MCP_BANK_WORKING_EDITED_OFFSET,%a0
         moveq   #0,%d0
         move.b  (%a0),%d0
@@ -458,7 +458,7 @@ gk_mcp_validate_no_write:
         move.b  GK_MCP_WORKING_EDITED,%d0
         cmp.l   GK_MCP_BASELINE_MIRROR_EDITED(%a6),%d0
         bne.s   .Lgk_mcp_no_write_corrupt
-        .incbin "stock/0297.bin", 0, 6
+        .incbin "stock/0298.bin", 0, 6
         move.l  #GK_STOCK_BANK_DIRTY_OFFSET,%d0
         move.l  (%a0,%d0.l),%d0
         cmp.l   GK_MCP_BASELINE_BANK_DIRTY(%a6),%d0
@@ -540,7 +540,7 @@ gk_mcp_validate_publication:
         moveq   #1,%d1
         move.l  GK_MCP_PART(%a6),%d0
         lsl.l   %d0,%d1
-        .incbin "stock/0298.bin", 0, 6
+        .incbin "stock/0299.bin", 0, 6
         adda.l  #GK_MCP_BANK_WORKING_EDITED_OFFSET,%a0
         moveq   #0,%d0
         move.b  (%a0),%d0
@@ -550,7 +550,7 @@ gk_mcp_validate_publication:
         move.b  GK_MCP_WORKING_EDITED,%d0
         and.l   %d1,%d0
         beq.w   .Lgk_mcp_validate_publication_corrupt
-        .incbin "stock/0299.bin", 0, 6
+        .incbin "stock/0300.bin", 0, 6
         move.l  #GK_STOCK_BANK_DIRTY_OFFSET,%d0
         move.l  (%a0,%d0.l),%d0
         cmpi.l  #1,%d0
@@ -636,7 +636,7 @@ gk_stock_midi_control_parameter:
         movem.l (%sp),%d0-%d1/%a0
         lea     16(%sp),%sp
         .byte 0x4e,0xf9
-        .incbin "stock/0300.bin", 0, 4
+        .incbin "stock/0301.bin", 0, 4
 .Lgk_mcp_writer:
         move.l  %d0,-(%sp)
         move.l  __gk_lifecycle_state,%d0
@@ -728,7 +728,7 @@ gk_stock_midi_control_parameter:
         move.w  %d0,%sr
         movem.l (%a6),%d0-%d7/%a0-%a6
         .byte 0x4e,0xb9
-        .incbin "stock/0301.bin", 0, 4
+        .incbin "stock/0302.bin", 0, 4
         .global gk_mcp_stock_return
 gk_mcp_stock_return:
         movem.l %d0-%d7/%a0-%a6,120(%sp)
@@ -890,14 +890,14 @@ gk_mcp_dirty_marker_common:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_MCP_MARKER_RETURN(%sp),%sp
-        .incbin "stock/0302.bin", 0, 6
+        .incbin "stock/0303.bin", 0, 6
         jmp     (%a5)
 .Lgk_mcp_marker_restore_a3:
         move.w  GK_MCP_MARKER_SR(%sp),%d0
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_MCP_MARKER_RETURN(%sp),%sp
-        .incbin "stock/0303.bin", 0, 6
+        .incbin "stock/0304.bin", 0, 6
         jmp     (%a3)
         .size   gk_mcp_dirty_marker_common,.-gk_mcp_dirty_marker_common
         .global gk_mcp_dirty_marker_a3
@@ -946,7 +946,7 @@ gk_mcp_pre_derived_refresh:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_MCP_MARKER_SCRATCH(%sp),%sp
-        .incbin "stock/0304.bin", 0, 6
+        .incbin "stock/0305.bin", 0, 6
         jmp     (%a4)
         .size   gk_mcp_pre_derived_refresh,.-gk_mcp_pre_derived_refresh
         .global gk_mcp_fatal

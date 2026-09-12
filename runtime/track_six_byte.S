@@ -221,8 +221,8 @@ gk_stock_track_six_byte_single:
         beq.w   .Lgk_track_six_byte_busy_early
         bra.w   gk_track_six_byte_fatal
 .Lgk_track_six_byte_single_lifecycle_active:
-        .incbin "stock/0286.bin", 0, 4
-        .incbin "stock/0286.bin", 4, 4
+        .incbin "stock/0287.bin", 0, 4
+        .incbin "stock/0287.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_track_six_byte_prepare
@@ -275,8 +275,8 @@ gk_stock_track_six_byte_commit:
         beq.w   .Lgk_track_six_byte_busy_early
         bra.w   gk_track_six_byte_fatal
 .Lgk_track_six_byte_commit_lifecycle_active:
-        .incbin "stock/0287.bin", 0, 4
-        .incbin "stock/0287.bin", 4, 4
+        .incbin "stock/0288.bin", 0, 4
+        .incbin "stock/0288.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_track_six_byte_prepare
@@ -333,7 +333,7 @@ gk_track_six_byte_single_write_marker:
         move.l  (%sp)+,%d0
         .global gk_track_six_byte_single_stock_dirty_store
 gk_track_six_byte_single_stock_dirty_store:
-        .incbin "stock/0288.bin", 0, 6
+        .incbin "stock/0289.bin", 0, 6
         rts
         .size   gk_track_six_byte_single_write_marker,.-gk_track_six_byte_single_write_marker
         .global gk_track_six_byte_commit_write_marker
@@ -371,7 +371,7 @@ gk_track_six_byte_commit_write_marker:
         move.l  (%sp)+,%d1
         .global gk_track_six_byte_commit_stock_dirty_store
 gk_track_six_byte_commit_stock_dirty_store:
-        .incbin "stock/0289.bin", 0, 6
+        .incbin "stock/0290.bin", 0, 6
         rts
         .size   gk_track_six_byte_commit_write_marker,.-gk_track_six_byte_commit_write_marker
         .global gk_track_six_byte_fatal

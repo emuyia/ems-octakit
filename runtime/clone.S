@@ -124,8 +124,8 @@ gk_descriptor_begin_clone:
 gk_descriptor_finish_clone:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         bhi.w   .Lgk_clone_finish_range
-        .incbin "stock/0054.bin", 0, 4
-        .incbin "stock/0054.bin", 4, 4
+        .incbin "stock/0055.bin", 0, 4
+        .incbin "stock/0055.bin", 4, 4
         move.l  %d0,%d2
         move.l %d2,%d0
         andi.l #0xff,%d0
@@ -307,8 +307,8 @@ gk_descriptor_clone_publication:
 gk_descriptor_abort_clone:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         bhi.w   .Lgk_clone_abort_range
-        .incbin "stock/0055.bin", 0, 4
-        .incbin "stock/0055.bin", 4, 4
+        .incbin "stock/0056.bin", 0, 4
+        .incbin "stock/0056.bin", 4, 4
         move.l  %d0,%d2
         move.l %d2,%d0
         andi.l #0xff,%d0
@@ -364,9 +364,9 @@ gk_descriptor_abort_clone:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_clone_abort_restore:
         move.w  %d4,%sr
-        .incbin "stock/0056.bin", 0, 4
-        .incbin "stock/0056.bin", 4, 4
-        .incbin "stock/0056.bin", 8, 2
+        .incbin "stock/0057.bin", 0, 4
+        .incbin "stock/0057.bin", 4, 4
+        .incbin "stock/0057.bin", 8, 2
 .Lgk_clone_abort_range:
         moveq   #GK_ERR_RANGE,%d0
         rts

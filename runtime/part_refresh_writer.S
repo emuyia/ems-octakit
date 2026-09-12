@@ -5,14 +5,14 @@
 gk_part_refresh_abort_fatal:
         jsr     gk_workspace_abort_update
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_cleanup
-        bra.w   gk_part_refresh_fatal_workspace
+        bne.w   gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup
+        bra.w   gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace
         .size   gk_part_refresh_abort_fatal,.-gk_part_refresh_abort_fatal
         .type   gk_part_refresh_release_abort_fatal,@function
 gk_part_refresh_release_abort_fatal:
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_cleanup
+        bne.w   gk_part_refresh_release_abort_fatal_report
         bra.w   gk_part_refresh_abort_fatal
         .size   gk_part_refresh_release_abort_fatal,.-gk_part_refresh_release_abort_fatal
         .global gk_stock_part_refresh_writer
@@ -25,7 +25,7 @@ gk_stock_part_refresh_writer:
         move.l  __gk_lifecycle_state,%d1
         beq.s   .Lgk_part_refresh_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_part_refresh_fatal_lifecycle
+        bne.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle
         move.l  %a0,%d1
         move.w  %d1,%sr
         movem.l (%sp),%d0-%d1/%a0
@@ -36,8 +36,8 @@ gk_stock_part_refresh_writer:
         move.w  %d1,%sr
         movem.l (%sp),%d0-%d1/%a0
         lea     12(%sp),%sp
-        .incbin "stock/0342.bin", 0, 4
-        .incbin "stock/0342.bin", 4, 4
+        .incbin "stock/0343.bin", 0, 4
+        .incbin "stock/0343.bin", 4, 4
         move.l  68(%sp),%d0
         moveq   #0,%d3
         cmpi.l  #GK_STOCK_PART_REFRESH_WRITER_RETURN_UI_A,%d0
@@ -55,17 +55,17 @@ gk_stock_part_refresh_writer:
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         cmp.l   %d0,%d1
-        bcs.w   gk_part_refresh_fatal_track
+        bcs.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track
         movea.l %d0,%a4
         moveq   #0,%d0
         move.b  GK_STOCK_ENGINE_UI_TRACK,%d0
         cmp.l   %d0,%d1
-        bcs.w   gk_part_refresh_fatal_engine_track
+        bcs.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track
         movea.l %d0,%a5
         moveq   #0,%d0
         move.b  GK_STOCK_ENGINE_UI_TRACK_SECONDARY,%d0
         cmp.l   %d0,%d1
-        bcs.w   gk_part_refresh_fatal_engine_track
+        bcs.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track
         movea.l %d0,%a6
         move.l  GK_STOCK_TRACK_MODE,%d0
         move.l  %d0,64(%sp)
@@ -73,25 +73,25 @@ gk_stock_part_refresh_writer:
         move.b  GK_STOCK_CURRENT_PART_PRIMARY,%d0
         moveq   #3,%d1
         cmp.l   %d0,%d1
-        bcs.w   gk_part_refresh_fatal_part
+        bcs.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part
         movea.l %d0,%a2
         tst.l   %d3
         beq.s   .Lgk_part_refresh_settled_context
         move.l  %d6,%d0
         jsr     gk_stock_latest_engine_context_validate
         tst.l   %d0
-        bmi.w   gk_part_refresh_fatal_context
+        bmi.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
         move.l  %d7,%d2
         cmp.l   %a2,%d2
-        bne.w   gk_part_refresh_fatal_context
+        bne.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
         move.l  %a0,%d2
         cmp.l   %a2,%d2
-        bne.w   gk_part_refresh_fatal_context
+        bne.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
         bra.s   .Lgk_part_refresh_context_ok
 .Lgk_part_refresh_settled_context:
         jsr     gk_stock_current_context_validate
         tst.l   %d0
-        bmi.w   gk_part_refresh_fatal_context
+        bmi.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
 .Lgk_part_refresh_context_ok:
         move.l  %d0,%d4
         move.l  %d1,%d5
@@ -99,7 +99,7 @@ gk_stock_part_refresh_writer:
         move.b  __gk_workspace_descriptor,%d6
         moveq   #GK_DESCRIPTOR_COUNT - 1,%d0
         cmp.l   %d6,%d0
-        bcs.w   gk_part_refresh_fatal_descriptor
+        bcs.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor
         move.l  %d4,%d0
         move.l  %d5,%d1
         moveq   #0,%d2
@@ -107,7 +107,7 @@ gk_stock_part_refresh_writer:
         moveq   #0,%d3
         jsr     gk_workspace_prepare
         tst.l   %d0
-        bmi.w   gk_part_refresh_fatal_workspace
+        bmi.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace
         cmp.l   %d6,%d0
         bne.w   gk_part_refresh_abort_fatal
         move.l  %a2,%d2
@@ -150,14 +150,14 @@ gk_part_refresh_stock_call:
         cmpi.l  #GK_PART_REFRESH_TOKEN_WRITTEN,%d0
         beq.s   .Lgk_part_refresh_written
         cmpi.l  #GK_PART_REFRESH_TOKEN_ARMED,%d0
-        bne.w   gk_part_refresh_fatal_token
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token
         move.l  %d6,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_release
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release
         jsr     gk_workspace_abort_update
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_abort
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort
         bra.s   .Lgk_part_refresh_post_validate
 .Lgk_part_refresh_written:
         move.l  %d6,%d0
@@ -166,10 +166,10 @@ gk_part_refresh_stock_call:
         move.l  %a2,%d3
         jsr     gk_workspace_mark_dirty_pending
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_mark_dirty
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty
         jsr     gk_workspace_commit_update
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_commit
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit
         moveq   #0,%d3
         move.w  62(%sp),%d3
         ori.l   #1,%d3
@@ -186,47 +186,47 @@ gk_part_refresh_stock_call:
         jsr     gk_stock_current_context_validate
 .Lgk_part_refresh_post_context_result:
         tst.l   %d0
-        bmi.w   gk_part_refresh_fatal_post_context
+        bmi.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
         cmp.l   %d4,%d0
-        bne.w   gk_part_refresh_fatal_post_context
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
         cmp.l   %d5,%d1
-        bne.w   gk_part_refresh_fatal_post_context
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
         btst    #1,%d3
         beq.s   .Lgk_part_refresh_post_part
         move.l  %a0,%d0
         move.l  %a2,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_part_refresh_fatal_post_context
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
 .Lgk_part_refresh_post_part:
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_PART_PRIMARY,%d0
         move.l  %a2,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_part_refresh_fatal_post_part
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         move.l  %a4,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_part_refresh_fatal_post_track
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track
         moveq   #0,%d0
         move.b  GK_STOCK_ENGINE_UI_TRACK,%d0
         move.l  %a5,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_part_refresh_fatal_post_track
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track
         moveq   #0,%d0
         move.b  GK_STOCK_ENGINE_UI_TRACK_SECONDARY,%d0
         move.l  %a6,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_part_refresh_fatal_post_track
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track
         move.l  GK_STOCK_TRACK_MODE,%d0
         cmp.l   64(%sp),%d0
-        bne.w   gk_part_refresh_fatal_post_mode
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode
         btst    #0,%d3
         beq.s   .Lgk_part_refresh_restore
         move.l  %d6,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_part_refresh_fatal_release
+        bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release
 .Lgk_part_refresh_restore:
         move.l  44(%sp),%d0
         move.l  48(%sp),%d1
@@ -241,8 +241,8 @@ gk_part_refresh_stock_call:
         .global gk_stock_part_refresh_writer_trampoline
         .type   gk_stock_part_refresh_writer_trampoline,@function
 gk_stock_part_refresh_writer_trampoline:
-        .incbin "stock/0343.bin", 0, 4
-        .incbin "stock/0343.bin", 4, 4
+        .incbin "stock/0344.bin", 0, 4
+        .incbin "stock/0344.bin", 4, 4
         .global gk_stock_part_refresh_writer_trampoline_jump
 gk_stock_part_refresh_writer_trampoline_jump:
         jmp     GK_STOCK_PART_REFRESH_WRITER_CONTINUE
@@ -254,34 +254,34 @@ gk_part_refresh_write_marker:
         move.l  __gk_lifecycle_state,%d1
         beq.s   .Lgk_part_refresh_marker_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d1
-        bne.w   gk_part_refresh_fatal_lifecycle
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle
         move.l  (%sp)+,%d1
         bra.s   gk_part_refresh_stock_dirty_store
 .Lgk_part_refresh_marker_active:
         cmpi.l  #1,%d0
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         cmpi.l  #1,%d6
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         move.l  4(%sp),%d1
         cmpi.l  #GK_STOCK_PART_REFRESH_WRITER_DIRTY_RETURN,%d1
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         moveq   #7,%d1
         cmp.l   %a3,%d1
-        bcs.w   gk_part_refresh_fatal_marker
+        bcs.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         moveq   #-128,%d1
         add.l   %a3,%d1
         cmp.l   %d2,%d1
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         cmp.b   (%a1),%d2
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         cmp.b   (%a0,%a5.l),%d2
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         move.l  %d7,%d1
         andi.l  #GK_PART_REFRESH_TOKEN_STATE_MASK,%d1
         cmpi.l  #GK_PART_REFRESH_TOKEN_ARMED,%d1
         beq.s   .Lgk_part_refresh_mark_written
         cmpi.l  #GK_PART_REFRESH_TOKEN_WRITTEN,%d1
-        bne.w   gk_part_refresh_fatal_marker
+        bne.w   gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         bra.s   .Lgk_part_refresh_replay_dirty
 .Lgk_part_refresh_mark_written:
         andi.l  #GK_PART_REFRESH_TOKEN_CONTEXT_MASK,%d7
@@ -290,7 +290,7 @@ gk_part_refresh_write_marker:
         move.l  (%sp)+,%d1
         .global gk_part_refresh_stock_dirty_store
 gk_part_refresh_stock_dirty_store:
-        .incbin "stock/0344.bin", 0, 6
+        .incbin "stock/0345.bin", 0, 6
         rts
         .size   gk_part_refresh_write_marker,.-gk_part_refresh_write_marker
         .global gk_part_refresh_fatal_caller
@@ -299,6 +299,11 @@ gk_part_refresh_fatal_caller:
         illegal
         bra.s gk_part_refresh_fatal_caller
         .size gk_part_refresh_fatal_caller,.-gk_part_refresh_fatal_caller
+        .global gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
+        .type gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker,@function
+gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker:
+        illegal
+        .size gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker,.-gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_marker
         .global gk_part_refresh_fatal_marker
         .type gk_part_refresh_fatal_marker,@function
 gk_part_refresh_fatal_marker:
@@ -311,38 +316,138 @@ gk_part_refresh_fatal_runtime:
         illegal
         bra.s gk_part_refresh_fatal_runtime
         .size gk_part_refresh_fatal_runtime,.-gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle
+        .type gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle,@function
+gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle:
+        illegal
+        .size gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle,.-gk_part_refresh_write_marker_report_fatal_part_refresh_fatal_lifecycle
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_lifecycle
         .global gk_part_refresh_fatal_lifecycle
         .set gk_part_refresh_fatal_lifecycle,gk_part_refresh_fatal_runtime
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_track
         .global gk_part_refresh_fatal_track
         .set gk_part_refresh_fatal_track,gk_part_refresh_fatal_runtime
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_engine_track
         .global gk_part_refresh_fatal_engine_track
         .set gk_part_refresh_fatal_engine_track,gk_part_refresh_fatal_runtime
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_part
         .global gk_part_refresh_fatal_part
         .set gk_part_refresh_fatal_part,gk_part_refresh_fatal_runtime
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
         .global gk_part_refresh_fatal_context
         .set gk_part_refresh_fatal_context,gk_part_refresh_fatal_runtime
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_descriptor
         .global gk_part_refresh_fatal_descriptor
         .set gk_part_refresh_fatal_descriptor,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace
+        .type gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace,@function
+gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace:
+        illegal
+        .size gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace,.-gk_part_refresh_abort_fatal_report_part_refresh_fatal_workspace
+        .global gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace
+        .type gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace,@function
+gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace:
+        illegal
+        .size gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace,.-gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_workspace
         .global gk_part_refresh_fatal_workspace
         .set gk_part_refresh_fatal_workspace,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup
+        .type gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup,@function
+gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup:
+        illegal
+        .size gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup,.-gk_part_refresh_abort_fatal_report_part_refresh_fatal_cleanup
+        .global gk_part_refresh_release_abort_fatal_report
+        .type gk_part_refresh_release_abort_fatal_report,@function
+gk_part_refresh_release_abort_fatal_report:
+        illegal
+        .size gk_part_refresh_release_abort_fatal_report,.-gk_part_refresh_release_abort_fatal_report
         .global gk_part_refresh_fatal_cleanup
         .set gk_part_refresh_fatal_cleanup,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_token
         .global gk_part_refresh_fatal_token
         .set gk_part_refresh_fatal_token,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release
         .global gk_part_refresh_fatal_release
         .set gk_part_refresh_fatal_release,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_abort
         .global gk_part_refresh_fatal_abort
         .set gk_part_refresh_fatal_abort,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_mark_dirty
         .global gk_part_refresh_fatal_mark_dirty
         .set gk_part_refresh_fatal_mark_dirty,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_commit
         .global gk_part_refresh_fatal_commit
         .set gk_part_refresh_fatal_commit,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_context
         .global gk_part_refresh_fatal_post_context
         .set gk_part_refresh_fatal_post_context,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_part
         .global gk_part_refresh_fatal_post_part
         .set gk_part_refresh_fatal_post_part,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_track
         .global gk_part_refresh_fatal_post_track
         .set gk_part_refresh_fatal_post_track,gk_part_refresh_fatal_runtime
+        .global gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode
+        .type gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode,@function
+gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode:
+        illegal
+        .size gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode,.-gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_post_mode
         .global gk_part_refresh_fatal_post_mode
         .set gk_part_refresh_fatal_post_mode,gk_part_refresh_fatal_runtime
         .global gk_part_refresh_fatal

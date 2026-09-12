@@ -668,6 +668,6 @@ gk_track_twelve_byte_write_marker:
         lea     GK_TTM_SAVED_BYTES(%sp),%sp
         .global gk_track_twelve_byte_stock_dirty_store
 gk_track_twelve_byte_stock_dirty_store:
-        .incbin "stock/0355.bin", 0, 6
+        .incbin "stock/0356.bin", 0, 6
         rts
         .size   gk_track_twelve_byte_write_marker,.-gk_track_twelve_byte_write_marker

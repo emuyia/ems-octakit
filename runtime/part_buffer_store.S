@@ -24,8 +24,8 @@ gk_stock_part_buffer_store:
         beq.s   .Lgk_part_buffer_store_active
         bra.w   gk_part_buffer_store_fatal
 .Lgk_part_buffer_store_active:
-        .incbin "stock/0113.bin", 0, 4
-        .incbin "stock/0113.bin", 4, 4
+        .incbin "stock/0114.bin", 0, 4
+        .incbin "stock/0114.bin", 4, 4
         movea.l 48(%sp),%a2
         move.l  52(%sp),%d6
         move.l  44(%sp),%d0
@@ -110,15 +110,15 @@ gk_part_buffer_store_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_part_buffer_store_fatal
-        .incbin "stock/0114.bin", 0, 4
-        .incbin "stock/0114.bin", 4, 4
-        .incbin "stock/0114.bin", 8, 2
+        .incbin "stock/0115.bin", 0, 4
+        .incbin "stock/0115.bin", 4, 4
+        .incbin "stock/0115.bin", 8, 2
         .size   gk_stock_part_buffer_store,.-gk_stock_part_buffer_store
         .global gk_stock_part_buffer_store_trampoline
         .type   gk_stock_part_buffer_store_trampoline,@function
 gk_stock_part_buffer_store_trampoline:
-        .incbin "stock/0115.bin", 0, 4
-        .incbin "stock/0115.bin", 4, 4
+        .incbin "stock/0116.bin", 0, 4
+        .incbin "stock/0116.bin", 4, 4
         .global gk_stock_part_buffer_store_trampoline_jump
 gk_stock_part_buffer_store_trampoline_jump:
         jmp     GK_STOCK_PART_BUFFER_STORE_CONTINUE

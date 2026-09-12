@@ -29,7 +29,7 @@ gk_pattern_schedule_global_kit_entry:
         move.l  36(%sp),%d0
         bsr.w   gk_arranger_publisher_owner_from_return
         tst.l   %d0
-        bmi.w   gk_arranger_fatal_pattern_publish_owner
+        bmi.w   gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner
         move.l  %d0,%d3
         cmpi.l  #15,%d4
         bhi.w   .Lgk_pattern_schedule_cancel
@@ -59,14 +59,14 @@ gk_pattern_schedule_global_kit_entry:
         beq.s   .Lgk_pattern_schedule_ordinary_prepare_new
         cmpi.l  #GK_ARRANGER_OWNER_TOKEN,%d3
         beq.s   .Lgk_pattern_schedule_prepared_owner
-        jmp     gk_pattern_queue_commit_prepared_fatal
+        jmp     gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal
 .Lgk_pattern_schedule_prepared_owner:
         move.l  %d4,%d0
         move.l  %d5,%d1
         jsr     gk_pattern_queue_commit_prepared_take
         tst.l   %d0
         bpl.s   .Lgk_pattern_schedule_prepared_taken
-        jmp     gk_pattern_queue_commit_prepared_fatal
+        jmp     gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal
 .Lgk_pattern_schedule_prepared_taken:
         move.l  %d0,%d7
         movea.l %d1,%a2
@@ -91,7 +91,7 @@ gk_pattern_schedule_global_kit_entry:
         move.l  %d5,%d2
         jsr     gk_ui_carried_pattern_lag_publish
         tst.l   %d0
-        bne.w   gk_pattern_transition_pre_engine_fatal
+        bne.w   gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal
         move.l  %d4,%d0
         move.l  #GK_STOCK_BANK_STRIDE,%d1
         muls.l  %d1,%d0
@@ -126,11 +126,11 @@ gk_pattern_stock_engine_call:
         jsr     GK_STOCK_ENGINE_PATTERN_PART_LOAD
         bsr.w   gk_workspace_commit_update
         tst.l   %d0
-        bne.w   gk_pattern_transition_post_engine_fatal
+        bne.w   gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
         lea     __gk_lease_sidecars,%a0
         jsr     gk_selector_acquire
         tst.l   %d0
-        bmi.w   gk_pattern_transition_post_engine_fatal
+        bmi.w   gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
         move.l  %d0,%d2
         cmp.l   %d7,%d0
         bne.w   .Lgk_pattern_schedule_release_fatal
@@ -146,12 +146,12 @@ gk_pattern_stock_engine_call:
         move.l  %d2,%d0
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_pattern_transition_post_engine_fatal
+        bne.w   gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
         tst.l   %d3
         beq.s   .Lgk_pattern_schedule_retry_ui
         bsr.w   gk_arranger_consume_finish
         tst.l   %d0
-        bne.w   gk_pattern_transition_post_engine_fatal
+        bne.w   gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
 .Lgk_pattern_schedule_retry_ui:
         jsr     gk_ui_transition_retry_ensure
         tst.l   %d0
@@ -166,11 +166,11 @@ gk_pattern_stock_engine_call:
 .Lgk_pattern_schedule_release_fatal:
         move.l  %d2,%d0
         jsr     gk_descriptor_release
-        bra.w   gk_pattern_transition_post_engine_fatal
+        bra.w   gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
 .Lgk_pattern_schedule_capture_failed:
         bsr.w   gk_workspace_abort_update
         tst.l   %d0
-        bne.s   gk_pattern_transition_pre_engine_fatal
+        bne.s   gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal
 .Lgk_pattern_schedule_cancel:
         movem.l (%sp),%d2-%d3/%d7/%a2
         lea     16(%sp),%sp
@@ -178,17 +178,32 @@ gk_pattern_stock_engine_call:
 .Lgk_pattern_schedule_boot_stock:
         .global gk_pattern_schedule_boot_stock_passthrough
 gk_pattern_schedule_boot_stock_passthrough:
-        .incbin "stock/0148.bin", 0, 6
-        .incbin "stock/0148.bin", 6, 4
-        .incbin "stock/0148.bin", 10, 2
-        .incbin "stock/0148.bin", 12, 2
-        .incbin "stock/0148.bin", 14, 6
+        .incbin "stock/0149.bin", 0, 6
+        .incbin "stock/0149.bin", 6, 4
+        .incbin "stock/0149.bin", 10, 2
+        .incbin "stock/0149.bin", 12, 2
+        .incbin "stock/0149.bin", 14, 6
         jmp     GK_STOCK_PATTERN_SCHEDULE_CONTINUE
         .global gk_pattern_transition_pre_engine_fatal
+        .global gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal
+        .type gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal,@function
+gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal:
+        illegal
+        .size gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal,.-gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal
+        .global gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal
+        .type gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal,@function
+gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal:
+        illegal
+        .size gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal,.-gk_pattern_stock_engine_call_report_fatal_pattern_transition_pre_engine_fatal
 gk_pattern_transition_pre_engine_fatal:
         illegal
         bra.s   gk_pattern_transition_pre_engine_fatal
         .global gk_pattern_transition_post_engine_fatal
+        .global gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
+        .type gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal,@function
+gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal:
+        illegal
+        .size gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal,.-gk_pattern_stock_engine_call_report_fatal_pattern_transition_post_engine_fatal
 gk_pattern_transition_post_engine_fatal:
         illegal
         bra.s   gk_pattern_transition_post_engine_fatal

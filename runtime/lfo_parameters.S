@@ -21,8 +21,8 @@ gk_lfo_parameter_release_abort_fatal:
 gk_stock_lfo_depth_write:
         tst.l   __gk_lifecycle_state
         bne.w   gk_lfo_parameter_fatal
-        .incbin "stock/0240.bin", 0, 4
-        .incbin "stock/0240.bin", 4, 4
+        .incbin "stock/0241.bin", 0, 4
+        .incbin "stock/0241.bin", 4, 4
         movea.l 48(%sp),%a6
         move.l  44(%sp),%d0
         cmpi.l  #GK_STOCK_LFO_DEPTH_RETURN_TOGGLE,%d0
@@ -124,15 +124,15 @@ gk_lfo_depth_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_lfo_parameter_fatal
-        .incbin "stock/0241.bin", 0, 4
-        .incbin "stock/0241.bin", 4, 4
-        .incbin "stock/0241.bin", 8, 2
+        .incbin "stock/0242.bin", 0, 4
+        .incbin "stock/0242.bin", 4, 4
+        .incbin "stock/0242.bin", 8, 2
         .size   gk_stock_lfo_depth_write,.-gk_stock_lfo_depth_write
         .global gk_stock_lfo_depth_write_trampoline
         .type   gk_stock_lfo_depth_write_trampoline,@function
 gk_stock_lfo_depth_write_trampoline:
-        .incbin "stock/0242.bin", 0, 4
-        .incbin "stock/0242.bin", 4, 4
+        .incbin "stock/0243.bin", 0, 4
+        .incbin "stock/0243.bin", 4, 4
         .global gk_stock_lfo_depth_write_trampoline_jump
 gk_stock_lfo_depth_write_trampoline_jump:
         jmp     GK_STOCK_LFO_DEPTH_WRITE_CONTINUE
@@ -154,8 +154,8 @@ gk_stock_lfo_block_write:
 .Lgk_lfo_block_designer_checked:
         tst.l   __gk_lifecycle_state
         bne.w   gk_lfo_parameter_fatal
-        .incbin "stock/0243.bin", 0, 4
-        .incbin "stock/0243.bin", 4, 4
+        .incbin "stock/0244.bin", 0, 4
+        .incbin "stock/0244.bin", 4, 4
         movea.l 48(%sp),%a6
         movea.l 52(%sp),%a2
         move.l  44(%sp),%d0
@@ -275,15 +275,15 @@ gk_lfo_block_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_lfo_parameter_fatal
-        .incbin "stock/0244.bin", 0, 4
-        .incbin "stock/0244.bin", 4, 4
-        .incbin "stock/0244.bin", 8, 2
+        .incbin "stock/0245.bin", 0, 4
+        .incbin "stock/0245.bin", 4, 4
+        .incbin "stock/0245.bin", 8, 2
         .size   gk_stock_lfo_block_write,.-gk_stock_lfo_block_write
         .global gk_stock_lfo_block_write_trampoline
         .type   gk_stock_lfo_block_write_trampoline,@function
 gk_stock_lfo_block_write_trampoline:
-        .incbin "stock/0245.bin", 0, 4
-        .incbin "stock/0245.bin", 4, 4
+        .incbin "stock/0246.bin", 0, 4
+        .incbin "stock/0246.bin", 4, 4
         .global gk_stock_lfo_block_write_trampoline_jump
 gk_stock_lfo_block_write_trampoline_jump:
         jmp     GK_STOCK_LFO_BLOCK_WRITE_CONTINUE

@@ -94,16 +94,16 @@ gk_stock_popup_object_active:
         bne.s   .Lgk_stock_popup_object_scan
 .Lgk_stock_popup_object_no:
         moveq   #0,%d0
-        .incbin "stock/0116.bin", 0, 2
+        .incbin "stock/0117.bin", 0, 2
         .size   gk_stock_popup_object_active,.-gk_stock_popup_object_active
         .global gk_function_map_active
         .type   gk_function_map_active,@function
 gk_function_map_active:
-        .incbin "stock/0116.bin", 2, 4
-        .incbin "stock/0116.bin", 6, 6
-        .incbin "stock/0116.bin", 12, 2
-        .incbin "stock/0116.bin", 14, 2
-        .incbin "stock/0116.bin", 16, 1
+        .incbin "stock/0117.bin", 2, 4
+        .incbin "stock/0117.bin", 6, 6
+        .incbin "stock/0117.bin", 12, 2
+        .incbin "stock/0117.bin", 14, 2
+        .incbin "stock/0117.bin", 16, 1
         .byte 0x04
 .Lgk_function_map_yes:
         moveq   #1,%d0
@@ -141,11 +141,11 @@ gk_func_part_yes_dispatch:
         move.b  %d0,__gk_ui_state_pad + 1
         clr.b   __gk_ui_state_pad + 2
         .byte 0x4e,0xf9
-        .incbin "stock/0117.bin", 0, 4
+        .incbin "stock/0118.bin", 0, 4
 .Lgk_func_part_yes_stock:
         clr.b   __gk_ui_state_pad + 2
         .byte 0x4e,0xf9
-        .incbin "stock/0118.bin", 0, 4
+        .incbin "stock/0119.bin", 0, 4
         .size   gk_func_part_yes_dispatch,.-gk_func_part_yes_dispatch
         .global gk_func_part_yes_function_release
         .type   gk_func_part_yes_function_release,@function
@@ -156,7 +156,7 @@ gk_func_part_yes_function_release:
         rts
 .Lgk_func_part_yes_release_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0119.bin", 0, 4
+        .incbin "stock/0120.bin", 0, 4
         .size   gk_func_part_yes_function_release,.-gk_func_part_yes_function_release
         .global gk_mki_bank_quick_save_dispatch
         .type   gk_mki_bank_quick_save_dispatch,@function
@@ -171,7 +171,7 @@ gk_mki_bank_quick_save_dispatch:
         move.b  %d0,__gk_ui_state_pad + 2
         move.l  (%sp)+,%d0
         .byte 0x4e,0xf9
-        .incbin "stock/0120.bin", 0, 4
+        .incbin "stock/0121.bin", 0, 4
 .Lgk_mki_bank_recording_edit:
         move.l  (%sp)+,%d0
         .global gk_recording_edit_menu_open_jump
@@ -730,8 +730,8 @@ gk_part_edit_menu_open:
         moveq   #GK_OK,%d0
         rts
 .Lgk_part_edit_open_new_v4:
-        .incbin "stock/0121.bin", 0, 4
-        .incbin "stock/0121.bin", 4, 4
+        .incbin "stock/0122.bin", 0, 4
+        .incbin "stock/0122.bin", 4, 4
         bsr.w   gk_stock_current_context_validate_or_resume
         tst.l   %d0
         bmi.s   .Lgk_part_edit_open_restore
@@ -815,8 +815,8 @@ gk_part_edit_save_as_reopen:
 gk_part_edit_save_as_open:
         moveq   #0,%d0
 .Lgk_part_edit_save_as_open_entry:
-        .incbin "stock/0122.bin", 0, 4
-        .incbin "stock/0122.bin", 4, 4
+        .incbin "stock/0123.bin", 0, 4
+        .incbin "stock/0123.bin", 4, 4
         move.l  %d0,%d3
         tst.l   %d3
         beq.s   .Lgk_part_edit_save_as_reopen_selection_ready
@@ -868,15 +868,15 @@ gk_save_as_stock_menu_call:
         lea     .Lgk_part_edit_message_saved_as,%a0
         bsr.w   gk_part_edit_notify_result
 .Lgk_part_edit_save_as_restore:
-        .incbin "stock/0123.bin", 0, 4
-        .incbin "stock/0123.bin", 4, 4
+        .incbin "stock/0124.bin", 0, 4
+        .incbin "stock/0124.bin", 4, 4
         rts
         .size   gk_part_edit_save_as_open,.-gk_part_edit_save_as_open
         .global gk_save_as_menu_confirm
         .type   gk_save_as_menu_confirm,@function
 gk_save_as_menu_confirm:
-        .incbin "stock/0124.bin", 0, 4
-        .incbin "stock/0124.bin", 4, 4
+        .incbin "stock/0125.bin", 0, 4
+        .incbin "stock/0125.bin", 4, 4
         moveq   #0,%d4
         move.b  __gk_ui_state_pad,%d4
         clr.b   __gk_ui_state_pad
@@ -917,9 +917,9 @@ gk_save_as_menu_confirm:
         lea     .Lgk_part_edit_message_saved_as,%a0
         bsr.w   gk_part_edit_notify_result
 .Lgk_save_as_confirm_restore:
-        .incbin "stock/0125.bin", 0, 4
-        .incbin "stock/0125.bin", 4, 4
-        .incbin "stock/0125.bin", 8, 2
+        .incbin "stock/0126.bin", 0, 4
+        .incbin "stock/0126.bin", 4, 4
+        .incbin "stock/0126.bin", 8, 2
         .size   gk_save_as_menu_confirm,.-gk_save_as_menu_confirm
         .global gk_save_as_overwrite_confirm
         .type   gk_save_as_overwrite_confirm,@function
@@ -1006,8 +1006,8 @@ gk_save_as_name_complete:
         moveq   #GK_OK,%d0
         rts
 .Lgk_save_name_confirmed_v3:
-        .incbin "stock/0126.bin", 0, 4
-        .incbin "stock/0126.bin", 4, 4
+        .incbin "stock/0127.bin", 0, 4
+        .incbin "stock/0127.bin", 4, 4
         moveq   #0,%d4
         move.b  __gk_ui_mode,%d4
         cmpi.l  #GK_UI_MODE_SAVE_NAME,%d4
@@ -1067,9 +1067,9 @@ gk_save_as_name_complete:
         lea     .Lgk_part_edit_message_saved,%a0
 .Lgk_save_name_notify_v3:
         bsr.w   gk_part_edit_notify_result
-        .incbin "stock/0127.bin", 0, 4
-        .incbin "stock/0127.bin", 4, 4
-        .incbin "stock/0127.bin", 8, 2
+        .incbin "stock/0128.bin", 0, 4
+        .incbin "stock/0128.bin", 4, 4
+        .incbin "stock/0128.bin", 8, 2
         .size   gk_save_as_name_complete,.-gk_save_as_name_complete
         .align  4
         .global gk_part_edit_callbacks
@@ -1087,33 +1087,33 @@ gk_part_edit_labels:
         .type   gk_save_as_confirmation_labels,@object
         .set    gk_save_as_confirmation_labels,gk_part_edit_labels
 .Lgk_part_edit_label_load:
-        .incbin "stock/0128.bin", 0, 5
-.Lgk_part_edit_label_save:
         .incbin "stock/0129.bin", 0, 5
+.Lgk_part_edit_label_save:
+        .incbin "stock/0130.bin", 0, 5
 .Lgk_part_edit_save_name_title:
-        .incbin "stock/0130.bin", 0, 4
+        .incbin "stock/0131.bin", 0, 4
         .byte 0x20,0x4b,0x49,0x54,0x00
 .Lgk_save_as_name_title:
         .global gk_kit_list_save_title
 gk_kit_list_save_title:
-        .incbin "stock/0131.bin", 0, 4
+        .incbin "stock/0132.bin", 0, 4
         .byte 0x20,0x4b,0x49,0x54,0x00
         .align  4
 .Lgk_part_edit_default_name:
         .ascii  "NEW KIT "
 .Lgk_part_edit_message_saved:
         .byte 0x4b,0x49,0x54
-        .incbin "stock/0132.bin", 0, 7
+        .incbin "stock/0133.bin", 0, 7
 .Lgk_part_edit_message_reloaded:
         .byte 0x4b,0x49,0x54
-        .incbin "stock/0133.bin", 0, 10
+        .incbin "stock/0134.bin", 0, 10
 .Lgk_part_edit_message_save_first:
-        .incbin "stock/0134.bin", 0, 4
+        .incbin "stock/0135.bin", 0, 4
         .byte 0x20,0x4b,0x49,0x54
-        .incbin "stock/0135.bin", 0, 8
+        .incbin "stock/0136.bin", 0, 8
 .Lgk_part_edit_message_saved_as:
         .byte 0x4b,0x49,0x54
-        .incbin "stock/0136.bin", 0, 7
+        .incbin "stock/0137.bin", 0, 7
 .Lgk_part_edit_message_busy:
         .asciz  "KIT BUSY - RETRY"
 .Lgk_part_edit_message_error:

@@ -380,7 +380,7 @@ gk_stock_lfo_designer_rotate_operation:
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
         move.l  %a3,%d1
         mulu.w  #0x24,%d1
-        .incbin "stock/0365.bin", 0, 6
+        .incbin "stock/0366.bin", 0, 6
         adda.l  #GK_STOCK_BANK_WORKING_OFFSET,%a0
         adda.l  %d0,%a0
         adda.l  %d1,%a0
@@ -672,14 +672,14 @@ gk_lfo_designer_operations_write_marker_d1:
         lea     64(%sp),%sp
         .global gk_lfo_designer_operations_stock_dirty_store_d1
 gk_lfo_designer_operations_stock_dirty_store_d1:
-        .incbin "stock/0366.bin", 0, 6
+        .incbin "stock/0367.bin", 0, 6
         rts
 .Lgk_ldo_marker_restore_d3:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     64(%sp),%sp
         .global gk_lfo_designer_operations_stock_dirty_store_d3
 gk_lfo_designer_operations_stock_dirty_store_d3:
-        .incbin "stock/0367.bin", 0, 6
+        .incbin "stock/0368.bin", 0, 6
         rts
         .size   gk_lfo_designer_operations_write_marker_d1,.-gk_lfo_designer_operations_write_marker_d1
         .global gk_lfo_designer_operations_fatal_runtime_image

@@ -1,11 +1,65 @@
         .include "abi.inc"
         .section .runtime,"ax"
         .align  4
+        .global gk_change_set_handoff_wait
+        .global gk_queue_entry_handoff_wait
+        .type   gk_change_set_handoff_wait,@function
+        .type   gk_queue_entry_handoff_wait,@function
+gk_change_set_handoff_wait:
+gk_queue_entry_handoff_wait:
+        lea     -24(%sp),%sp
+        movem.l %d0-%d2/%a0-%a1,(%sp)
+        move.w  %sr,%d1
+        move.w  %d1,20(%sp)
+        cmpi.l  #GK_STOCK_CHANGE_SET_QUEUE_RETURN,%d0
+        beq.s   .Lgk_change_set_wait_caller_ready
+        cmpi.l  #GK_STOCK_TRANSPORT_STOP_QUEUE_RETURN,%d0
+        bne.w   .Lgk_change_set_wait_restore
+.Lgk_change_set_wait_caller_ready:
+        andi.l  #0x700,%d1
+        cmpi.l  #0x200,%d1
+        bcc.w   .Lgk_change_set_wait_restore
+.Lgk_change_set_wait_poll:
+        move.w  #0x2700,%sr
+        tst.b   __gk_arranger_guard_depth
+        bne.w   .Lgk_change_set_wait_restore
+        tst.w   __gk_arranger_guard_saved_sr
+        bne.w   .Lgk_change_set_wait_restore
+        tst.w   __gk_arranger_guard_saved_sr_pad
+        bne.w   .Lgk_change_set_wait_restore
+        tst.w   __gk_arranger_guard_reserved
+        bne.w   .Lgk_change_set_wait_restore
+        tst.b   __gk_arranger_playback_guard_active
+        bne.w   .Lgk_change_set_wait_restore
+        moveq   #GK_PATTERN_QUEUE_PREPARED_BASE + 1,%d0
+        cmp.b   __gk_pattern_queue_commit_prepared,%d0
+        bne.w   .Lgk_change_set_wait_restore
+        tst.l   GK_STOCK_AUDIO_LATCH_TRIGGER
+        beq.w   .Lgk_change_set_wait_restore
+        jsr     gk_pattern_queue_audio_handoff_ready
+        tst.l   %d0
+        bmi.w   .Lgk_change_set_wait_restore
+        move.w  20(%sp),%d1
+        move.w  %d1,%sr
+        .global gk_change_set_handoff_wait_interruptible
+        .global gk_queue_entry_handoff_wait_interruptible
+gk_change_set_handoff_wait_interruptible:
+gk_queue_entry_handoff_wait_interruptible:
+        nop
+        bra.w   .Lgk_change_set_wait_poll
+.Lgk_change_set_wait_restore:
+        move.w  20(%sp),%d1
+        move.w  %d1,%sr
+        movem.l (%sp),%d0-%d2/%a0-%a1
+        lea     24(%sp),%sp
+        rts
+        .size   gk_change_set_handoff_wait,.-gk_change_set_handoff_wait
+        .size   gk_queue_entry_handoff_wait,.-gk_queue_entry_handoff_wait
         .global gk_pattern_queue_commit_guard_enter
         .type   gk_pattern_queue_commit_guard_enter,@function
 gk_pattern_queue_commit_guard_enter:
-        .incbin "stock/0383.bin", 0, 4
-        .incbin "stock/0383.bin", 4, 4
+        .incbin "stock/0384.bin", 0, 4
+        .incbin "stock/0384.bin", 4, 4
         move.w  %sr,%d4
         move.w  #0x2700,%sr
         tst.w   __gk_arranger_guard_reserved
@@ -62,16 +116,16 @@ gk_pattern_queue_commit_guard_enter:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_queue_guard_restore:
         move.w  %d4,%sr
-        .incbin "stock/0384.bin", 0, 4
-        .incbin "stock/0384.bin", 4, 4
-        .incbin "stock/0384.bin", 8, 2
+        .incbin "stock/0385.bin", 0, 4
+        .incbin "stock/0385.bin", 4, 4
+        .incbin "stock/0385.bin", 8, 2
         .size   gk_pattern_queue_commit_guard_enter,.-gk_pattern_queue_commit_guard_enter
-        .align  4
+        .incbin "stock/0386.bin", 0, 2
         .global gk_pattern_queue_handoff_marker_publish
         .type   gk_pattern_queue_handoff_marker_publish,@function
 gk_pattern_queue_handoff_marker_publish:
-        .incbin "stock/0385.bin", 0, 4
-        .incbin "stock/0385.bin", 4, 3
+        .incbin "stock/0386.bin", 2, 4
+        .incbin "stock/0386.bin", 6, 3
         .byte 0x06
         move.w  %sr,%d2
         move.w  %d2,8(%sp)
@@ -134,30 +188,30 @@ gk_pattern_queue_commit_prepare:
         cmpi.l  #GK_PATTERN_QUEUE_QUEUED_BASE,%d1
         beq.s   .Lgk_queue_prepare_owner_ready
         cmpi.l  #GK_PATTERN_QUEUE_DISPATCHING_BASE,%d1
-        bne.w   .Lgk_queue_prepare_corrupt
+        bne.w   .Lgk_queue_prepare_corrupt_owner_token
 .Lgk_queue_prepare_owner_ready:
         moveq   #0,%d0
         move.b  __gk_sequencer_latch_queue_handoff,%d0
         cmpi.l  #1,%d0
-        bhi.w   .Lgk_queue_prepare_corrupt
+        bhi.w   .Lgk_queue_prepare_corrupt_handoff_range
         moveq   #0,%d1
         move.b  __gk_pattern_queue_commit_prepared,%d1
         beq.s   .Lgk_queue_prepare_marker_ready
         andi.l  #1,%d1
         cmp.l   %d1,%d0
-        bne.w   .Lgk_queue_prepare_corrupt
+        bne.w   .Lgk_queue_prepare_corrupt_owner_handoff
 .Lgk_queue_prepare_marker_ready:
         move.l  %d0,%d3
         move.l  GK_STOCK_SCHEDULER_STATE,%d6
         cmpi.l  #2,%d6
-        bhi.w   .Lgk_queue_prepare_corrupt
+        bhi.w   .Lgk_queue_prepare_corrupt_scheduler_state
         tst.l   %d3
         beq.s   .Lgk_queue_prepare_stock_route
         cmpi.l  #1,%d6
         bne.w   .Lgk_queue_prepare_changed
         move.l  GK_STOCK_SCHEDULER_CHAINED,%d0
         cmpi.l  #1,%d0
-        bhi.w   .Lgk_queue_prepare_corrupt
+        bhi.w   .Lgk_queue_prepare_corrupt_playback_chained
         moveq   #0x10,%d7
         or.l    %d0,%d7
         moveq   #0,%d4
@@ -169,11 +223,11 @@ gk_pattern_queue_commit_prepare:
         move.l  GK_STOCK_SCHEDULER_CHAINED,%d0
         beq.s   .Lgk_queue_prepare_ordinary
         cmpi.l  #1,%d0
-        bne.w   .Lgk_queue_prepare_corrupt
+        bne.w   .Lgk_queue_prepare_corrupt_stock_chained
         tst.l   %d6
         bne.s   .Lgk_queue_prepare_chained
         tst.l   %d3
-        bne.w   .Lgk_queue_prepare_corrupt
+        bne.w   .Lgk_queue_prepare_corrupt_stopped_handoff
         tst.l   GK_STOCK_PATTERN_QUEUE_GATE
         bne.w   .Lgk_queue_prepare_changed
 .Lgk_queue_prepare_chained:
@@ -185,7 +239,7 @@ gk_pattern_queue_commit_prepare:
         bra.s   .Lgk_queue_prepare_tuple_ready
 .Lgk_queue_prepare_ordinary:
         tst.l   %d6
-        beq.w   .Lgk_queue_prepare_corrupt
+        beq.w   .Lgk_queue_prepare_corrupt_ordinary_stopped
         moveq   #0,%d7
         moveq   #0,%d4
         move.b  GK_STOCK_QUEUED_BANK,%d4
@@ -193,9 +247,9 @@ gk_pattern_queue_commit_prepare:
         move.b  GK_STOCK_QUEUED_PATTERN,%d5
 .Lgk_queue_prepare_tuple_ready:
         cmpi.l  #15,%d4
-        bhi.w   .Lgk_queue_prepare_corrupt
+        bhi.w   .Lgk_queue_prepare_corrupt_bank_range
         cmpi.l  #15,%d5
-        bhi.w   .Lgk_queue_prepare_corrupt
+        bhi.w   .Lgk_queue_prepare_corrupt_pattern_range
         lsl.l   #1,%d3
         or.l    %d3,%d7
         lsl.l   #2,%d6
@@ -220,7 +274,12 @@ gk_pattern_queue_commit_prepare:
         moveq   #0,%d3
         jsr     gk_workspace_prepare
         tst.l   %d0
-        bmi.w   .Lgk_queue_prepare_restore
+        bpl.s   .Lgk_queue_prepare_workspace_ready
+        cmpi.l  #GK_ERR_CORRUPT,%d0
+        bne.w   .Lgk_queue_prepare_restore
+        lea     gk_pattern_queue_prepare_report_fatal_workspace,%a0
+        bra.w   .Lgk_queue_prepare_restore
+.Lgk_queue_prepare_workspace_ready:
         .global gk_pattern_queue_mirror_sync_start
 gk_pattern_queue_mirror_sync_start:
         lea     -12(%sp),%sp
@@ -297,15 +356,24 @@ gk_pattern_queue_mirror_sync_end:
 gk_pattern_queue_commit_prepared_publication:
         move.b  %d0,__gk_pattern_queue_commit_prepared
         moveq   #GK_OK,%d0
-        bra.s   .Lgk_queue_prepare_restore_locked
+        bra.w   .Lgk_queue_prepare_restore_locked
 .Lgk_queue_prepare_abort:
+        moveq   #0,%d2
+        cmpi.l  #GK_ERR_CORRUPT,%d0
+        bne.s   .Lgk_queue_prepare_abort_reason_ready
+        move.l  #gk_pattern_queue_prepare_report_fatal_ui_transition,%d2
+.Lgk_queue_prepare_abort_reason_ready:
         movea.l %d0,%a3
         move.w  32(%sp),%d1
         move.w  %d1,%sr
         jsr     gk_workspace_abort_update
         tst.l   %d0
-        bne.s   .Lgk_queue_prepare_corrupt
+        bne.s   .Lgk_queue_prepare_corrupt_workspace_abort
         move.l  %a3,%d0
+        cmpi.l  #GK_ERR_CORRUPT,%d0
+        bne.s   .Lgk_queue_prepare_abort_restored
+        movea.l %d2,%a0
+.Lgk_queue_prepare_abort_restored:
         bra.s   .Lgk_queue_prepare_restore
 .Lgk_queue_prepare_changed:
         moveq   #GK_ERR_BUSY,%d0
@@ -313,6 +381,38 @@ gk_pattern_queue_commit_prepared_publication:
 .Lgk_queue_prepare_busy:
         moveq   #GK_ERR_BUSY,%d0
         bra.s   .Lgk_queue_prepare_restore
+.Lgk_queue_prepare_corrupt_owner_token:
+        lea     gk_pattern_queue_prepare_report_fatal_owner_token,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_handoff_range:
+        lea     gk_pattern_queue_prepare_report_fatal_handoff_range,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_owner_handoff:
+        lea     gk_pattern_queue_prepare_report_fatal_owner_handoff,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_scheduler_state:
+        lea     gk_pattern_queue_prepare_report_fatal_scheduler_state,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_playback_chained:
+        lea     gk_pattern_queue_prepare_report_fatal_playback_chained,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_stock_chained:
+        lea     gk_pattern_queue_prepare_report_fatal_stock_chained,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_stopped_handoff:
+        lea     gk_pattern_queue_prepare_report_fatal_stopped_handoff,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_ordinary_stopped:
+        lea     gk_pattern_queue_prepare_report_fatal_ordinary_stopped,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_bank_range:
+        lea     gk_pattern_queue_prepare_report_fatal_bank_range,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_pattern_range:
+        lea     gk_pattern_queue_prepare_report_fatal_pattern_range,%a0
+        bra.s   .Lgk_queue_prepare_corrupt
+.Lgk_queue_prepare_corrupt_workspace_abort:
+        lea     gk_pattern_queue_prepare_report_fatal_workspace_abort,%a0
 .Lgk_queue_prepare_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_queue_prepare_restore:
@@ -321,6 +421,10 @@ gk_pattern_queue_commit_prepared_publication:
 .Lgk_queue_prepare_restore_locked:
         movem.l (%sp),%d2-%d7/%a2-%a3
         lea     36(%sp),%sp
+        cmpi.l  #GK_ERR_CORRUPT,%d0
+        bne.s   .Lgk_queue_prepare_return
+        jmp     (%a0)
+.Lgk_queue_prepare_return:
         rts
         .size   gk_pattern_queue_commit_prepare,.-gk_pattern_queue_commit_prepare
         .align  4
@@ -387,8 +491,8 @@ gk_stock_pattern_queue_request_ipl_restore:
 .Lgk_queue_request_replay:
         .global gk_pattern_queue_request_stock_replay
 gk_pattern_queue_request_stock_replay:
-        .incbin "stock/0386.bin", 0, 2
-        .incbin "stock/0386.bin", 2, 4
+        .incbin "stock/0387.bin", 0, 2
+        .incbin "stock/0387.bin", 2, 4
         jmp     GK_STOCK_PATTERN_SCHEDULE_REQUEST_CONTINUE
 .Lgk_queue_request_corrupt:
         movem.l (%sp),%d0-%d2
@@ -554,15 +658,15 @@ gk_pattern_queue_commit_cancel_deferred:
         move.w  8(%sp),%d1
         move.w  %d1,%sr
         movem.l (%sp),%d1-%d2
-        .incbin "stock/0387.bin", 0, 4
-        .incbin "stock/0387.bin", 4, 2
+        .incbin "stock/0388.bin", 0, 4
+        .incbin "stock/0388.bin", 4, 2
         .size   gk_pattern_queue_commit_cancel_deferred,.-gk_pattern_queue_commit_cancel_deferred
-        .incbin "stock/0387.bin", 6, 2
+        .incbin "stock/0388.bin", 6, 2
         .global gk_pattern_queue_retry_event_ensure
         .type   gk_pattern_queue_retry_event_ensure,@function
 gk_pattern_queue_retry_event_ensure:
-        .incbin "stock/0388.bin", 0, 4
-        .incbin "stock/0388.bin", 4, 4
+        .incbin "stock/0389.bin", 0, 4
+        .incbin "stock/0389.bin", 4, 4
         move.w  %sr,%d2
         move.w  #0x2700,%sr
         moveq   #0,%d0
@@ -982,8 +1086,8 @@ gk_pattern_queue_audio_handoff_ready:
         .global gk_pattern_queue_audio_handoff_finish
         .type   gk_pattern_queue_audio_handoff_finish,@function
 gk_pattern_queue_audio_handoff_finish:
-        .incbin "stock/0389.bin", 0, 4
-        .incbin "stock/0389.bin", 4, 4
+        .incbin "stock/0390.bin", 0, 4
+        .incbin "stock/0390.bin", 4, 4
         moveq   #1,%d0
         cmp.l   GK_STOCK_SCHEDULER_STATE,%d0
         bne.w   .Lgk_playback_audio_finish_corrupt
@@ -1052,7 +1156,7 @@ gk_pattern_queue_audio_handoff_finish:
         tst.l   %d0
         beq.s   .Lgk_playback_audio_finish_retire
         cmpi.l  #GK_ERR_OVERFLOW,%d0
-        beq.w   gk_pattern_queue_retry_overflow_fatal
+        beq.w   gk_pattern_queue_audio_handoff_finish_report_fatal
         bra.s   .Lgk_playback_audio_finish_corrupt
 .Lgk_playback_audio_finish_retire:
         moveq   #1,%d0
@@ -1120,20 +1224,20 @@ gk_pattern_queue_retry_callback:
         cmpi.l  #GK_PATTERN_QUEUE_PREPARED_BASE,%d1
         beq.w   .Lgk_queue_retry_callback_ok
         cmpa.l  #__gk_pattern_queue_retry_event,%a2
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_callback_report_fatal
         cmpi.l  #GK_PATTERN_QUEUE_QUEUED_BASE,%d1
         beq.s   .Lgk_queue_retry_callback_claim
         cmpi.l  #GK_PATTERN_QUEUE_DEFERRED_BASE,%d1
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_callback_report_fatal
 .Lgk_queue_retry_callback_claim:
         moveq   #0,%d2
         move.b  __gk_sequencer_latch_queue_handoff,%d2
         cmpi.l  #1,%d2
-        bhi.w   gk_pattern_queue_retry_callback_fatal
+        bhi.w   gk_pattern_queue_retry_callback_report_fatal
         move.l  %d0,%d3
         andi.l  #1,%d3
         cmp.l   %d2,%d3
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_callback_report_fatal
         ori.l   #GK_PATTERN_QUEUE_DISPATCHING_BASE,%d3
         .global gk_pattern_queue_retry_dispatch_publication
 gk_pattern_queue_retry_dispatch_publication:
@@ -1151,21 +1255,21 @@ gk_pattern_queue_retry_dispatch_publication:
         beq.s   .Lgk_queue_retry_callback_post_dispatch
         cmpi.l  #GK_ERR_EXHAUSTED,%d0
         beq.s   .Lgk_queue_retry_callback_post_dispatch
-        bra.w   gk_pattern_queue_retry_callback_fatal
+        bra.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
 .Lgk_queue_retry_callback_playback_staged:
         move.w  #0x2700,%sr
         moveq   #0,%d0
         move.b  __gk_pattern_queue_commit_prepared,%d0
         beq.s   .Lgk_queue_retry_callback_playback_retired
         cmpi.l  #GK_PATTERN_QUEUE_PREPARED_BASE + 1,%d0
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         moveq   #1,%d0
         cmp.b   __gk_sequencer_latch_queue_handoff,%d0
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         bra.s   .Lgk_queue_retry_callback_ok
 .Lgk_queue_retry_callback_playback_retired:
         tst.b   __gk_sequencer_latch_queue_handoff
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         bra.s   .Lgk_queue_retry_callback_ok
 .Lgk_queue_retry_callback_stock_consumer:
         jsr     GK_STOCK_PATTERN_QUEUE_COMMIT_ENTRY
@@ -1177,14 +1281,14 @@ gk_pattern_queue_retry_dispatch_publication:
         move.l  %d0,%d1
         andi.l  #GK_PATTERN_QUEUE_PREPARED_MASK,%d1
         cmpi.l  #GK_PATTERN_QUEUE_DISPATCHING_BASE,%d1
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         moveq   #0,%d2
         move.b  __gk_sequencer_latch_queue_handoff,%d2
         cmpi.l  #1,%d2
-        bhi.w   gk_pattern_queue_retry_callback_fatal
+        bhi.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         andi.l  #1,%d0
         cmp.l   %d2,%d0
-        bne.w   gk_pattern_queue_retry_callback_fatal
+        bne.w   gk_pattern_queue_retry_dispatch_publication_report_fatal
         ori.l   #GK_PATTERN_QUEUE_DEFERRED_BASE,%d0
         .global gk_pattern_queue_retry_deferred_retirement
 gk_pattern_queue_retry_deferred_retirement:
@@ -1209,40 +1313,40 @@ gk_stock_pattern_queue_retry_event_epilogue:
         tst.l   %d0
         beq.s   .Lgk_queue_retry_epilogue_restore
         cmpi.l  #GK_ERR_OVERFLOW,%d0
-        beq.w   gk_pattern_queue_retry_overflow_fatal
-        jmp     gk_pattern_queue_commit_defer_fatal
+        beq.w   gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal
+        jmp     gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_queue_retry_epilogue_restore:
         movem.l (%sp),%d0-%d1/%a0-%a1
         lea     16(%sp),%sp
 .Lgk_queue_retry_epilogue_stock:
         .global gk_pattern_queue_retry_event_epilogue_stock_replay
 gk_pattern_queue_retry_event_epilogue_stock_replay:
-        .incbin "stock/0390.bin", 0, 6
+        .incbin "stock/0391.bin", 0, 6
         jmp     GK_STOCK_UI_EVENT_EPILOGUE_CONTINUE
         .size   gk_stock_pattern_queue_retry_event_epilogue,.-gk_stock_pattern_queue_retry_event_epilogue
         .align  2
         .global __gk_pattern_queue_retry_event
 __gk_pattern_queue_retry_event:
         .byte   GK_PATTERN_QUEUE_RETRY_EVENT_ID,0
-        .byte 0x45,0xd2,0xd3
-        .incbin "stock/0391.bin", 0, 1
-        .incbin "stock/0391.bin", 1, 4
-        .incbin "stock/0391.bin", 5, 4
-        .incbin "stock/0391.bin", 9, 4
-        .incbin "stock/0391.bin", 13, 4
-        .incbin "stock/0391.bin", 17, 4
+        .byte 0x45,0xd2,0xd5
+        .incbin "stock/0392.bin", 0, 1
+        .incbin "stock/0392.bin", 1, 4
+        .incbin "stock/0392.bin", 5, 4
+        .incbin "stock/0392.bin", 9, 4
+        .incbin "stock/0392.bin", 13, 4
+        .incbin "stock/0392.bin", 17, 4
         .global __gk_pattern_queue_retry_event_end
 __gk_pattern_queue_retry_event_end:
         .global gk_pattern_queue_commit_prepared_take
         .type   gk_pattern_queue_commit_prepared_take,@function
 gk_pattern_queue_commit_prepared_take:
-        .incbin "stock/0392.bin", 0, 1
+        .incbin "stock/0393.bin", 0, 1
         .byte 0x80,0x00,0x00,0x00,0x0f
         bhi.w   .Lgk_queue_take_range
         cmpi.l  #15,%d1
         bhi.w   .Lgk_queue_take_range
-        .incbin "stock/0393.bin", 0, 4
-        .incbin "stock/0393.bin", 4, 4
+        .incbin "stock/0394.bin", 0, 4
+        .incbin "stock/0394.bin", 4, 4
         move.l  %d0,%d4
         move.l  %d1,%d5
         moveq   #0,%d3
@@ -1339,8 +1443,8 @@ gk_pattern_queue_commit_prepared_take:
 .Lgk_queue_take_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_queue_take_restore:
-        .incbin "stock/0394.bin", 0, 4
-        .incbin "stock/0394.bin", 4, 4
+        .incbin "stock/0395.bin", 0, 4
+        .incbin "stock/0395.bin", 4, 4
         rts
 .Lgk_queue_take_range:
         moveq   #GK_ERR_RANGE,%d0
@@ -1645,6 +1749,76 @@ gk_pattern_queue_clone_reader_validate_restore:
         lea     36(%sp),%sp
         rts
         .size   gk_pattern_queue_clone_reader_validate,.-gk_pattern_queue_clone_reader_validate
+        .global gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal
+        .type gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal,@function
+gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal:
+        illegal
+        .size gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal,.-gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal
+        .global gk_pattern_queue_prepare_report_fatal_owner_token
+        .type gk_pattern_queue_prepare_report_fatal_owner_token,@function
+gk_pattern_queue_prepare_report_fatal_owner_token:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_owner_token,.-gk_pattern_queue_prepare_report_fatal_owner_token
+        .global gk_pattern_queue_prepare_report_fatal_handoff_range
+        .type gk_pattern_queue_prepare_report_fatal_handoff_range,@function
+gk_pattern_queue_prepare_report_fatal_handoff_range:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_handoff_range,.-gk_pattern_queue_prepare_report_fatal_handoff_range
+        .global gk_pattern_queue_prepare_report_fatal_owner_handoff
+        .type gk_pattern_queue_prepare_report_fatal_owner_handoff,@function
+gk_pattern_queue_prepare_report_fatal_owner_handoff:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_owner_handoff,.-gk_pattern_queue_prepare_report_fatal_owner_handoff
+        .global gk_pattern_queue_prepare_report_fatal_scheduler_state
+        .type gk_pattern_queue_prepare_report_fatal_scheduler_state,@function
+gk_pattern_queue_prepare_report_fatal_scheduler_state:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_scheduler_state,.-gk_pattern_queue_prepare_report_fatal_scheduler_state
+        .global gk_pattern_queue_prepare_report_fatal_playback_chained
+        .type gk_pattern_queue_prepare_report_fatal_playback_chained,@function
+gk_pattern_queue_prepare_report_fatal_playback_chained:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_playback_chained,.-gk_pattern_queue_prepare_report_fatal_playback_chained
+        .global gk_pattern_queue_prepare_report_fatal_stock_chained
+        .type gk_pattern_queue_prepare_report_fatal_stock_chained,@function
+gk_pattern_queue_prepare_report_fatal_stock_chained:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_stock_chained,.-gk_pattern_queue_prepare_report_fatal_stock_chained
+        .global gk_pattern_queue_prepare_report_fatal_stopped_handoff
+        .type gk_pattern_queue_prepare_report_fatal_stopped_handoff,@function
+gk_pattern_queue_prepare_report_fatal_stopped_handoff:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_stopped_handoff,.-gk_pattern_queue_prepare_report_fatal_stopped_handoff
+        .global gk_pattern_queue_prepare_report_fatal_ordinary_stopped
+        .type gk_pattern_queue_prepare_report_fatal_ordinary_stopped,@function
+gk_pattern_queue_prepare_report_fatal_ordinary_stopped:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_ordinary_stopped,.-gk_pattern_queue_prepare_report_fatal_ordinary_stopped
+        .global gk_pattern_queue_prepare_report_fatal_bank_range
+        .type gk_pattern_queue_prepare_report_fatal_bank_range,@function
+gk_pattern_queue_prepare_report_fatal_bank_range:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_bank_range,.-gk_pattern_queue_prepare_report_fatal_bank_range
+        .global gk_pattern_queue_prepare_report_fatal_pattern_range
+        .type gk_pattern_queue_prepare_report_fatal_pattern_range,@function
+gk_pattern_queue_prepare_report_fatal_pattern_range:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_pattern_range,.-gk_pattern_queue_prepare_report_fatal_pattern_range
+        .global gk_pattern_queue_prepare_report_fatal_workspace
+        .type gk_pattern_queue_prepare_report_fatal_workspace,@function
+gk_pattern_queue_prepare_report_fatal_workspace:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_workspace,.-gk_pattern_queue_prepare_report_fatal_workspace
+        .global gk_pattern_queue_prepare_report_fatal_ui_transition
+        .type gk_pattern_queue_prepare_report_fatal_ui_transition,@function
+gk_pattern_queue_prepare_report_fatal_ui_transition:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_ui_transition,.-gk_pattern_queue_prepare_report_fatal_ui_transition
+        .global gk_pattern_queue_prepare_report_fatal_workspace_abort
+        .type gk_pattern_queue_prepare_report_fatal_workspace_abort,@function
+gk_pattern_queue_prepare_report_fatal_workspace_abort:
+        illegal
+        .size gk_pattern_queue_prepare_report_fatal_workspace_abort,.-gk_pattern_queue_prepare_report_fatal_workspace_abort
         .global gk_pattern_queue_commit_prepare_fatal
 gk_pattern_queue_commit_prepare_fatal:
         illegal
@@ -1653,14 +1827,44 @@ gk_pattern_queue_commit_prepare_fatal:
 gk_pattern_queue_commit_guard_enter_fatal:
         illegal
         bra.s gk_pattern_queue_commit_guard_enter_fatal
+        .global gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal
+        .type gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal,@function
+gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal:
+        illegal
+        .size gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal,.-gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal
+        .global gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal
+        .type gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal,@function
+gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal:
+        illegal
+        .size gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal,.-gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal
         .global gk_pattern_queue_commit_guard_exit_fatal
 gk_pattern_queue_commit_guard_exit_fatal:
         illegal
         bra.s gk_pattern_queue_commit_guard_exit_fatal
+        .global gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal
+        .type gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal,@function
+gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal:
+        illegal
+        .size gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal,.-gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal
+        .global gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
+        .type gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal,@function
+gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal:
+        illegal
+        .size gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal,.-gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
+        .global gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal
+        .type gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal,@function
+gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal:
+        illegal
+        .size gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal,.-gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_commit_defer_fatal
         .global gk_pattern_queue_commit_defer_fatal
 gk_pattern_queue_commit_defer_fatal:
         illegal
         bra.s gk_pattern_queue_commit_defer_fatal
+        .global gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal
+        .type gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal,@function
+gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal:
+        illegal
+        .size gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal,.-gk_pattern_schedule_global_kit_entry_report_fatal_pattern_queue_commit_prepared_fatal
         .global gk_pattern_queue_commit_prepared_fatal
 gk_pattern_queue_commit_prepared_fatal:
         illegal
@@ -1669,18 +1873,53 @@ gk_pattern_queue_commit_prepared_fatal:
 gk_pattern_queue_commit_finish_fatal:
         illegal
         bra.s gk_pattern_queue_commit_finish_fatal
+        .global gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal
+        .type gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal,@function
+gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal:
+        illegal
+        .size gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal,.-gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal
         .global gk_pattern_queue_commit_exit_fatal
 gk_pattern_queue_commit_exit_fatal:
         illegal
         bra.s gk_pattern_queue_commit_exit_fatal
+        .global gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal
+        .type gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal,@function
+gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal:
+        illegal
+        .size gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal,.-gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal
         .global gk_arranger_queue_commit_prepared_fatal
 gk_arranger_queue_commit_prepared_fatal:
         illegal
         bra.s gk_arranger_queue_commit_prepared_fatal
+        .global gk_pattern_queue_retry_callback_report_fatal
+        .type gk_pattern_queue_retry_callback_report_fatal,@function
+gk_pattern_queue_retry_callback_report_fatal:
+        illegal
+        .size gk_pattern_queue_retry_callback_report_fatal,.-gk_pattern_queue_retry_callback_report_fatal
+        .global gk_pattern_queue_retry_dispatch_publication_report_fatal
+        .type gk_pattern_queue_retry_dispatch_publication_report_fatal,@function
+gk_pattern_queue_retry_dispatch_publication_report_fatal:
+        illegal
+        .size gk_pattern_queue_retry_dispatch_publication_report_fatal,.-gk_pattern_queue_retry_dispatch_publication_report_fatal
         .global gk_pattern_queue_retry_callback_fatal
 gk_pattern_queue_retry_callback_fatal:
         illegal
         bra.s gk_pattern_queue_retry_callback_fatal
+        .global gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal
+        .type gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal,@function
+gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal:
+        illegal
+        .size gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal,.-gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal
+        .global gk_pattern_queue_audio_handoff_finish_report_fatal
+        .type gk_pattern_queue_audio_handoff_finish_report_fatal,@function
+gk_pattern_queue_audio_handoff_finish_report_fatal:
+        illegal
+        .size gk_pattern_queue_audio_handoff_finish_report_fatal,.-gk_pattern_queue_audio_handoff_finish_report_fatal
+        .global gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal
+        .type gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal,@function
+gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal:
+        illegal
+        .size gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal,.-gk_stock_pattern_queue_retry_event_epilogue_report_fatal_pattern_queue_retry_overflow_fatal
         .global gk_pattern_queue_retry_overflow_fatal
 gk_pattern_queue_retry_overflow_fatal:
         illegal

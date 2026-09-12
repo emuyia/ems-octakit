@@ -333,7 +333,7 @@ gk_lfo_designer_write_marker:
         lea     64(%sp),%sp
         .global gk_lfo_designer_stock_dirty_store
 gk_lfo_designer_stock_dirty_store:
-        .incbin "stock/0364.bin", 0, 6
+        .incbin "stock/0365.bin", 0, 6
         rts
         .size   gk_lfo_designer_write_marker,.-gk_lfo_designer_write_marker
         .global gk_lfo_designer_nested_block_write

@@ -167,7 +167,7 @@ gk_scene_clipboard_finish_prepare:
         movea.l %a0,%a5
         move.l  %a2,%d0
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
-        .incbin "stock/0323.bin", 0, 6
+        .incbin "stock/0324.bin", 0, 6
         adda.l  %d0,%a0
         adda.l  #GK_STOCK_BANK_WORKING_OFFSET,%a0
         cmpa.l  %a5,%a0
@@ -413,15 +413,15 @@ gk_scene_clipboard_scene_equals_buffer:
 .Lgk_sc_scene_buffer_miss:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_sc_scene_buffer_restore:
-        .incbin "stock/0324.bin", 0, 4
-        .incbin "stock/0324.bin", 4, 4
-        .incbin "stock/0324.bin", 8, 2
+        .incbin "stock/0325.bin", 0, 4
+        .incbin "stock/0325.bin", 4, 4
+        .incbin "stock/0325.bin", 8, 2
         .size   gk_scene_clipboard_scene_equals_buffer,.-gk_scene_clipboard_scene_equals_buffer
         .type   gk_scene_clipboard_scene_is_clear,@function
 gk_scene_clipboard_scene_is_clear:
-        .incbin "stock/0324.bin", 10, 4
-        .incbin "stock/0324.bin", 14, 4
-        .incbin "stock/0324.bin", 18, 1
+        .incbin "stock/0325.bin", 10, 4
+        .incbin "stock/0325.bin", 14, 4
+        .incbin "stock/0325.bin", 18, 1
         .byte 0x00
         cmpi.l  #15,%d2
         bhi.s   .Lgk_sc_scene_clear_miss
@@ -464,7 +464,7 @@ gk_scene_clipboard_validate_dirty:
         moveq   #1,%d1
         move.l  %a2,%d0
         lsl.l   %d0,%d1
-        .incbin "stock/0325.bin", 0, 6
+        .incbin "stock/0326.bin", 0, 6
         move.l  #0x95048,%d0
         move.b  (%a0,%d0.l),%d0
         andi.l  #0xff,%d0
@@ -688,8 +688,8 @@ gk_stock_scene_copy_callback:
         jmp GK_STOCK_SCENE_COPY_CALLBACK
 .Lgk_sc_wrapper_accepted_0:
         move.l (%sp)+,%d0
-        .incbin "stock/0326.bin", 0, 4
-        .incbin "stock/0326.bin", 4, 4
+        .incbin "stock/0327.bin", 0, 4
+        .incbin "stock/0327.bin", 4, 4
         movea.l %sp,%a6
         move.l %d0,GK_SC_INPUT_D0(%a6)
         move.l %d1,GK_SC_INPUT_D1(%a6)
@@ -735,8 +735,8 @@ gk_stock_scene_paste_callback:
         jmp GK_STOCK_SCENE_PASTE_CALLBACK
 .Lgk_sc_wrapper_accepted_2:
         move.l (%sp)+,%d0
-        .incbin "stock/0327.bin", 0, 4
-        .incbin "stock/0327.bin", 4, 4
+        .incbin "stock/0328.bin", 0, 4
+        .incbin "stock/0328.bin", 4, 4
         movea.l %sp,%a6
         move.l %d0,GK_SC_INPUT_D0(%a6)
         move.l %d1,GK_SC_INPUT_D1(%a6)
@@ -783,8 +783,8 @@ gk_stock_scene_clear_callback:
         jmp GK_STOCK_SCENE_CLEAR_CALLBACK
 .Lgk_sc_wrapper_accepted_4:
         move.l (%sp)+,%d0
-        .incbin "stock/0328.bin", 0, 4
-        .incbin "stock/0328.bin", 4, 4
+        .incbin "stock/0329.bin", 0, 4
+        .incbin "stock/0329.bin", 4, 4
         movea.l %sp,%a6
         move.l %d0,GK_SC_INPUT_D0(%a6)
         move.l %d1,GK_SC_INPUT_D1(%a6)

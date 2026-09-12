@@ -14,8 +14,8 @@ gk_ui_transition_prepare_entry_release:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         jmp     gk_ui_transition_prepare_after_entry_compare
 .Lgk_stock_source_prepare:
-        .incbin "stock/0339.bin", 0, 4
-        .incbin "stock/0339.bin", 4, 4
+        .incbin "stock/0340.bin", 0, 4
+        .incbin "stock/0340.bin", 4, 4
         move.l  %d0,%d7
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
@@ -99,7 +99,7 @@ gk_ui_transition_prepare_entry_release:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a5
         adda.l  %d0,%a5
-        .incbin "stock/0340.bin", 0, 6
+        .incbin "stock/0341.bin", 0, 6
         cmpa.l  %a5,%a0
         bne.w   .Lgk_stock_source_prepare_corrupt
         moveq   #0,%d6

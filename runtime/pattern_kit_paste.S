@@ -12,8 +12,8 @@ gk_stock_pattern_copy_capture:
         .global gk_stock_pattern_copy_capture_trampoline
         .type   gk_stock_pattern_copy_capture_trampoline,@function
 gk_stock_pattern_copy_capture_trampoline:
-        .incbin "stock/0395.bin", 0, 4
-        .incbin "stock/0395.bin", 4, 4
+        .incbin "stock/0396.bin", 0, 4
+        .incbin "stock/0396.bin", 4, 4
         .byte 0x8e,0xd8
         .global gk_stock_pattern_copy_capture_trampoline_jump
 gk_stock_pattern_copy_capture_trampoline_jump:
@@ -22,8 +22,8 @@ gk_stock_pattern_copy_capture_trampoline_jump:
         .global gk_pattern_kit_capture_workspace
         .type   gk_pattern_kit_capture_workspace,@function
 gk_pattern_kit_capture_workspace:
-        .incbin "stock/0396.bin", 0, 4
-        .incbin "stock/0396.bin", 4, 4
+        .incbin "stock/0397.bin", 0, 4
+        .incbin "stock/0397.bin", 4, 4
         clr.b   __gk_pattern_kit_valid
         clr.b   __gk_pattern_kit_armed
         tst.l   __gk_lifecycle_state
@@ -253,16 +253,16 @@ gk_pattern_kit_paste_dispatch:
         moveq   #1,%d0
         cmp.l   12(%sp),%d0
         bne.w   .Lgk_pattern_kit_paste_not_handled
-        .incbin "stock/0397.bin", 0, 4
-        .incbin "stock/0397.bin", 4, 4
+        .incbin "stock/0398.bin", 0, 4
+        .incbin "stock/0398.bin", 4, 4
         jsr     gk_function_map_active
         tst.l   %d0
         beq.w   .Lgk_pattern_kit_paste_not_handled_restore
-        .incbin "stock/0398.bin", 0, 4
-        .incbin "stock/0398.bin", 4, 6
-        .incbin "stock/0398.bin", 10, 2
-        .incbin "stock/0398.bin", 12, 2
-        .incbin "stock/0398.bin", 14, 2
+        .incbin "stock/0399.bin", 0, 4
+        .incbin "stock/0399.bin", 4, 6
+        .incbin "stock/0399.bin", 10, 2
+        .incbin "stock/0399.bin", 12, 2
+        .incbin "stock/0399.bin", 14, 2
         .byte 0x01,0x92
         pea     GK_STOCK_PASTE_PRESS_INPUT
         jsr     GK_STOCK_INPUT_RECORD_STATE
@@ -400,7 +400,7 @@ gk_pattern_kit_paste_dispatch:
         .align  4
 .Lgk_pattern_kit_paste_message:
         .byte 0x4b,0x49,0x54,0x20
-        .incbin "stock/0399.bin", 0, 5
+        .incbin "stock/0400.bin", 0, 5
         .byte 0x44,0x00
         .align  4
         .global gk_pattern_kit_mkii_part_dispatch
@@ -414,7 +414,7 @@ gk_pattern_kit_mkii_part_dispatch:
         moveq   #GK_QUICK_SAVE_INITIATOR_PART,%d0
         move.b  %d0,__gk_ui_state_pad + 2
         .byte 0x4e,0xf9
-        .incbin "stock/0400.bin", 0, 4
+        .incbin "stock/0401.bin", 0, 4
         .size   gk_pattern_kit_mkii_part_dispatch,.-gk_pattern_kit_mkii_part_dispatch
         .align  4
         .global gk_pattern_kit_mki_part_dispatch
@@ -426,7 +426,7 @@ gk_pattern_kit_mki_part_dispatch:
         rts
 .Lgk_pattern_kit_mki_part_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0401.bin", 0, 4
+        .incbin "stock/0402.bin", 0, 4
         .size   gk_pattern_kit_mki_part_dispatch,.-gk_pattern_kit_mki_part_dispatch
         .global gk_pattern_kit_mki_part_lifecycle_dispatch
         .type   gk_pattern_kit_mki_part_lifecycle_dispatch,@function

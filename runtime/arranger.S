@@ -364,9 +364,9 @@ gk_arranger_guard_final_invalidation:
         beq.s   .Lgk_arranger_guard_exit_final_return
         cmpi.l  #GK_ERR_OVERFLOW,%d0
         bne.s   .Lgk_arranger_guard_exit_retry_corrupt
-        jmp     gk_pattern_queue_retry_overflow_fatal
+        jmp     gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_retry_overflow_fatal
 .Lgk_arranger_guard_exit_retry_corrupt:
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_arranger_guard_final_invalidation_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_guard_exit_final_return:
         rts
 .Lgk_arranger_guard_exit_corrupt:
@@ -990,7 +990,7 @@ gk_arranger_visible_mirror_restore:
         move.l  %d3,%d0
         bsr.w   gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_arranger_fatal_active_scene_release
+        bne.w   gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release
         movea.l %a3,%a0
         moveq   #GK_OK,%d0
         bra.s   .Lgk_arranger_active_restore
@@ -1003,7 +1003,7 @@ gk_arranger_visible_mirror_restore:
         move.b  40(%sp),%d2
         bsr.w   gk_descriptor_store_byte
         tst.l   %d0
-        bne.w   gk_arranger_fatal_active_scene_rollback_a
+        bne.w   gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a
 .Lgk_arranger_active_rollback_b:
         btst    #1,%d5
         beq.s   .Lgk_arranger_active_rollback_flags
@@ -1013,7 +1013,7 @@ gk_arranger_visible_mirror_restore:
         move.b  41(%sp),%d2
         bsr.w   gk_descriptor_store_byte
         tst.l   %d0
-        bne.w   gk_arranger_fatal_active_scene_rollback_b
+        bne.w   gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b
 .Lgk_arranger_active_rollback_flags:
         move.b  42(%sp),GK_DESC_FLAGS(%a2)
         moveq   #0,%d0
@@ -1021,7 +1021,7 @@ gk_arranger_visible_mirror_restore:
         move.b  %d0,__gk_workspace_dirty
         move.w  44(%sp),%d0
         move.w  %d0,%sr
-        bra.w   gk_arranger_fatal_active_scene_rollback_terminal
+        bra.w   gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal
 .Lgk_arranger_active_masked_release_corrupt:
         move.w  44(%sp),%d0
         move.w  %d0,%sr
@@ -1382,7 +1382,7 @@ gk_arranger_transition_adopt:
         jsr     gk_pattern_queue_commit_prepared_take
         tst.l   %d0
         bpl.s   .Lgk_arranger_adopt_prepared_taken
-        jmp     gk_arranger_queue_commit_prepared_fatal
+        jmp     gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal
 .Lgk_arranger_adopt_prepared_taken:
         move.b  %d0,__gk_arranger_descriptor
         bra.s   .Lgk_arranger_adopt_validate_write
@@ -1404,7 +1404,7 @@ gk_arranger_transition_adopt:
         beq.s   .Lgk_arranger_adopt_scene_applied
         tst.b   __gk_pattern_queue_commit_prepared
         beq.s   .Lgk_arranger_adopt_scene_unprepared_fail
-        jmp     gk_arranger_queue_commit_prepared_fatal
+        jmp     gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal
 .Lgk_arranger_adopt_scene_unprepared_fail:
         bra.w   .Lgk_arranger_adopt_fail
 .Lgk_arranger_adopt_scene_applied:
@@ -1434,7 +1434,7 @@ gk_arranger_transition_adopt:
         beq.s   .Lgk_arranger_adopt_readers_ready
         tst.b   __gk_pattern_queue_commit_prepared
         beq.s   .Lgk_arranger_adopt_readers_unprepared_busy
-        jmp     gk_arranger_queue_commit_prepared_fatal
+        jmp     gk_arranger_transition_adopt_report_fatal_arranger_queue_commit_prepared_fatal
 .Lgk_arranger_adopt_readers_unprepared_busy:
         bra.w   .Lgk_arranger_adopt_busy
 .Lgk_arranger_adopt_readers_ready:
@@ -1488,7 +1488,7 @@ gk_arranger_transition_adopt:
         movea.l %d0,%a5
         bsr.w   gk_arranger_consume_abort
         tst.l   %d0
-        bne.w   gk_arranger_fatal_transition_adopt_abort
+        bne.w   gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort
         move.l  %a5,%d0
 .Lgk_arranger_adopt_restore:
         movem.l (%sp),%d2-%d7/%a2-%a5
@@ -2172,7 +2172,7 @@ gk_arranger_producer_prepare:
         move.l  %d0,%d7
         bsr.w   gk_arranger_state_clear
         tst.l   %d0
-        bne.w   gk_arranger_fatal_producer_state_clear
+        bne.w   gk_arranger_producer_prepare_report_fatal
         move.l  %d7,%d0
         bra.s   .Lgk_arranger_producer_restore
 .Lgk_arranger_producer_ok:
@@ -2222,7 +2222,7 @@ gk_stock_arranger_playback_scene_prepare:
         movem.l %d0-%d7/%a0-%a2,(%sp)
         bsr.w   gk_arranger_playback_guard_enter
         tst.l   %d0
-        bne.w   gk_arranger_fatal_playback_prepare_guard_enter
+        bne.w   gk_stock_arranger_playback_scene_prepare_report_fatal
         moveq   #GK_ARRANGER_OWNER_PLAYBACK,%d0
         movea.l %a1,%a0
         lea     GK_STOCK_PLAYBACK_SCENE_A_EVENT,%a1
@@ -2249,7 +2249,7 @@ gk_stock_arranger_playback_exit:
         cmpi.l  #GK_ARRANGER_NOT_HANDLED,%d0
         beq.s   .Lgk_arranger_playback_exit_restore
         tst.l   %d0
-        bne.w   gk_arranger_fatal_playback_exit_guard
+        bne.w   gk_stock_arranger_playback_exit_report_fatal
 .Lgk_arranger_playback_exit_restore:
         movem.l (%sp),%d0-%d1/%a0-%a1
         lea     16(%sp),%sp
@@ -2262,7 +2262,7 @@ gk_stock_arranger_playback_exit:
 gk_stock_pattern_schedule_enter:
         bsr.w   gk_arranger_guard_enter
         tst.l   %d0
-        bne.w   gk_arranger_fatal_pattern_schedule_guard_enter
+        bne.w   gk_stock_pattern_schedule_enter_report_fatal
         .incbin "stock/0011.bin", 0, 4
         .incbin "stock/0011.bin", 4, 4
         jmp     GK_STOCK_PATTERN_SCHEDULE_ENTER_CONTINUE
@@ -2275,7 +2275,7 @@ gk_stock_pattern_schedule_queued_handoff:
         move.l  44(%sp),%d0
         bsr.w   gk_arranger_publisher_owner_from_return
         tst.l   %d0
-        bmi.w   gk_arranger_fatal_queued_owner
+        bmi.w   gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner
         move.l  %d0,%d3
         cmpi.l  #GK_ARRANGER_OWNER_ROW,%d0
         beq.s   .Lgk_arranger_stock_queued_owner_ok
@@ -2283,9 +2283,9 @@ gk_stock_pattern_schedule_queued_handoff:
         bne.s   .Lgk_arranger_stock_queued_restore
 .Lgk_arranger_stock_queued_owner_ok:
         cmpi.l  #15,%d4
-        bhi.w   gk_arranger_fatal_queued_bank_range
+        bhi.w   gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range
         cmpi.l  #15,%d5
-        bhi.w   gk_arranger_fatal_queued_pattern_range
+        bhi.w   gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range
         move.l  %d4,%d0
         lsl.l   #4,%d0
         add.l   %d5,%d0
@@ -2296,7 +2296,7 @@ gk_stock_pattern_schedule_queued_handoff:
         move.l  %d5,%d1
         bsr.w   gk_arranger_queue_publish_handoff
         tst.l   %d0
-        bne.w   gk_arranger_fatal_queued_publish
+        bne.w   gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish
 .Lgk_arranger_stock_queued_restore:
         movem.l (%sp),%d0-%d3/%a0-%a1
         lea     24(%sp),%sp
@@ -2338,7 +2338,7 @@ gk_stock_pattern_notify_exit:
         bmi.s   .Lgk_arranger_notify_exit_restore
         bsr.w   gk_arranger_guard_exit
         tst.l   %d0
-        bne.w   gk_arranger_fatal_notify_guard_exit
+        bne.w   gk_stock_pattern_notify_exit_report_fatal
 .Lgk_arranger_notify_exit_restore:
         movem.l (%sp),%d0-%d1/%a0-%a1
         lea     16(%sp),%sp
@@ -2352,7 +2352,7 @@ gk_stock_pattern_schedule_abort_cleanup:
         move.l  36(%sp),%d0
         bsr.w   gk_arranger_publisher_owner_from_return
         tst.l   %d0
-        bmi.w   gk_arranger_fatal_abort_owner
+        bmi.w   gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner
         move.l  %d0,%d3
         cmpi.l  #GK_ARRANGER_OWNER_ROW,%d0
         beq.s   .Lgk_arranger_stock_abort_owner_ok
@@ -2373,7 +2373,7 @@ gk_stock_pattern_schedule_abort_cleanup:
         move.l  %d5,%d1
         bsr.w   gk_arranger_abort_matching
         tst.l   %d0
-        bne.w   gk_arranger_fatal_abort_matching
+        bne.w   gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching
 .Lgk_arranger_stock_abort_restore_volatile:
         bsr.w   gk_arranger_guard_exit
         tst.l   %d0
@@ -2390,6 +2390,8 @@ gk_stock_pattern_queue_commit_enter:
         lea     -40(%sp),%sp
         movem.l %d2-%d5/%a2-%fp,4(%sp)
         clr.l   (%sp)
+        move.l  40(%sp),%d0
+        jsr     gk_queue_entry_handoff_wait
         jsr     gk_pattern_queue_commit_guard_enter
         cmpi.l  #GK_ERR_BUSY,%d0
         beq.w   .Lgk_arranger_queue_entry_guard_busy
@@ -2412,7 +2414,7 @@ gk_stock_pattern_queue_commit_enter:
         move.l  GK_STOCK_SCHEDULER_STATE,%d0
         cmpi.l  #2,%d0
         bls.s   .Lgk_arranger_queue_entry_state_valid
-        jmp     gk_pattern_queue_commit_prepare_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal
 .Lgk_arranger_queue_entry_state_valid:
         tst.l   %d0
         bne.s   .Lgk_arranger_queue_entry_prepare
@@ -2424,7 +2426,7 @@ gk_stock_pattern_queue_commit_enter:
         beq.w   .Lgk_arranger_queue_entry_unqueued
         cmpi.l  #1,%d0
         beq.s   .Lgk_arranger_queue_entry_state_zero_chain
-        jmp     gk_pattern_queue_commit_prepare_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal
 .Lgk_arranger_queue_entry_state_zero_chain:
         tst.l   GK_STOCK_PATTERN_QUEUE_GATE
         bne.w   .Lgk_arranger_queue_entry_unqueued
@@ -2438,14 +2440,14 @@ gk_stock_pattern_queue_commit_enter:
         beq.s   .Lgk_arranger_queue_entry_busy
         cmpi.l  #GK_ERR_EXHAUSTED,%d0
         beq.s   .Lgk_arranger_queue_entry_busy
-        jmp     gk_pattern_queue_commit_prepare_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_prepare_fatal
 .Lgk_arranger_queue_entry_busy:
         jsr     gk_pattern_queue_commit_defer_publish
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_entry_defer_arranger
         cmpi.l  #GK_ARRANGER_NOT_HANDLED,%d0
         beq.s   .Lgk_arranger_queue_entry_cancel_vanished
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_queue_entry_defer_arranger:
         move.l  (%sp),%d0
         andi.l  #GK_QUEUE_COMMIT_TOKEN_MASK,%d0
@@ -2455,7 +2457,7 @@ gk_stock_pattern_queue_commit_enter:
         bsr.w   gk_arranger_queue_token_defer
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_entry_release_guard
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_queue_entry_cancel_vanished:
         jsr     gk_pattern_queue_commit_cancel_deferred
         tst.l   %d0
@@ -2472,7 +2474,7 @@ gk_stock_pattern_queue_commit_enter:
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_entry_release_guard
 .Lgk_arranger_queue_entry_cancel_vanished_fatal:
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_queue_entry_release_guard:
         move.l  (%sp),%d0
         btst    #31,%d0
@@ -2480,14 +2482,14 @@ gk_stock_pattern_queue_commit_enter:
         bsr.w   gk_arranger_guard_exit
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_entry_return
-        jmp     gk_pattern_queue_commit_guard_exit_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_guard_exit_fatal
 .Lgk_arranger_queue_entry_guard_busy:
         jsr     gk_pattern_queue_commit_defer_publish
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_entry_return
         cmpi.l  #GK_ARRANGER_NOT_HANDLED,%d0
         beq.s   .Lgk_arranger_queue_entry_return
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_queue_entry_return:
         movem.l 4(%sp),%d2-%d5/%a2-%fp
         lea     40(%sp),%sp
@@ -2498,7 +2500,7 @@ gk_stock_pattern_queue_commit_enter:
         beq.s   .Lgk_arranger_queue_entry_prepared
         cmpi.l  #GK_ERR_BUSY,%d0
         beq.w   .Lgk_arranger_queue_entry_release_guard
-        jmp     gk_pattern_queue_commit_defer_fatal
+        jmp     gk_stock_pattern_queue_commit_enter_report_fatal_pattern_queue_commit_defer_fatal
 .Lgk_arranger_queue_entry_prepared:
         jmp     GK_STOCK_PATTERN_QUEUE_COMMIT_CONTINUE
         .size   gk_stock_pattern_queue_commit_enter,.-gk_stock_pattern_queue_commit_enter
@@ -2525,11 +2527,11 @@ gk_stock_pattern_queue_commit_exit:
         moveq   #GK_PATTERN_QUEUE_PREPARED_BASE + 1,%d0
         cmp.b   __gk_pattern_queue_commit_prepared,%d0
         beq.s   .Lgk_arranger_queue_exit_prepared_clear
-        jmp     gk_pattern_queue_commit_exit_fatal
+        jmp     gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal
 .Lgk_arranger_queue_exit_marker_clear:
         tst.b   __gk_pattern_queue_commit_prepared
         beq.s   .Lgk_arranger_queue_exit_prepared_clear
-        jmp     gk_pattern_queue_commit_exit_fatal
+        jmp     gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal
 .Lgk_arranger_queue_exit_prepared_clear:
         jsr     gk_sequencer_latch_queue_handoff_refresh
         tst.b   __gk_pattern_queue_commit_prepared
@@ -2537,7 +2539,7 @@ gk_stock_pattern_queue_commit_exit:
         tst.b   __gk_sequencer_latch_queue_handoff
         beq.s   .Lgk_arranger_queue_exit_state_clear
 .Lgk_arranger_queue_exit_state_fatal:
-        jmp     gk_pattern_queue_commit_exit_fatal
+        jmp     gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_exit_fatal
 .Lgk_arranger_queue_exit_state_clear:
         move.l  16(%sp),%d0
         btst    #31,%d0
@@ -2545,7 +2547,7 @@ gk_stock_pattern_queue_commit_exit:
         jsr     gk_arranger_guard_exit
         tst.l   %d0
         beq.s   .Lgk_arranger_queue_exit_guard_released
-        jmp     gk_pattern_queue_commit_guard_exit_fatal
+        jmp     gk_stock_pattern_queue_commit_exit_report_fatal_pattern_queue_commit_guard_exit_fatal
 .Lgk_arranger_queue_exit_guard_released:
         movem.l 20(%sp),%d2-%d5/%a2-%fp
         movem.l (%sp),%d0-%d1/%a0-%a1
@@ -2656,3 +2658,88 @@ gk_arranger_fatal_queue_token_issue:
 gk_arranger_fatal_pattern_publish_owner:
         illegal
         bra.s gk_arranger_fatal_pattern_publish_owner
+        .global gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release
+        .type gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release,@function
+gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release:
+        illegal
+        .size gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release,.-gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_release
+        .global gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a
+        .type gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a,@function
+gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a:
+        illegal
+        .size gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a,.-gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_a
+        .global gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b
+        .type gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b,@function
+gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b:
+        illegal
+        .size gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b,.-gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_b
+        .global gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal
+        .type gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal,@function
+gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal:
+        illegal
+        .size gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal,.-gk_arranger_visible_mirror_restore_report_fatal_arranger_fatal_active_scene_rollback_terminal
+        .global gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort
+        .type gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort,@function
+gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort:
+        illegal
+        .size gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort,.-gk_arranger_transition_adopt_report_fatal_arranger_fatal_transition_adopt_abort
+        .global gk_arranger_producer_prepare_report_fatal
+        .type gk_arranger_producer_prepare_report_fatal,@function
+gk_arranger_producer_prepare_report_fatal:
+        illegal
+        .size gk_arranger_producer_prepare_report_fatal,.-gk_arranger_producer_prepare_report_fatal
+        .global gk_stock_arranger_playback_scene_prepare_report_fatal
+        .type gk_stock_arranger_playback_scene_prepare_report_fatal,@function
+gk_stock_arranger_playback_scene_prepare_report_fatal:
+        illegal
+        .size gk_stock_arranger_playback_scene_prepare_report_fatal,.-gk_stock_arranger_playback_scene_prepare_report_fatal
+        .global gk_stock_arranger_playback_exit_report_fatal
+        .type gk_stock_arranger_playback_exit_report_fatal,@function
+gk_stock_arranger_playback_exit_report_fatal:
+        illegal
+        .size gk_stock_arranger_playback_exit_report_fatal,.-gk_stock_arranger_playback_exit_report_fatal
+        .global gk_stock_pattern_schedule_enter_report_fatal
+        .type gk_stock_pattern_schedule_enter_report_fatal,@function
+gk_stock_pattern_schedule_enter_report_fatal:
+        illegal
+        .size gk_stock_pattern_schedule_enter_report_fatal,.-gk_stock_pattern_schedule_enter_report_fatal
+        .global gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner
+        .type gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner,@function
+gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner:
+        illegal
+        .size gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner,.-gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_owner
+        .global gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range
+        .type gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range,@function
+gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range:
+        illegal
+        .size gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range,.-gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_bank_range
+        .global gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range
+        .type gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range,@function
+gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range:
+        illegal
+        .size gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range,.-gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_pattern_range
+        .global gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish
+        .type gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish,@function
+gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish:
+        illegal
+        .size gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish,.-gk_stock_pattern_schedule_queued_handoff_report_fatal_arranger_fatal_queued_publish
+        .global gk_stock_pattern_notify_exit_report_fatal
+        .type gk_stock_pattern_notify_exit_report_fatal,@function
+gk_stock_pattern_notify_exit_report_fatal:
+        illegal
+        .size gk_stock_pattern_notify_exit_report_fatal,.-gk_stock_pattern_notify_exit_report_fatal
+        .global gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner
+        .type gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner,@function
+gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner:
+        illegal
+        .size gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner,.-gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_owner
+        .global gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching
+        .type gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching,@function
+gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching:
+        illegal
+        .size gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching,.-gk_stock_pattern_schedule_abort_cleanup_report_fatal_arranger_fatal_abort_matching
+        .global gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner
+        .type gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner,@function
+gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner:
+        illegal
+        .size gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner,.-gk_pattern_schedule_global_kit_entry_report_fatal_arranger_fatal_pattern_publish_owner

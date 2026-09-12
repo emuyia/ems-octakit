@@ -38,8 +38,8 @@ gk_kit_reference_count:
 gk_ui_prepare_kit_tables:
         tst.l   %a0
         beq.w   .Lgk_ui_prepare_invalid
-        .incbin "stock/0198.bin", 0, 4
-        .incbin "stock/0198.bin", 4, 4
+        .incbin "stock/0199.bin", 0, 4
+        .incbin "stock/0199.bin", 4, 4
         move.l  %a0,%a5
         lea     __gk_ui_referenced_bitmap,%a0
         moveq   #0,%d0

@@ -81,30 +81,30 @@ gk_stock_audio_transfer_current_adjacent:
         beq.s   .Lgk_current_adjacent_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_current_adjacent_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_current_adjacent_report_fatal
 .Lgk_current_adjacent_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #6,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_current_adjacent_report_fatal
         move.l  %d5,%d4
         addq.l  #1,%d4
         cmp.l   64 + 0x98(%sp),%d4
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_current_adjacent_report_fatal
         move.l  %d5,%d0
         lsl.l   #2,%d0
         lea     GK_STOCK_AUDIO_SNAPSHOT_RECORDS,%a1
         adda.l  %d0,%a1
         cmpa.l  64 + 0xbc(%sp),%a1
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_current_adjacent_report_fatal
         moveq   #0,%d2
         move.b  GK_STOCK_AUDIO_SNAPSHOT_VALIDITY,%d2
         bset    %d4,%d2
         moveq   #0,%d0
         move.b  7(%sp),%d0
         cmp.b   %d2,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_current_adjacent_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -125,7 +125,7 @@ gk_stock_audio_transfer_current_adjacent:
         beq.w .Lgk_current_adjacent_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_current_adjacent_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_current_adjacent_stock_restore:
@@ -135,12 +135,12 @@ gk_stock_audio_transfer_current_adjacent:
         lea 64(%sp),%sp
         .global gk_audio_transfer_current_adjacent_stock
 gk_audio_transfer_current_adjacent_stock:
-        .incbin "stock/0048.bin", 0, 10
-        .incbin "stock/0048.bin", 10, 10
-        .incbin "stock/0048.bin", 20, 10
-        .incbin "stock/0048.bin", 30, 10
-        .incbin "stock/0048.bin", 40, 10
-        .incbin "stock/0048.bin", 50, 8
+        .incbin "stock/0049.bin", 0, 10
+        .incbin "stock/0049.bin", 10, 10
+        .incbin "stock/0049.bin", 20, 10
+        .incbin "stock/0049.bin", 30, 10
+        .incbin "stock/0049.bin", 40, 10
+        .incbin "stock/0049.bin", 50, 8
         .global gk_audio_transfer_current_adjacent_stock_end
 gk_audio_transfer_current_adjacent_stock_end:
         lea -64(%sp),%sp
@@ -152,7 +152,7 @@ gk_audio_transfer_current_adjacent_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_current_adjacent_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_current_adjacent_stock_end_report_fatal
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         addq.l  #1,%d5
@@ -163,10 +163,10 @@ gk_audio_transfer_current_adjacent_stock_end:
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_current_adjacent_continue_restore:
         move.w (%sp),%d0
@@ -193,20 +193,20 @@ gk_stock_audio_transfer_current_special:
         beq.s   .Lgk_current_special_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_current_special_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_current_special_report_fatal
 .Lgk_current_special_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #7,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_current_special_report_fatal
         moveq   #0,%d2
         move.b  GK_STOCK_AUDIO_SNAPSHOT_VALIDITY,%d2
         ori.l   #0x80,%d2
         moveq   #0,%d0
         move.b  7(%sp),%d0
         cmp.b   %d2,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_current_special_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -224,7 +224,7 @@ gk_stock_audio_transfer_current_special:
         beq.w .Lgk_current_special_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_current_special_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_current_special_stock_restore:
@@ -234,12 +234,12 @@ gk_stock_audio_transfer_current_special:
         lea 64(%sp),%sp
         .global gk_audio_transfer_current_special_stock
 gk_audio_transfer_current_special_stock:
-        .incbin "stock/0049.bin", 0, 10
-        .incbin "stock/0049.bin", 10, 10
-        .incbin "stock/0049.bin", 20, 10
-        .incbin "stock/0049.bin", 30, 10
-        .incbin "stock/0049.bin", 40, 10
-        .incbin "stock/0049.bin", 50, 8
+        .incbin "stock/0050.bin", 0, 10
+        .incbin "stock/0050.bin", 10, 10
+        .incbin "stock/0050.bin", 20, 10
+        .incbin "stock/0050.bin", 30, 10
+        .incbin "stock/0050.bin", 40, 10
+        .incbin "stock/0050.bin", 50, 8
         .global gk_audio_transfer_current_special_stock_end
 gk_audio_transfer_current_special_stock_end:
         lea -64(%sp),%sp
@@ -251,15 +251,15 @@ gk_audio_transfer_current_special_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_current_special_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_current_special_stock_end_report_fatal
         lea     __gk_lease_sidecars + GK_SIDECAR_AUDIO_SNAPSHOT_OFFSET + 14,%a0
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_current_special_continue_restore:
         move.w (%sp),%d0
@@ -286,28 +286,28 @@ gk_stock_audio_transfer_active_primary:
         beq.s   .Lgk_active_primary_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_active_primary_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_active_primary_report_fatal
 .Lgk_active_primary_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         moveq   #0,%d4
         move.l  64 + 0x48(%sp),%d4
         cmpi.l  #GK_SIDECAR_AUDIO_PRIMARY_COUNT - 1,%d4
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_active_primary_report_fatal
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #7,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_active_primary_report_fatal
         cmp.l   20(%sp),%d4
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_active_primary_report_fatal
         cmp.l   16(%sp),%d5
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_active_primary_report_fatal
         move.l  52(%sp),%d0
         cmpi.l  #GK_STOCK_AUDIO_ACTIVE_STATE,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_active_primary_report_fatal
         move.l  %d4,%d0
         andi.l  #7,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_active_primary_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -333,7 +333,7 @@ gk_stock_audio_transfer_active_primary:
         beq.w .Lgk_active_primary_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_active_primary_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_active_primary_stock_restore:
@@ -343,12 +343,12 @@ gk_stock_audio_transfer_active_primary:
         lea 64(%sp),%sp
         .global gk_audio_transfer_active_primary_stock
 gk_audio_transfer_active_primary_stock:
-        .incbin "stock/0050.bin", 0, 10
-        .incbin "stock/0050.bin", 10, 10
-        .incbin "stock/0050.bin", 20, 10
-        .incbin "stock/0050.bin", 30, 10
-        .incbin "stock/0050.bin", 40, 10
-        .incbin "stock/0050.bin", 50, 10
+        .incbin "stock/0051.bin", 0, 10
+        .incbin "stock/0051.bin", 10, 10
+        .incbin "stock/0051.bin", 20, 10
+        .incbin "stock/0051.bin", 30, 10
+        .incbin "stock/0051.bin", 40, 10
+        .incbin "stock/0051.bin", 50, 10
         .global gk_audio_transfer_active_primary_stock_end
 gk_audio_transfer_active_primary_stock_end:
         lea -64(%sp),%sp
@@ -360,7 +360,7 @@ gk_audio_transfer_active_primary_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_active_primary_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_active_primary_stock_end_report_fatal
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         move.l  %d5,%d0
@@ -370,10 +370,10 @@ gk_audio_transfer_active_primary_stock_end:
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_active_primary_continue_restore:
         move.w (%sp),%d0
@@ -400,37 +400,37 @@ gk_stock_audio_transfer_primary_adjacent:
         beq.s   .Lgk_primary_adjacent_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_primary_adjacent_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
 .Lgk_primary_adjacent_active:
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #6,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         move.l  %d5,%d4
         addq.l  #1,%d4
         cmp.l   64 + 0x98(%sp),%d4
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         move.l  %d5,%d0
         lsl.l   #2,%d0
         lea     GK_STOCK_AUDIO_SNAPSHOT_RECORDS,%a1
         adda.l  %d0,%a1
         cmpa.l  64 + 0xbc(%sp),%a1
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         moveq   #0,%d2
         move.b  GK_STOCK_AUDIO_SNAPSHOT_VALIDITY,%d2
         bset    %d4,%d2
         moveq   #0,%d0
         move.b  7(%sp),%d0
         cmp.b   %d2,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         moveq   #0,%d3
         move.l  64 + 0x48(%sp),%d3
         cmpi.l  #GK_SIDECAR_AUDIO_PRIMARY_COUNT - 1,%d3
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         move.l  %d3,%d0
         andi.l  #7,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -454,12 +454,12 @@ gk_stock_audio_transfer_primary_adjacent:
         cmpi.l  #GK_ID_NONE,%d6
         beq.s   .Lgk_primary_adjacent_fallback
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d6
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_primary_adjacent_report_fatal
         jsr .Lgk_audio_transfer_begin_pinned
         tst.l %d0
         beq.s 1f
         cmpi.l #GK_ERR_UPDATING,%d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_begin_pinned_result_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         bra.w .Lgk_primary_adjacent_skip
 1:
@@ -472,7 +472,7 @@ gk_stock_audio_transfer_primary_adjacent:
         beq.w .Lgk_primary_adjacent_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_primary_adjacent_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_primary_adjacent_stock_restore:
@@ -482,12 +482,12 @@ gk_stock_audio_transfer_primary_adjacent:
         lea 64(%sp),%sp
         .global gk_audio_transfer_primary_adjacent_stock
 gk_audio_transfer_primary_adjacent_stock:
-        .incbin "stock/0051.bin", 0, 10
-        .incbin "stock/0051.bin", 10, 10
-        .incbin "stock/0051.bin", 20, 10
-        .incbin "stock/0051.bin", 30, 10
-        .incbin "stock/0051.bin", 40, 10
-        .incbin "stock/0051.bin", 50, 2
+        .incbin "stock/0052.bin", 0, 10
+        .incbin "stock/0052.bin", 10, 10
+        .incbin "stock/0052.bin", 20, 10
+        .incbin "stock/0052.bin", 30, 10
+        .incbin "stock/0052.bin", 40, 10
+        .incbin "stock/0052.bin", 50, 2
         .global gk_audio_transfer_primary_adjacent_stock_end
 gk_audio_transfer_primary_adjacent_stock_end:
         lea -64(%sp),%sp
@@ -499,7 +499,7 @@ gk_audio_transfer_primary_adjacent_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_primary_adjacent_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_primary_adjacent_stock_end_report_fatal
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         addq.l  #1,%d5
@@ -510,10 +510,10 @@ gk_audio_transfer_primary_adjacent_stock_end:
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_primary_adjacent_continue_restore:
         move.w (%sp),%d0
@@ -540,28 +540,28 @@ gk_stock_audio_transfer_primary_special:
         beq.s   .Lgk_primary_special_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_primary_special_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_primary_special_report_fatal
 .Lgk_primary_special_active:
         move.b  #GK_ID_NONE,64 + GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #7,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_primary_special_report_fatal
         moveq   #0,%d2
         move.b  GK_STOCK_AUDIO_SNAPSHOT_VALIDITY,%d2
         ori.l   #0x80,%d2
         moveq   #0,%d0
         move.b  7(%sp),%d0
         cmp.b   %d2,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_special_report_fatal
         moveq   #0,%d4
         move.l  64 + 0x48(%sp),%d4
         cmpi.l  #GK_SIDECAR_AUDIO_PRIMARY_COUNT - 1,%d4
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_primary_special_report_fatal
         move.l  %d4,%d0
         andi.l  #7,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_primary_special_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -584,7 +584,7 @@ gk_stock_audio_transfer_primary_special:
         beq.w .Lgk_primary_special_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_primary_special_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_primary_special_stock_restore:
@@ -594,12 +594,12 @@ gk_stock_audio_transfer_primary_special:
         lea 64(%sp),%sp
         .global gk_audio_transfer_primary_special_stock
 gk_audio_transfer_primary_special_stock:
-        .incbin "stock/0052.bin", 0, 10
-        .incbin "stock/0052.bin", 10, 10
-        .incbin "stock/0052.bin", 20, 10
-        .incbin "stock/0052.bin", 30, 10
-        .incbin "stock/0052.bin", 40, 10
-        .incbin "stock/0052.bin", 50, 2
+        .incbin "stock/0053.bin", 0, 10
+        .incbin "stock/0053.bin", 10, 10
+        .incbin "stock/0053.bin", 20, 10
+        .incbin "stock/0053.bin", 30, 10
+        .incbin "stock/0053.bin", 40, 10
+        .incbin "stock/0053.bin", 50, 2
         .global gk_audio_transfer_primary_special_stock_end
 gk_audio_transfer_primary_special_stock_end:
         lea -64(%sp),%sp
@@ -611,15 +611,15 @@ gk_audio_transfer_primary_special_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_primary_special_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_primary_special_stock_end_report_fatal
         lea     __gk_lease_sidecars + GK_SIDECAR_AUDIO_SNAPSHOT_OFFSET + 14,%a0
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_primary_special_continue_restore:
         move.w (%sp),%d0
@@ -646,29 +646,29 @@ gk_stock_audio_transfer_snapshot_chain:
         beq.s   .Lgk_snapshot_chain_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   .Lgk_snapshot_chain_stock_restore
-        bra.w   gk_audio_transfer_fatal
+        bra.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
 .Lgk_snapshot_chain_active:
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         cmpi.l  #6,%d5
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
         move.l  %d5,%d4
         addq.l  #1,%d4
         cmp.l   64 + 0x98(%sp),%d4
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
         move.l  %d5,%d0
         lsl.l   #2,%d0
         lea     GK_STOCK_AUDIO_SNAPSHOT_RECORDS,%a1
         adda.l  %d0,%a1
         cmpa.l  64 + 0xbc(%sp),%a1
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
         moveq   #0,%d2
         move.b  GK_STOCK_AUDIO_SNAPSHOT_VALIDITY,%d2
         bset    %d4,%d2
         moveq   #0,%d0
         move.b  7(%sp),%d0
         cmp.b   %d2,%d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
         moveq #0,%d7
         move.b 64+0x76(%sp),%d7
         lsl.l #8,%d7
@@ -693,12 +693,12 @@ gk_stock_audio_transfer_snapshot_chain:
         cmpi.l  #GK_ID_NONE,%d6
         beq.s   .Lgk_snapshot_chain_fallback
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d6
-        bhi.w   gk_audio_transfer_fatal
+        bhi.w   gk_stock_audio_transfer_snapshot_chain_report_fatal
         jsr .Lgk_audio_transfer_begin_pinned
         tst.l %d0
         beq.s 1f
         cmpi.l #GK_ERR_UPDATING,%d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_begin_pinned_result_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
         bra.w .Lgk_snapshot_chain_skip
 1:
@@ -711,7 +711,7 @@ gk_stock_audio_transfer_snapshot_chain:
         beq.w .Lgk_snapshot_chain_skip
         cmpi.l #GK_ERR_UPDATING,%d0
         beq.w .Lgk_snapshot_chain_skip
-        bra.w gk_audio_transfer_fatal
+        bra.w macro_gk_audio_transfer_begin_result_report_fatal
 1:
         move.b %d6,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_snapshot_chain_stock_restore:
@@ -721,10 +721,10 @@ gk_stock_audio_transfer_snapshot_chain:
         lea 64(%sp),%sp
         .global gk_audio_transfer_snapshot_chain_stock
 gk_audio_transfer_snapshot_chain_stock:
-        .incbin "stock/0053.bin", 0, 10
-        .incbin "stock/0053.bin", 10, 10
-        .incbin "stock/0053.bin", 20, 10
-        .incbin "stock/0053.bin", 30, 10
+        .incbin "stock/0054.bin", 0, 10
+        .incbin "stock/0054.bin", 10, 10
+        .incbin "stock/0054.bin", 20, 10
+        .incbin "stock/0054.bin", 30, 10
         .global gk_audio_transfer_snapshot_chain_stock_end
 gk_audio_transfer_snapshot_chain_stock_end:
         lea -64(%sp),%sp
@@ -736,7 +736,7 @@ gk_audio_transfer_snapshot_chain_stock_end:
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.s   .Lgk_snapshot_chain_continue_restore
         tst.l   %d0
-        bne.w   gk_audio_transfer_fatal
+        bne.w   gk_audio_transfer_snapshot_chain_stock_end_report_fatal
         moveq   #0,%d5
         move.l  64 + 0x72(%sp),%d5
         addq.l  #1,%d5
@@ -747,10 +747,10 @@ gk_audio_transfer_snapshot_chain_stock_end:
         moveq #0,%d6
         move.b 64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp),%d6
         cmpi.l #GK_DESCRIPTOR_COUNT-1,%d6
-        bhi.w gk_audio_transfer_fatal
+        bhi.w macro_gk_audio_transfer_finish_report_fatal
         jsr .Lgk_audio_transfer_finish
         tst.l %d0
-        bne.w gk_audio_transfer_fatal
+        bne.w macro_gk_audio_transfer_finish_report_fatal
         move.b #GK_ID_NONE,64+GK_AUDIO_TRANSFER_DESCRIPTOR_SP(%sp)
 .Lgk_snapshot_chain_continue_restore:
         move.w (%sp),%d0
@@ -767,6 +767,81 @@ gk_audio_transfer_snapshot_chain_stock_end:
         .size   gk_stock_audio_transfer_snapshot_chain,.-gk_stock_audio_transfer_snapshot_chain
         .global gk_audio_transfer_fatal
         .type   gk_audio_transfer_fatal,@function
+        .global gk_audio_transfer_active_primary_stock_end_report_fatal
+        .type gk_audio_transfer_active_primary_stock_end_report_fatal,@function
+gk_audio_transfer_active_primary_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_active_primary_stock_end_report_fatal,.-gk_audio_transfer_active_primary_stock_end_report_fatal
+        .global gk_audio_transfer_current_adjacent_stock_end_report_fatal
+        .type gk_audio_transfer_current_adjacent_stock_end_report_fatal,@function
+gk_audio_transfer_current_adjacent_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_current_adjacent_stock_end_report_fatal,.-gk_audio_transfer_current_adjacent_stock_end_report_fatal
+        .global gk_audio_transfer_current_special_stock_end_report_fatal
+        .type gk_audio_transfer_current_special_stock_end_report_fatal,@function
+gk_audio_transfer_current_special_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_current_special_stock_end_report_fatal,.-gk_audio_transfer_current_special_stock_end_report_fatal
+        .global gk_audio_transfer_primary_adjacent_stock_end_report_fatal
+        .type gk_audio_transfer_primary_adjacent_stock_end_report_fatal,@function
+gk_audio_transfer_primary_adjacent_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_primary_adjacent_stock_end_report_fatal,.-gk_audio_transfer_primary_adjacent_stock_end_report_fatal
+        .global gk_audio_transfer_primary_special_stock_end_report_fatal
+        .type gk_audio_transfer_primary_special_stock_end_report_fatal,@function
+gk_audio_transfer_primary_special_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_primary_special_stock_end_report_fatal,.-gk_audio_transfer_primary_special_stock_end_report_fatal
+        .global gk_audio_transfer_snapshot_chain_stock_end_report_fatal
+        .type gk_audio_transfer_snapshot_chain_stock_end_report_fatal,@function
+gk_audio_transfer_snapshot_chain_stock_end_report_fatal:
+        illegal
+        .size gk_audio_transfer_snapshot_chain_stock_end_report_fatal,.-gk_audio_transfer_snapshot_chain_stock_end_report_fatal
+        .global gk_stock_audio_transfer_active_primary_report_fatal
+        .type gk_stock_audio_transfer_active_primary_report_fatal,@function
+gk_stock_audio_transfer_active_primary_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_active_primary_report_fatal,.-gk_stock_audio_transfer_active_primary_report_fatal
+        .global gk_stock_audio_transfer_current_adjacent_report_fatal
+        .type gk_stock_audio_transfer_current_adjacent_report_fatal,@function
+gk_stock_audio_transfer_current_adjacent_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_current_adjacent_report_fatal,.-gk_stock_audio_transfer_current_adjacent_report_fatal
+        .global gk_stock_audio_transfer_current_special_report_fatal
+        .type gk_stock_audio_transfer_current_special_report_fatal,@function
+gk_stock_audio_transfer_current_special_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_current_special_report_fatal,.-gk_stock_audio_transfer_current_special_report_fatal
+        .global gk_stock_audio_transfer_primary_adjacent_report_fatal
+        .type gk_stock_audio_transfer_primary_adjacent_report_fatal,@function
+gk_stock_audio_transfer_primary_adjacent_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_primary_adjacent_report_fatal,.-gk_stock_audio_transfer_primary_adjacent_report_fatal
+        .global gk_stock_audio_transfer_primary_special_report_fatal
+        .type gk_stock_audio_transfer_primary_special_report_fatal,@function
+gk_stock_audio_transfer_primary_special_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_primary_special_report_fatal,.-gk_stock_audio_transfer_primary_special_report_fatal
+        .global gk_stock_audio_transfer_snapshot_chain_report_fatal
+        .type gk_stock_audio_transfer_snapshot_chain_report_fatal,@function
+gk_stock_audio_transfer_snapshot_chain_report_fatal:
+        illegal
+        .size gk_stock_audio_transfer_snapshot_chain_report_fatal,.-gk_stock_audio_transfer_snapshot_chain_report_fatal
+        .global macro_gk_audio_transfer_begin_pinned_result_report_fatal
+        .type macro_gk_audio_transfer_begin_pinned_result_report_fatal,@function
+macro_gk_audio_transfer_begin_pinned_result_report_fatal:
+        illegal
+        .size macro_gk_audio_transfer_begin_pinned_result_report_fatal,.-macro_gk_audio_transfer_begin_pinned_result_report_fatal
+        .global macro_gk_audio_transfer_begin_result_report_fatal
+        .type macro_gk_audio_transfer_begin_result_report_fatal,@function
+macro_gk_audio_transfer_begin_result_report_fatal:
+        illegal
+        .size macro_gk_audio_transfer_begin_result_report_fatal,.-macro_gk_audio_transfer_begin_result_report_fatal
+        .global macro_gk_audio_transfer_finish_report_fatal
+        .type macro_gk_audio_transfer_finish_report_fatal,@function
+macro_gk_audio_transfer_finish_report_fatal:
+        illegal
+        .size macro_gk_audio_transfer_finish_report_fatal,.-macro_gk_audio_transfer_finish_report_fatal
 gk_audio_transfer_fatal:
         illegal
         .size   gk_audio_transfer_fatal,.-gk_audio_transfer_fatal

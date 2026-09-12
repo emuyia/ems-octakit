@@ -138,7 +138,7 @@ gk_stock_current_context_validate:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0171.bin", 0, 6
+        .incbin "stock/0172.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w gk_project_load_diag_bank_pointer
         move.l  %d5,%d0
@@ -275,7 +275,7 @@ gk_stock_staged_audio_handoff_validate:
         cmp.b   GK_STOCK_SEQUENCER_LATCH_PART,%d2
         bne.w gk_arranger_fatal_active_scene_rollback_a
 .Lgk_stock_staged_audio_foreground_part_valid:
-        .incbin "stock/0172.bin", 0, 6
+        .incbin "stock/0173.bin", 0, 6
         andi.l  #0xffff00fd,%d0
         cmpi.l  #1,%d0
         bne.w gk_arranger_fatal_latch_trigger_pending
@@ -397,8 +397,8 @@ gk_stock_engine_context_validate:
         bhi.w   .Lgk_stock_engine_range
         cmpi.l  #3,%d2
         bhi.w   .Lgk_stock_engine_range
-        .incbin "stock/0173.bin", 0, 4
-        .incbin "stock/0173.bin", 4, 4
+        .incbin "stock/0174.bin", 0, 4
+        .incbin "stock/0174.bin", 4, 4
         move.l  %d0,%d4
         move.l  %d1,%d5
         move.l  %d2,%d6
@@ -427,7 +427,7 @@ gk_stock_engine_context_validate:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0174.bin", 0, 6
+        .incbin "stock/0175.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w   .Lgk_stock_engine_corrupt
         move.l  %d5,%d0
@@ -539,8 +539,8 @@ gk_stock_load_kit_transaction:
         bhi.w   .Lgk_stock_load_transaction_range
         cmpi.l  #GK_KIT_COUNT,%d2
         bhi.w   .Lgk_stock_load_transaction_range
-        .incbin "stock/0175.bin", 0, 4
-        .incbin "stock/0175.bin", 4, 4
+        .incbin "stock/0176.bin", 0, 4
+        .incbin "stock/0176.bin", 4, 4
         move.l  %d0,%d4
         move.l  %d1,%d5
         move.l  %d2,%d6
@@ -648,9 +648,9 @@ gk_load_kit_transition_validate_call:
         .global gk_stock_load_transaction_restore
 gk_stock_load_transaction_restore:
 .Lgk_stock_load_transaction_restore:
-        .incbin "stock/0176.bin", 0, 4
-        .incbin "stock/0176.bin", 4, 4
-        .incbin "stock/0176.bin", 8, 2
+        .incbin "stock/0177.bin", 0, 4
+        .incbin "stock/0177.bin", 4, 4
+        .incbin "stock/0177.bin", 8, 2
 .Lgk_stock_load_transaction_range:
         moveq   #GK_ERR_RANGE,%d0
         rts
@@ -745,8 +745,8 @@ gk_pattern_unassignment_v3_dirty_call:
         .global gk_stock_pattern_clear_unassign_empty
         .type   gk_stock_pattern_clear_unassign_empty,@function
 gk_stock_pattern_clear_unassign_empty:
-        .incbin "stock/0177.bin", 0, 4
-        .incbin "stock/0177.bin", 4, 4
+        .incbin "stock/0178.bin", 0, 4
+        .incbin "stock/0178.bin", 4, 4
         move.l  24(%sp),%d2
         cmpi.l  #15,%d2
         bhi.w   .Lgk_pattern_clear_unassign_restore_stock
@@ -761,7 +761,7 @@ gk_stock_pattern_clear_unassign_empty:
         move.l  %d2,-(%sp)
         .global gk_stock_pattern_clear_call
 gk_stock_pattern_clear_call:
-        .incbin "stock/0178.bin", 0, 6
+        .incbin "stock/0179.bin", 0, 6
         addq.l  #4,%sp
         move.l  %d0,%d4
         move.l  %d3,-(%sp)
@@ -803,7 +803,7 @@ gk_pattern_clear_unassignment_v3_dirty_call:
         bra.s   .Lgk_pattern_clear_unassign_restore
 .Lgk_pattern_clear_unassign_restore_stock:
         move.l  %d2,-(%sp)
-        .incbin "stock/0179.bin", 0, 6
+        .incbin "stock/0180.bin", 0, 6
         addq.l  #4,%sp
 .Lgk_pattern_clear_unassign_restore:
         movem.l (%sp),%d2-%d5/%a2
@@ -835,8 +835,8 @@ gk_load_kit_menu_open:
         moveq   #GK_OK,%d0
         rts
 .Lgk_load_menu_allocate:
-        .incbin "stock/0180.bin", 0, 4
-        .incbin "stock/0180.bin", 4, 4
+        .incbin "stock/0181.bin", 0, 4
+        .incbin "stock/0181.bin", 4, 4
         bsr.w   gk_stock_current_context_validate_or_resume
         tst.l   %d0
         bmi.w   .Lgk_load_menu_restore
@@ -866,9 +866,9 @@ gk_load_kit_stock_menu_call:
         lea     20(%sp),%sp
         moveq   #GK_OK,%d0
 .Lgk_load_menu_restore:
-        .incbin "stock/0181.bin", 0, 4
-        .incbin "stock/0181.bin", 4, 4
-        .incbin "stock/0181.bin", 8, 2
+        .incbin "stock/0182.bin", 0, 4
+        .incbin "stock/0182.bin", 4, 4
+        .incbin "stock/0182.bin", 8, 2
 .Lgk_load_menu_busy_fast:
         moveq   #GK_ERR_BUSY,%d0
         rts
@@ -876,8 +876,8 @@ gk_load_kit_stock_menu_call:
         .global gk_load_kit_menu_confirm
         .type   gk_load_kit_menu_confirm,@function
 gk_load_kit_menu_confirm:
-        .incbin "stock/0182.bin", 0, 4
-        .incbin "stock/0182.bin", 4, 4
+        .incbin "stock/0183.bin", 0, 4
+        .incbin "stock/0183.bin", 4, 4
         .global gk_load_confirm_pattern_interlock_begin
 gk_load_confirm_pattern_interlock_begin:
         move.w  %sr,%d7
@@ -941,9 +941,9 @@ gk_load_confirm_context_validate_call:
         .global gk_load_confirm_pattern_interlock_release
 gk_load_confirm_pattern_interlock_release:
         move.w  %d7,%sr
-        .incbin "stock/0183.bin", 0, 4
-        .incbin "stock/0183.bin", 4, 4
-        .incbin "stock/0183.bin", 8, 2
+        .incbin "stock/0184.bin", 0, 4
+        .incbin "stock/0184.bin", 4, 4
+        .incbin "stock/0184.bin", 8, 2
         .size   gk_load_kit_menu_confirm,.-gk_load_kit_menu_confirm
         .global gk_stock_part_status_format
         .type   gk_stock_part_status_format,@function
@@ -1041,16 +1041,16 @@ gk_stock_relative_control_dispatch:
         beq.s   .Lgk_relative_control_done
         move.l  %d2,-(%sp)
         move.l  %d1,%d2
-        .incbin "stock/0184.bin", 0, 4
-        .incbin "stock/0184.bin", 4, 6
-        .incbin "stock/0184.bin", 10, 2
-        .incbin "stock/0184.bin", 12, 2
-        .incbin "stock/0184.bin", 14, 2
-        .incbin "stock/0184.bin", 16, 1
-        .incbin "stock/0185.bin", 0, 1
-        .incbin "stock/0185.bin", 1, 2
-        .incbin "stock/0185.bin", 3, 2
-        .incbin "stock/0185.bin", 5, 2
+        .incbin "stock/0185.bin", 0, 4
+        .incbin "stock/0185.bin", 4, 6
+        .incbin "stock/0185.bin", 10, 2
+        .incbin "stock/0185.bin", 12, 2
+        .incbin "stock/0185.bin", 14, 2
+        .incbin "stock/0185.bin", 16, 1
+        .incbin "stock/0186.bin", 0, 1
+        .incbin "stock/0186.bin", 1, 2
+        .incbin "stock/0186.bin", 3, 2
+        .incbin "stock/0186.bin", 5, 2
 .Lgk_relative_control_scaled:
         tst.l   %d2
         bmi.s   .Lgk_relative_control_up
@@ -1092,8 +1092,8 @@ gk_relative_control_stock_dispatch_jump:
         .asciz  "--- NEW KIT"
 .Lgk_reload_message_success:
         .byte 0x4b,0x49,0x54
-        .incbin "stock/0186.bin", 0, 10
+        .incbin "stock/0187.bin", 0, 10
 .Lgk_reload_message_save_first:
-        .incbin "stock/0187.bin", 0, 4
+        .incbin "stock/0188.bin", 0, 4
         .byte 0x20,0x4b,0x49,0x54
-        .incbin "stock/0188.bin", 0, 8
+        .incbin "stock/0189.bin", 0, 8

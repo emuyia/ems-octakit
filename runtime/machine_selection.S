@@ -513,15 +513,15 @@ gk_machine_selection_busy_saved:
         .global gk_stock_machine_select_fx1_trampoline
         .type   gk_stock_machine_select_fx1_trampoline,@function
 gk_stock_machine_select_fx1_trampoline:
-        .incbin "stock/0290.bin", 0, 4
-        .incbin "stock/0290.bin", 4, 4
+        .incbin "stock/0291.bin", 0, 4
+        .incbin "stock/0291.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SELECT_FX1_CONTINUE
         .size   gk_stock_machine_select_fx1_trampoline,.-gk_stock_machine_select_fx1_trampoline
         .global gk_stock_machine_select_fx2_trampoline
         .type   gk_stock_machine_select_fx2_trampoline,@function
 gk_stock_machine_select_fx2_trampoline:
-        .incbin "stock/0291.bin", 0, 4
-        .incbin "stock/0291.bin", 4, 4
+        .incbin "stock/0292.bin", 0, 4
+        .incbin "stock/0292.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SELECT_FX2_CONTINUE
         .size   gk_stock_machine_select_fx2_trampoline,.-gk_stock_machine_select_fx2_trampoline
         .global gk_machine_selection_fatal

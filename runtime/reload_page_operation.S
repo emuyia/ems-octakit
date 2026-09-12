@@ -819,7 +819,7 @@ gk_reload_page_write_marker_d0:
         move.l  (%sp)+,%d1
         .global gk_reload_page_stock_dirty_store_d0
 gk_reload_page_stock_dirty_store_d0:
-        .incbin "stock/0329.bin", 0, 6
+        .incbin "stock/0330.bin", 0, 6
         rts
         .size   gk_reload_page_write_marker_d0,.-gk_reload_page_write_marker_d0
         .global gk_reload_page_write_marker_d2
@@ -906,7 +906,7 @@ gk_reload_page_write_marker_d2:
         move.l  (%sp)+,%d0
         .global gk_reload_page_stock_dirty_store_d2
 gk_reload_page_stock_dirty_store_d2:
-        .incbin "stock/0330.bin", 0, 6
+        .incbin "stock/0331.bin", 0, 6
         rts
         .size   gk_reload_page_write_marker_d2,.-gk_reload_page_write_marker_d2
         .global gk_reload_page_fatal

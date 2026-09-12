@@ -82,7 +82,7 @@ gk_slice_lock_state_validate:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a1
         adda.l  %d0,%a1
-        .incbin "stock/0377.bin", 0, 6
+        .incbin "stock/0378.bin", 0, 6
         cmpa.l  %a1,%a0
         bne.w   gk_slice_lock_fatal_owned
         moveq   #0,%d1
@@ -245,10 +245,10 @@ gk_slice_lock_prepare:
         cmpi.l  #GK_SL_KIND_RANDOM,%d0
         blo.w   gk_slice_lock_fatal_entry
         cmpi.l  #GK_SL_KIND_LINEAR,%d0
-        bhi.w   gk_slice_lock_fatal_entry
+        bhi.w   gk_slice_lock_prepare_report_fatal
         move.l  %d0,%d4
         tst.l   __gk_lifecycle_state
-        bne.w   gk_slice_lock_fatal_entry
+        bne.w   gk_slice_lock_prepare_report_fatal
         move.w  %sr,%d2
         move.w  #0x2700,%sr
         tst.b   __gk_slice_lock_active
@@ -267,7 +267,7 @@ gk_slice_lock_prepare:
         bra.s   .Lgk_slice_lock_claimed
 .Lgk_slice_lock_claim_conflict:
         move.w  %d2,%sr
-        bra.w   gk_slice_lock_fatal_entry
+        bra.w   gk_slice_lock_prepare_report_fatal
 .Lgk_slice_lock_claimed:
         move.l  GK_STOCK_SLICE_LOCK_SOURCE_MODE,%d0
         cmpi.l  #1,%d0
@@ -373,7 +373,7 @@ gk_slice_lock_prepare_call:
         cmpi.l  #GK_STOCK_SLICE_LOCK_RANDOM_CONTINUE,%d0
         beq.s   .Lgk_slice_lock_prepare_random
         cmpi.l  #GK_STOCK_SLICE_LOCK_LINEAR_CONTINUE,%d0
-        bne.w   gk_slice_lock_fatal_entry
+        bne.w   gk_slice_lock_prepare_call_report_fatal
         moveq   #GK_SL_KIND_LINEAR,%d0
         bra.s   .Lgk_slice_lock_prepare_kind_ready
 .Lgk_slice_lock_prepare_random:
@@ -384,7 +384,7 @@ gk_slice_lock_prepare_call:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0378.bin", 0, 6
+        .incbin "stock/0379.bin", 0, 6
         rts
         .size   gk_slice_lock_prepare_call,.-gk_slice_lock_prepare_call
         .type   gk_slice_lock_part_publication_validate,@function
@@ -479,7 +479,7 @@ gk_slice_lock_dirty_marker_d1:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0379.bin", 0, 6
+        .incbin "stock/0380.bin", 0, 6
         rts
         .size   gk_slice_lock_dirty_marker_d1,.-gk_slice_lock_dirty_marker_d1
         .type   gk_slice_lock_finish,@function
@@ -488,11 +488,11 @@ gk_slice_lock_finish:
         tst.b   __gk_slice_lock_active
         bne.s   .Lgk_slice_lock_finish_owned
         tst.b   __gk_slice_lock_active_inverse
-        bne.w   gk_slice_lock_fatal_entry
+        bne.w   gk_slice_lock_finish_report_fatal
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
         btst    #7,%d0
-        bne.w   gk_slice_lock_fatal_entry
+        bne.w   gk_slice_lock_finish_report_fatal
         rts
 .Lgk_slice_lock_finish_owned:
         cmp.b   __gk_slice_lock_active,%d4
@@ -563,7 +563,7 @@ gk_slice_lock_random_finish_tail:
         move.w %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0380.bin", 0, 6
+        .incbin "stock/0381.bin", 0, 6
         .size gk_slice_lock_random_finish_tail,.-gk_slice_lock_random_finish_tail
         .global gk_slice_lock_linear_finish_tail
         .type gk_slice_lock_linear_finish_tail,@function
@@ -578,7 +578,7 @@ gk_slice_lock_linear_finish_tail:
         move.w %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0381.bin", 0, 6
+        .incbin "stock/0382.bin", 0, 6
         .size gk_slice_lock_linear_finish_tail,.-gk_slice_lock_linear_finish_tail
 gk_slice_lock_fatal_release_returned_abort:
         jsr     gk_descriptor_release
@@ -586,7 +586,7 @@ gk_slice_lock_fatal_abort:
         jsr     gk_workspace_abort_update
 gk_slice_lock_fatal_claimed:
         bsr.w   gk_slice_lock_state_clear
-        bra.w   gk_slice_lock_fatal
+        bra.w   gk_slice_lock_fatal_claimed_report
 gk_slice_lock_fatal_owned:
         moveq   #0,%d0
         move.b  __gk_workspace_descriptor,%d0
@@ -596,15 +596,45 @@ gk_slice_lock_fatal_owned:
 .Lgk_slice_lock_owned_abort:
         jsr     gk_workspace_abort_update
         bsr.w   gk_slice_lock_state_clear
-        bra.w   gk_slice_lock_fatal
+        bra.w   gk_slice_lock_fatal_owned_report
 gk_slice_lock_fatal_post_commit:
         move.l  %d6,%d0
         jsr     gk_descriptor_release
 gk_slice_lock_fatal_post_commit_clear:
         bsr.w   gk_slice_lock_state_clear
-        bra.w   gk_slice_lock_fatal
+        bra.w   gk_slice_lock_fatal_post_commit_clear_report
+        .global gk_slice_lock_finish_report_fatal
+        .type gk_slice_lock_finish_report_fatal,@function
+gk_slice_lock_finish_report_fatal:
+        illegal
+        .size gk_slice_lock_finish_report_fatal,.-gk_slice_lock_finish_report_fatal
+        .global gk_slice_lock_prepare_call_report_fatal
+        .type gk_slice_lock_prepare_call_report_fatal,@function
+gk_slice_lock_prepare_call_report_fatal:
+        illegal
+        .size gk_slice_lock_prepare_call_report_fatal,.-gk_slice_lock_prepare_call_report_fatal
+        .global gk_slice_lock_prepare_report_fatal
+        .type gk_slice_lock_prepare_report_fatal,@function
+gk_slice_lock_prepare_report_fatal:
+        illegal
+        .size gk_slice_lock_prepare_report_fatal,.-gk_slice_lock_prepare_report_fatal
 gk_slice_lock_fatal_entry:
         .global gk_slice_lock_fatal
+        .global gk_slice_lock_fatal_claimed_report
+        .type gk_slice_lock_fatal_claimed_report,@function
+gk_slice_lock_fatal_claimed_report:
+        illegal
+        .size gk_slice_lock_fatal_claimed_report,.-gk_slice_lock_fatal_claimed_report
+        .global gk_slice_lock_fatal_owned_report
+        .type gk_slice_lock_fatal_owned_report,@function
+gk_slice_lock_fatal_owned_report:
+        illegal
+        .size gk_slice_lock_fatal_owned_report,.-gk_slice_lock_fatal_owned_report
+        .global gk_slice_lock_fatal_post_commit_clear_report
+        .type gk_slice_lock_fatal_post_commit_clear_report,@function
+gk_slice_lock_fatal_post_commit_clear_report:
+        illegal
+        .size gk_slice_lock_fatal_post_commit_clear_report,.-gk_slice_lock_fatal_post_commit_clear_report
 gk_slice_lock_fatal:
         illegal
         bra.w   gk_slice_lock_fatal

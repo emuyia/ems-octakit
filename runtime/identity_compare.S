@@ -174,8 +174,8 @@ gk_stock_derived_cache_refresh_authenticated:
         .global gk_stock_derived_cache_refresh_trampoline
         .type   gk_stock_derived_cache_refresh_trampoline,@function
 gk_stock_derived_cache_refresh_trampoline:
-        .incbin "stock/0239.bin", 0, 4
-        .incbin "stock/0239.bin", 4, 4
+        .incbin "stock/0240.bin", 0, 4
+        .incbin "stock/0240.bin", 4, 4
         .global gk_stock_derived_cache_refresh_trampoline_jump
 gk_stock_derived_cache_refresh_trampoline_jump:
         jmp     GK_STOCK_DERIVED_REFRESH_CONTINUE

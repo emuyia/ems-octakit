@@ -147,8 +147,8 @@ gk_engine_current_selector_begin:
         bhi.w   .Lgk_engine_current_begin_range
         cmpi.l  #3,%d2
         bhi.w   .Lgk_engine_current_begin_range
-        .incbin "stock/0074.bin", 0, 4
-        .incbin "stock/0074.bin", 4, 4
+        .incbin "stock/0075.bin", 0, 4
+        .incbin "stock/0075.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d2,%d5
@@ -457,7 +457,7 @@ gk_stock_engine_part_load_and_publish:
         tst.l   %d0
         beq.s   .Lgk_stock_engine_load_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_engine_part_load_fatal
+        bne.w   gk_stock_engine_part_load_and_publish_report_fatal
         move.l  (%sp),%d0
         cmpi.l  #GK_STOCK_ENGINE_LOAD_RETAINED_RETURN,%d0
         beq.w   gk_stock_engine_part_load_trampoline
@@ -467,21 +467,21 @@ gk_stock_engine_part_load_and_publish:
         beq.w   gk_stock_engine_part_load_trampoline
         cmpi.l  #GK_STOCK_ENGINE_LOAD_BANKS_RETURN,%d0
         beq.w   gk_stock_engine_part_load_trampoline
-        bra.w   gk_engine_part_load_fatal
+        bra.w   gk_stock_engine_part_load_and_publish_report_fatal
 .Lgk_stock_engine_load_active:
-        .incbin "stock/0075.bin", 0, 4
-        .incbin "stock/0075.bin", 4, 4
         .incbin "stock/0076.bin", 0, 4
         .incbin "stock/0076.bin", 4, 4
+        .incbin "stock/0077.bin", 0, 4
+        .incbin "stock/0077.bin", 4, 4
         cmpi.l  #15,%d4
-        bhi.w   gk_engine_part_load_fatal
+        bhi.w   gk_stock_engine_part_load_and_publish_report_fatal
         cmpi.l  #3,%d5
-        bhi.w   gk_engine_part_load_fatal
+        bhi.w   gk_stock_engine_part_load_and_publish_report_fatal
         move.l  %d4,%d0
         move.l  %d5,%d1
         bsr.w   gk_physical_acquire
         tst.l   %d0
-        bmi.w   gk_engine_part_load_fatal
+        bmi.w   gk_stock_engine_part_load_and_publish_report_fatal
         move.l  %d0,%d6
         move.l  %d6,%d0
         move.l  %d4,%d1
@@ -506,27 +506,27 @@ gk_stock_engine_part_load_and_publish:
         move.l  %d7,%d3
         bsr.w   gk_engine_load_publish
         tst.l   %d0
-        bne.w   gk_engine_part_load_fatal
-        .incbin "stock/0077.bin", 0, 4
-        .incbin "stock/0077.bin", 4, 4
-        .incbin "stock/0077.bin", 8, 2
+        bne.w   gk_stock_engine_part_load_and_publish_report_fatal
+        .incbin "stock/0078.bin", 0, 4
+        .incbin "stock/0078.bin", 4, 4
+        .incbin "stock/0078.bin", 8, 2
 .Lgk_stock_engine_load_abort_current_fatal:
         tst.l   %d7
         beq.s   .Lgk_stock_engine_load_release_fatal
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
         bsr.w   gk_selector_abort_update
         tst.l   %d0
-        bne.w   gk_engine_part_load_fatal
+        bne.w   gk_stock_engine_part_load_and_publish_report_fatal
 .Lgk_stock_engine_load_release_fatal:
         move.l  %d6,%d0
         bsr.w   gk_descriptor_release
-        bra.w   gk_engine_part_load_fatal
+        bra.w   gk_stock_engine_part_load_and_publish_report_fatal
         .size   gk_stock_engine_part_load_and_publish,.-gk_stock_engine_part_load_and_publish
         .global gk_stock_engine_part_load_trampoline
         .type   gk_stock_engine_part_load_trampoline,@function
 gk_stock_engine_part_load_trampoline:
-        .incbin "stock/0078.bin", 0, 4
-        .incbin "stock/0078.bin", 4, 4
+        .incbin "stock/0079.bin", 0, 4
+        .incbin "stock/0079.bin", 4, 4
         .global gk_stock_engine_part_load_trampoline_jump
 gk_stock_engine_part_load_trampoline_jump:
         jmp     GK_STOCK_ENGINE_PART_LOAD_CONTINUE
@@ -539,21 +539,21 @@ gk_stock_engine_saved_part_reload:
         beq.s   .Lgk_stock_engine_saved_reload_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
         beq.w   gk_stock_engine_saved_part_reload_trampoline
-        bra.w   gk_engine_part_load_fatal
+        bra.w   gk_stock_engine_saved_part_reload_report_fatal
 .Lgk_stock_engine_saved_reload_active:
-        .incbin "stock/0079.bin", 0, 4
-        .incbin "stock/0079.bin", 4, 4
         .incbin "stock/0080.bin", 0, 4
         .incbin "stock/0080.bin", 4, 4
+        .incbin "stock/0081.bin", 0, 4
+        .incbin "stock/0081.bin", 4, 4
         cmpi.l  #15,%d4
-        bhi.w   gk_engine_part_load_fatal
+        bhi.w   gk_stock_engine_saved_part_reload_report_fatal
         cmpi.l  #3,%d5
-        bhi.w   gk_engine_part_load_fatal
+        bhi.w   gk_stock_engine_saved_part_reload_report_fatal
         move.l  %d4,%d0
         move.l  %d5,%d1
         bsr.w   gk_physical_acquire
         tst.l   %d0
-        bmi.w   gk_engine_part_load_fatal
+        bmi.w   gk_stock_engine_saved_part_reload_report_fatal
         move.l  %d0,%d6
         move.l  %d6,%d0
         move.l  %d4,%d1
@@ -578,32 +578,42 @@ gk_stock_engine_saved_part_reload:
         move.l  %d7,%d3
         bsr.w   gk_engine_saved_reload_publish
         tst.l   %d0
-        bne.w   gk_engine_part_load_fatal
-        .incbin "stock/0081.bin", 0, 4
-        .incbin "stock/0081.bin", 4, 4
-        .incbin "stock/0081.bin", 8, 2
+        bne.w   gk_stock_engine_saved_part_reload_report_fatal
+        .incbin "stock/0082.bin", 0, 4
+        .incbin "stock/0082.bin", 4, 4
+        .incbin "stock/0082.bin", 8, 2
 .Lgk_stock_engine_saved_abort_current_fatal:
         tst.l   %d7
         beq.s   .Lgk_stock_engine_saved_release_fatal
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
         bsr.w   gk_selector_abort_update
         tst.l   %d0
-        bne.s   gk_engine_part_load_fatal
+        bne.s   gk_stock_engine_saved_part_reload_report_fatal
 .Lgk_stock_engine_saved_release_fatal:
         move.l  %d6,%d0
         bsr.w   gk_descriptor_release
-        bra.s   gk_engine_part_load_fatal
+        bra.s   gk_stock_engine_saved_part_reload_report_fatal
         .size   gk_stock_engine_saved_part_reload,.-gk_stock_engine_saved_part_reload
         .global gk_stock_engine_saved_part_reload_trampoline
         .type   gk_stock_engine_saved_part_reload_trampoline,@function
 gk_stock_engine_saved_part_reload_trampoline:
-        .incbin "stock/0082.bin", 0, 4
-        .incbin "stock/0082.bin", 4, 4
+        .incbin "stock/0083.bin", 0, 4
+        .incbin "stock/0083.bin", 4, 4
         .global gk_stock_engine_saved_part_reload_trampoline_jump
 gk_stock_engine_saved_part_reload_trampoline_jump:
         jmp     GK_STOCK_ENGINE_SAVED_PART_RELOAD_CONTINUE
         .size   gk_stock_engine_saved_part_reload_trampoline,.-gk_stock_engine_saved_part_reload_trampoline
         .global gk_engine_part_load_fatal
+        .global gk_stock_engine_part_load_and_publish_report_fatal
+        .type gk_stock_engine_part_load_and_publish_report_fatal,@function
+gk_stock_engine_part_load_and_publish_report_fatal:
+        illegal
+        .size gk_stock_engine_part_load_and_publish_report_fatal,.-gk_stock_engine_part_load_and_publish_report_fatal
+        .global gk_stock_engine_saved_part_reload_report_fatal
+        .type gk_stock_engine_saved_part_reload_report_fatal,@function
+gk_stock_engine_saved_part_reload_report_fatal:
+        illegal
+        .size gk_stock_engine_saved_part_reload_report_fatal,.-gk_stock_engine_saved_part_reload_report_fatal
 gk_engine_part_load_fatal:
         illegal
         bra.s   gk_engine_part_load_fatal

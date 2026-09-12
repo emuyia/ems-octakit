@@ -56,51 +56,51 @@ gk_machine_transition_state_validate:
         cmpi.l  #GK_MT_KIND_UI_A,%d0
         blo.w   gk_machine_transition_fatal_state
         cmpi.l  #GK_MT_KIND_EVENT,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         move.l  %d0,%d1
         not.l   %d1
         andi.l  #0xff,%d1
         cmp.b   __gk_machine_transition_active_inverse,%d1
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         tst.l   __gk_lifecycle_state
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_part,%d0
         cmpi.l  #3,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_PART_PRIMARY,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_PART_MIRROR,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_ENGINE_PART,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_track,%d0
         cmpi.l  #7,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d1
         move.b  __gk_machine_transition_active,%d1
         cmpi.l  #GK_MT_KIND_UI_B,%d1
         bhi.s   .Lgk_mt_track_current_done
         cmp.b   GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
 .Lgk_mt_track_current_done:
         moveq   #0,%d0
         move.b  __gk_machine_transition_bank,%d0
         cmpi.l  #15,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_BANK_PRIMARY,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_BANK_MIRROR,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_ENGINE_BANK,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   __gk_current_bank,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_pattern,%d0
         cmpi.l  #15,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d1
         move.b  __gk_machine_transition_active,%d1
         cmpi.l  #GK_MT_KIND_EVENT,%d1
@@ -108,114 +108,114 @@ gk_machine_transition_state_validate:
         moveq   #0,%d1
         move.b  __gk_machine_transition_reserved,%d1
         cmpi.l  #15,%d1
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_PATTERN_PRIMARY,%d1
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_PATTERN,%d1
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         bra.s   .Lgk_mt_state_pattern_runtime
 .Lgk_mt_state_pattern_settled:
         cmp.b   GK_STOCK_CURRENT_PATTERN_PRIMARY,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   GK_STOCK_CURRENT_PATTERN,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
 .Lgk_mt_state_pattern_runtime:
         cmp.b   __gk_current_pattern,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_descriptor,%d0
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         cmp.b   __gk_workspace_descriptor,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_kit,%d0
         cmp.b   __gk_current_kit,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_count,%d0
         cmpi.l  #8,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_event_index,%d0
         cmpi.l  #8,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_state_validate_report_fatal
         rts
         .size   gk_machine_transition_state_validate,.-gk_machine_transition_state_validate
         .global gk_machine_transition_current_tuple_validate
         .type   gk_machine_transition_current_tuple_validate,@function
 gk_machine_transition_current_tuple_validate:
         cmpi.l  #15,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmpi.l  #3,%d1
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmpi.l  #7,%d2
-        bhi.w   gk_machine_transition_fatal_state
-        .incbin "stock/0368.bin", 0, 4
-        .incbin "stock/0368.bin", 4, 4
+        bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
+        .incbin "stock/0369.bin", 0, 4
+        .incbin "stock/0369.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d2,%d5
         bsr.w   gk_machine_transition_state_validate
         cmp.b   __gk_machine_transition_bank,%d3
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_machine_transition_part,%d4
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_machine_transition_track,%d5
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d2
         move.b  __gk_machine_transition_descriptor,%d2
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d2
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_workspace_descriptor,%d2
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_pending_workspace_descriptor,%d2
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
         btst    #7,%d0
-        beq.w   gk_machine_transition_fatal_state
+        beq.w   gk_machine_transition_current_tuple_validate_report_fatal
         andi.l  #0x7e,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_pending_transition_flags,%d0
         cmpi.l  #GK_TRANSITION_PRESERVE_NAME,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         tst.b   __gk_pending_ui_capture_created
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_pending_bank,%d3
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_current_pattern,%d0
         cmp.b   __gk_pending_pattern,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_current_kit,%d0
         cmp.b   __gk_pending_kit,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_workspace_bound,%d0
         cmpi.l  #1,%d0
-        bhi.w   gk_machine_transition_fatal_state
+        bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.b   __gk_pending_workspace_bound,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a1
         moveq   #0,%d0
         move.b  GK_SIDECAR_CURRENT(%a1),%d0
         cmp.l   %d2,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         moveq   #0,%d0
         move.b  GK_SIDECAR_PENDING(%a1),%d0
         cmp.l   %d2,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         move.l  %d3,%d0
         lsl.l   #2,%d0
         add.l   %d4,%d0
         jsr     gk_physical_validate
         tst.l   %d0
-        bmi.w   gk_machine_transition_fatal_state
+        bmi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmp.l   %d2,%d0
-        bne.w   gk_machine_transition_fatal_state
+        bne.w   gk_machine_transition_current_tuple_validate_report_fatal
         movea.l %a0,%a2
         move.l %d2,%d0
         andi.l #0xff,%d0
@@ -223,9 +223,9 @@ gk_machine_transition_current_tuple_validate:
         lea __gk_descriptors,%a1
         adda.l %d0,%a1
         tst.w   GK_DESC_ROOTS(%a1)
-        beq.w   gk_machine_transition_fatal_state
+        beq.w   gk_machine_transition_current_tuple_validate_report_fatal
         tst.w   GK_DESC_READERS(%a1)
-        beq.w   gk_machine_transition_fatal_state
+        beq.w   gk_machine_transition_current_tuple_validate_report_fatal
         move.l  %d2,%d0
         movea.l %a2,%a0
         movem.l (%sp),%d2-%d5/%a2
@@ -238,17 +238,17 @@ gk_machine_transition_prepare:
         cmpi.l  #GK_MT_KIND_UI_A,%d0
         blo.w   gk_machine_transition_fatal_entry
         cmpi.l  #GK_MT_KIND_EVENT,%d0
-        bhi.w   gk_machine_transition_fatal_entry
+        bhi.w   gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry
         cmpi.l  #7,%d1
-        bhi.w   gk_machine_transition_fatal_entry
+        bhi.w   gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry
         tst.l   __gk_lifecycle_state
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry
         move.w  %sr,%d2
         move.w  #0x2700,%sr
         tst.b   __gk_machine_transition_active
-        bne.w   gk_machine_transition_fatal_claim
+        bne.w   gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim
         tst.b   __gk_machine_transition_active_inverse
-        bne.w   gk_machine_transition_fatal_claim
+        bne.w   gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim
         move.b  %d0,__gk_machine_transition_active
         not.l   %d0
         move.b  %d0,__gk_machine_transition_active_inverse
@@ -351,7 +351,7 @@ gk_machine_transition_terminal_validate:
         cmpi.l  #GK_MT_KIND_COMMIT_B,%d0
         beq.s   .Lgk_mt_terminal_optional_simple
         cmpi.l  #GK_MT_KIND_SETUP,%d0
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
 .Lgk_mt_terminal_optional_simple:
         tst.l   %d1
         beq.s   .Lgk_mt_terminal_zero
@@ -360,18 +360,18 @@ gk_machine_transition_terminal_validate:
         beq.s   .Lgk_mt_terminal_one
         cmpi.l  #GK_MT_STAGE_DIRECT_HELPER,%d1
         beq.s   .Lgk_mt_terminal_two
-        bra.w   gk_machine_transition_fatal_terminal
+        bra.w   gk_machine_transition_terminal_validate_report_fatal
 .Lgk_mt_terminal_zero:
         tst.l   %d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         rts
 .Lgk_mt_terminal_one:
         cmpi.l  #1,%d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         rts
 .Lgk_mt_terminal_two:
         cmpi.l  #2,%d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         rts
 .Lgk_mt_terminal_ui:
         tst.l   %d1
@@ -386,12 +386,12 @@ gk_machine_transition_terminal_validate:
         beq.s   .Lgk_mt_terminal_outer
         cmpi.l  #GK_MT_STAGE_OUTER_HELPER,%d1
         beq.s   .Lgk_mt_terminal_outer_helper
-        bra.w   gk_machine_transition_fatal_terminal
+        bra.w   gk_machine_transition_terminal_validate_report_fatal
 .Lgk_mt_terminal_nested:
         cmpi.l  #2,%d2
         beq.s   .Lgk_mt_terminal_ok
         cmpi.l  #3,%d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
 .Lgk_mt_terminal_ok:
         rts
 .Lgk_mt_terminal_outer:
@@ -400,7 +400,7 @@ gk_machine_transition_terminal_validate:
         cmpi.l  #3,%d2
         beq.s   .Lgk_mt_terminal_ok
         cmpi.l  #4,%d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         rts
 .Lgk_mt_terminal_outer_helper:
         cmpi.l  #2,%d2
@@ -408,17 +408,17 @@ gk_machine_transition_terminal_validate:
         cmpi.l  #4,%d2
         beq.s   .Lgk_mt_terminal_ok
         cmpi.l  #5,%d2
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         rts
 .Lgk_mt_terminal_event:
         tst.l   %d1
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_event_index,%d0
         cmpi.l  #8,%d0
-        bne.w   gk_machine_transition_fatal_terminal
+        bne.w   gk_machine_transition_terminal_validate_report_fatal
         cmp.l   %d0,%d2
-        bhi.w   gk_machine_transition_fatal_terminal
+        bhi.w   gk_machine_transition_terminal_validate_report_fatal
         rts
         .size   gk_machine_transition_terminal_validate,.-gk_machine_transition_terminal_validate
         .global gk_machine_transition_finish
@@ -429,20 +429,20 @@ gk_machine_transition_finish:
         moveq   #0,%d0
         move.b  __gk_machine_transition_bank,%d0
         cmp.l   %d4,%d0
-        bne.w   gk_machine_transition_fatal_finish
+        bne.w   gk_machine_transition_finish_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_pattern,%d0
         cmp.l   %d5,%d0
-        bne.w   gk_machine_transition_fatal_finish
+        bne.w   gk_machine_transition_finish_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_descriptor,%d0
         cmp.l   %d6,%d0
-        bne.w   gk_machine_transition_fatal_finish
+        bne.w   gk_machine_transition_finish_report_fatal
         moveq   #0,%d0
         move.b  __gk_machine_transition_part,%d0
         move.l  %a2,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_machine_transition_fatal_finish
+        bne.w   gk_machine_transition_finish_report_fatal
         tst.b   __gk_machine_transition_count
         beq.s   .Lgk_mt_finish_no_write
         move.l  %d6,%d0
@@ -482,17 +482,17 @@ gk_machine_transition_entry_validate:
         bhi.w   .Lgk_mt_entry_direct
         move.l  GK_MT_ARG1(%a6),%d1
         cmpi.l  #GK_STOCK_MACHINE_COMMAND_ID,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         tst.l   GK_MT_ARG2(%a6)
-        beq.w   gk_machine_transition_fatal_entry
+        beq.w   gk_machine_transition_entry_validate_report_fatal
         cmp.l   (%a6),%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         move.l  GK_MT_ARG2(%a6),%d1
         cmp.l   8(%a6),%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         move.l  GK_MT_RETURN(%a6),%d1
         cmpi.l  #GK_STOCK_DIRECT_PRESS_RETURN,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         cmpi.l  #GK_MT_KIND_UI_A,%d0
         bne.s   .Lgk_mt_entry_ui_b_identity
         lea     gk_stock_machine_ui_callback_a,%a0
@@ -503,17 +503,17 @@ gk_machine_transition_entry_validate:
         move.l  %a0,%d2
         move.l  GK_MT_OUT_A0(%a6),%d1
         cmp.l   %d2,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         move.l  #GK_STOCK_MACHINE_COMMAND_ID * 24,%d1
         lea     GK_STOCK_MACHINE_DIRECT_REGISTRY,%a0
         move.l  (%a0,%d1.l),%d1
         cmp.l   %d2,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         rts
 .Lgk_mt_entry_direct:
         move.l  GK_MT_ARG1(%a6),%d1
         cmpi.l  #7,%d1
-        bhi.w   gk_machine_transition_fatal_entry
+        bhi.w   gk_machine_transition_entry_validate_report_fatal
         move.l  GK_MT_RETURN(%a6),%d1
         cmpi.l  #GK_MT_KIND_COMMIT_A,%d0
         beq.w   .Lgk_mt_entry_commit_a
@@ -522,7 +522,7 @@ gk_machine_transition_entry_validate:
         cmpi.l  #GK_MT_KIND_COMMIT_B,%d0
         beq.w   .Lgk_mt_entry_commit_b
         cmpi.l  #GK_MT_KIND_SETUP,%d0
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         cmpi.l  #0x4006dd12,%d1
         beq.w   .Lgk_mt_entry_ok
         cmpi.l  #0x40073900,%d1
@@ -532,12 +532,12 @@ gk_machine_transition_entry_validate:
         cmpi.l  #0x40076858,%d1
         beq.w   .Lgk_mt_entry_ok
         cmpi.l  #0x400793ee,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
 .Lgk_mt_entry_ok:
         rts
 .Lgk_mt_entry_temporary:
         cmpi.l  #0x40062418,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         rts
 .Lgk_mt_entry_commit_a:
         cmpi.l  #0x40022718,%d1
@@ -555,7 +555,7 @@ gk_machine_transition_entry_validate:
         cmpi.l  #0x40078a06,%d1
         beq.w   .Lgk_mt_entry_ok
         cmpi.l  #0x40079402,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         rts
 .Lgk_mt_entry_commit_b:
         cmpi.l  #0x40022726,%d1
@@ -575,7 +575,7 @@ gk_machine_transition_entry_validate:
         cmpi.l  #0x40078a14,%d1
         beq.w   .Lgk_mt_entry_ok
         cmpi.l  #0x40079410,%d1
-        bne.w   gk_machine_transition_fatal_entry
+        bne.w   gk_machine_transition_entry_validate_report_fatal
         rts
         .size   gk_machine_transition_entry_validate,.-gk_machine_transition_entry_validate
         .type   gk_machine_transition_execute,@function
@@ -777,23 +777,23 @@ gk_stock_machine_setup:
         .size gk_stock_machine_setup,.-gk_stock_machine_setup
         .global gk_machine_commit_a_trampoline
 gk_machine_commit_a_trampoline:
-        .incbin "stock/0369.bin", 0, 4
-        .incbin "stock/0369.bin", 4, 4
+        .incbin "stock/0370.bin", 0, 4
+        .incbin "stock/0370.bin", 4, 4
         jmp     GK_STOCK_MACHINE_COMMIT_A_CONTINUE
         .global gk_machine_temporary_trampoline
 gk_machine_temporary_trampoline:
-        .incbin "stock/0370.bin", 0, 4
-        .incbin "stock/0370.bin", 4, 4
+        .incbin "stock/0371.bin", 0, 4
+        .incbin "stock/0371.bin", 4, 4
         jmp     GK_STOCK_MACHINE_TEMPORARY_CONTINUE
         .global gk_machine_commit_b_trampoline
 gk_machine_commit_b_trampoline:
-        .incbin "stock/0371.bin", 0, 4
-        .incbin "stock/0371.bin", 4, 4
+        .incbin "stock/0372.bin", 0, 4
+        .incbin "stock/0372.bin", 4, 4
         jmp     GK_STOCK_MACHINE_COMMIT_B_CONTINUE
         .global gk_machine_setup_trampoline
 gk_machine_setup_trampoline:
-        .incbin "stock/0372.bin", 0, 4
-        .incbin "stock/0372.bin", 4, 4
+        .incbin "stock/0373.bin", 0, 4
+        .incbin "stock/0373.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SETUP_CONTINUE
         .type   gk_machine_transition_count_increment,@function
 gk_machine_transition_count_increment:
@@ -801,7 +801,7 @@ gk_machine_transition_count_increment:
         move.b  __gk_machine_transition_count,%d0
         addq.l  #1,%d0
         cmpi.l  #8,%d0
-        bhi.w   gk_machine_transition_fatal_marker
+        bhi.w   gk_machine_transition_count_increment_report_fatal
         move.b  %d0,__gk_machine_transition_count
         rts
         .size   gk_machine_transition_count_increment,.-gk_machine_transition_count_increment
@@ -831,21 +831,21 @@ gk_machine_transition_primary_marker_validate:
         beq.w   .Lgk_mt_marker_commit_b
         cmpi.l  #GK_STOCK_MACHINE_SETUP_DIRTY_RETURN,%d3
         beq.w   .Lgk_mt_marker_setup
-        bra.w   gk_machine_transition_fatal_marker
+        bra.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_ui_a_direct:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         tst.l   %d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_DIRECT,%d2
         bra.w   .Lgk_mt_marker_publish
 .Lgk_mt_marker_ui_a_outer:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         tst.l   %d2
         beq.s   .Lgk_mt_marker_outer_ready
         cmpi.l  #GK_MT_STAGE_NESTED_DONE,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_outer_ready:
         moveq   #GK_MT_STAGE_OUTER,%d2
         bra.w   .Lgk_mt_marker_publish
@@ -853,53 +853,53 @@ gk_machine_transition_primary_marker_validate:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
         beq.s   .Lgk_mt_marker_nested_kind_ok
         cmpi.l  #GK_MT_KIND_UI_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_nested_kind_ok:
         tst.l   %d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_NESTED_FIRST,%d2
         bra.w   .Lgk_mt_marker_publish
 .Lgk_mt_marker_nested_done:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
         beq.s   .Lgk_mt_marker_nested_done_kind
         cmpi.l  #GK_MT_KIND_UI_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_nested_done_kind:
         cmpi.l  #GK_MT_STAGE_NESTED_FIRST,%d2
         beq.s   .Lgk_mt_marker_nested_done_ready
         cmpi.l  #GK_MT_STAGE_NESTED_HELPER,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_nested_done_ready:
         moveq   #GK_MT_STAGE_NESTED_DONE,%d2
         bra.s   .Lgk_mt_marker_publish
 .Lgk_mt_marker_ui_b_outer:
         cmpi.l  #GK_MT_KIND_UI_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         tst.l   %d2
         beq.s   .Lgk_mt_marker_ui_b_ready
         cmpi.l  #GK_MT_STAGE_NESTED_DONE,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_ui_b_ready:
         moveq   #GK_MT_STAGE_OUTER,%d2
         bra.s   .Lgk_mt_marker_publish
 .Lgk_mt_marker_commit_a:
         cmpi.l  #GK_MT_KIND_COMMIT_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         bra.s   .Lgk_mt_marker_simple
 .Lgk_mt_marker_temporary:
         cmpi.l  #GK_MT_KIND_TEMPORARY,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         bra.s   .Lgk_mt_marker_simple
 .Lgk_mt_marker_commit_b:
         cmpi.l  #GK_MT_KIND_COMMIT_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         bra.s   .Lgk_mt_marker_simple
 .Lgk_mt_marker_setup:
         cmpi.l  #GK_MT_KIND_SETUP,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
 .Lgk_mt_marker_simple:
         tst.l   %d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_primary_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_DIRECT,%d2
 .Lgk_mt_marker_publish:
         move.b  %d2,__gk_machine_transition_stage
@@ -910,13 +910,13 @@ gk_machine_transition_primary_marker_validate:
 gk_machine_transition_helper_marker_validate:
         move.l  %d0,%d3
         cmpi.l  #3,%d1
-        bhi.w   gk_machine_transition_fatal_marker
+        bhi.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmpi.l  #7,%d2
-        bhi.w   gk_machine_transition_fatal_marker
+        bhi.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmp.b   __gk_machine_transition_part,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmp.b   __gk_machine_transition_track,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         bsr.w   gk_machine_transition_state_validate
         moveq   #0,%d1
         move.b  __gk_machine_transition_active,%d1
@@ -940,63 +940,63 @@ gk_machine_transition_helper_marker_validate:
         beq.w   .Lgk_mt_helper_setup
         cmpi.l  #gk_stock_part_event_machine_return,%d3
         beq.w   .Lgk_mt_helper_event
-        bra.w   gk_machine_transition_fatal_marker
+        bra.w   gk_machine_transition_helper_marker_validate_report_fatal
 .Lgk_mt_helper_ui_a_direct:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmpi.l  #GK_MT_STAGE_DIRECT,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_DIRECT_HELPER,%d2
         bra.w   .Lgk_mt_helper_publish
 .Lgk_mt_helper_ui_a_outer:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmpi.l  #GK_MT_STAGE_OUTER,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_OUTER_HELPER,%d2
         bra.w   .Lgk_mt_helper_publish
 .Lgk_mt_helper_nested:
         cmpi.l  #GK_MT_KIND_UI_A,%d1
         beq.s   .Lgk_mt_helper_nested_kind
         cmpi.l  #GK_MT_KIND_UI_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
 .Lgk_mt_helper_nested_kind:
         cmpi.l  #GK_MT_STAGE_NESTED_FIRST,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_NESTED_HELPER,%d2
         bra.w   .Lgk_mt_helper_publish
 .Lgk_mt_helper_ui_b_outer:
         cmpi.l  #GK_MT_KIND_UI_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmpi.l  #GK_MT_STAGE_OUTER,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_OUTER_HELPER,%d2
         bra.s   .Lgk_mt_helper_publish
 .Lgk_mt_helper_commit_a:
         cmpi.l  #GK_MT_KIND_COMMIT_A,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         bra.s   .Lgk_mt_helper_simple
 .Lgk_mt_helper_temporary:
         cmpi.l  #GK_MT_KIND_TEMPORARY,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         bra.s   .Lgk_mt_helper_simple
 .Lgk_mt_helper_commit_b:
         cmpi.l  #GK_MT_KIND_COMMIT_B,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         bra.s   .Lgk_mt_helper_simple
 .Lgk_mt_helper_setup:
         cmpi.l  #GK_MT_KIND_SETUP,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
 .Lgk_mt_helper_simple:
         cmpi.l  #GK_MT_STAGE_DIRECT,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_DIRECT_HELPER,%d2
         bra.s   .Lgk_mt_helper_publish
 .Lgk_mt_helper_event:
         cmpi.l  #GK_MT_KIND_EVENT,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         cmpi.l  #GK_MT_STAGE_EVENT_ARMED,%d2
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_marker_validate_report_fatal
         moveq   #GK_MT_STAGE_EVENT_WRITTEN,%d2
 .Lgk_mt_helper_publish:
         move.b  %d2,__gk_machine_transition_stage
@@ -1007,21 +1007,7 @@ gk_machine_transition_helper_marker_validate:
         .type gk_machine_transition_dirty_marker_d1,@function
 gk_machine_transition_dirty_marker_d1:
         cmpi.l #1,%d1
-        bne.w gk_machine_transition_fatal_marker
-        lea -GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        movem.l %d0-%d7/%a0-%a2,(%sp)
-        move.l GK_MT_MARKER_SAVE_BYTES(%sp),%d0
-        bsr.w gk_machine_transition_primary_marker_validate
-        movem.l (%sp),%d0-%d7/%a0-%a2
-        lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0373.bin", 0, 6
-        rts
-        .size gk_machine_transition_dirty_marker_d1,.-gk_machine_transition_dirty_marker_d1
-        .global gk_machine_transition_dirty_marker_d2
-        .type gk_machine_transition_dirty_marker_d2,@function
-gk_machine_transition_dirty_marker_d2:
-        cmpi.l #1,%d2
-        bne.w gk_machine_transition_fatal_marker
+        bne.w macro_gk_mt_primary_marker_report_fatal
         lea -GK_MT_MARKER_SAVE_BYTES(%sp),%sp
         movem.l %d0-%d7/%a0-%a2,(%sp)
         move.l GK_MT_MARKER_SAVE_BYTES(%sp),%d0
@@ -1030,12 +1016,12 @@ gk_machine_transition_dirty_marker_d2:
         lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
         .incbin "stock/0374.bin", 0, 6
         rts
-        .size gk_machine_transition_dirty_marker_d2,.-gk_machine_transition_dirty_marker_d2
-        .global gk_machine_transition_dirty_marker_d3
-        .type gk_machine_transition_dirty_marker_d3,@function
-gk_machine_transition_dirty_marker_d3:
-        cmpi.l #1,%d3
-        bne.w gk_machine_transition_fatal_marker
+        .size gk_machine_transition_dirty_marker_d1,.-gk_machine_transition_dirty_marker_d1
+        .global gk_machine_transition_dirty_marker_d2
+        .type gk_machine_transition_dirty_marker_d2,@function
+gk_machine_transition_dirty_marker_d2:
+        cmpi.l #1,%d2
+        bne.w macro_gk_mt_primary_marker_report_fatal
         lea -GK_MT_MARKER_SAVE_BYTES(%sp),%sp
         movem.l %d0-%d7/%a0-%a2,(%sp)
         move.l GK_MT_MARKER_SAVE_BYTES(%sp),%d0
@@ -1044,6 +1030,20 @@ gk_machine_transition_dirty_marker_d3:
         lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
         .incbin "stock/0375.bin", 0, 6
         rts
+        .size gk_machine_transition_dirty_marker_d2,.-gk_machine_transition_dirty_marker_d2
+        .global gk_machine_transition_dirty_marker_d3
+        .type gk_machine_transition_dirty_marker_d3,@function
+gk_machine_transition_dirty_marker_d3:
+        cmpi.l #1,%d3
+        bne.w macro_gk_mt_primary_marker_report_fatal
+        lea -GK_MT_MARKER_SAVE_BYTES(%sp),%sp
+        movem.l %d0-%d7/%a0-%a2,(%sp)
+        move.l GK_MT_MARKER_SAVE_BYTES(%sp),%d0
+        bsr.w gk_machine_transition_primary_marker_validate
+        movem.l (%sp),%d0-%d7/%a0-%a2
+        lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
+        .incbin "stock/0376.bin", 0, 6
+        rts
         .size gk_machine_transition_dirty_marker_d3,.-gk_machine_transition_dirty_marker_d3
         .global gk_machine_transition_helper_dirty_marker_d1
         .type   gk_machine_transition_helper_dirty_marker_d1,@function
@@ -1051,23 +1051,23 @@ gk_machine_transition_helper_dirty_marker_d1:
         tst.b   __gk_machine_transition_active
         bne.s   .Lgk_mt_helper_marker_owned
         tst.b   __gk_machine_transition_active_inverse
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_dirty_marker_d1_report_fatal
         jmp     gk_page_clipboard_helper_marker_d1
 .Lgk_mt_helper_marker_owned:
         cmpi.l  #1,%d1
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_dirty_marker_d1_report_fatal
         lea     -GK_MT_MARKER_SAVE_BYTES(%sp),%sp
         movem.l %d0-%d7/%a0-%a2,(%sp)
         move.l  GK_MT_MARKER_SAVE_BYTES(%sp),%d0
         cmpi.l  #GK_STOCK_MACHINE_HELPER_DIRTY_RETURN,%d0
-        bne.w   gk_machine_transition_fatal_marker
+        bne.w   gk_machine_transition_helper_dirty_marker_d1_report_fatal
         move.l  GK_MT_MARKER_SAVE_BYTES + 24(%sp),%d0
         move.l  GK_MT_MARKER_SAVE_BYTES + 28(%sp),%d1
         move.l  GK_MT_MARKER_SAVE_BYTES + 32(%sp),%d2
         bsr.w   gk_machine_transition_helper_marker_validate
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea     GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0376.bin", 0, 6
+        .incbin "stock/0377.bin", 0, 6
         rts
         .size   gk_machine_transition_helper_dirty_marker_d1,.-gk_machine_transition_helper_dirty_marker_d1
         .global gk_machine_transition_event_arm
@@ -1077,15 +1077,15 @@ gk_machine_transition_event_arm:
         moveq   #0,%d1
         move.b  __gk_machine_transition_active,%d1
         cmpi.l  #GK_MT_KIND_EVENT,%d1
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_arm_report_fatal
         tst.b   __gk_machine_transition_stage
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_arm_report_fatal
         moveq   #0,%d1
         move.b  __gk_machine_transition_event_index,%d1
         cmp.l   %d1,%d0
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_arm_report_fatal
         cmpi.l  #7,%d0
-        bhi.w   gk_machine_transition_fatal_event
+        bhi.w   gk_machine_transition_event_arm_report_fatal
         move.b  %d0,__gk_machine_transition_track
         moveq   #GK_MT_STAGE_EVENT_ARMED,%d1
         move.b  %d1,__gk_machine_transition_stage
@@ -1098,15 +1098,15 @@ gk_machine_transition_event_step_finish:
         moveq   #0,%d1
         move.b  __gk_machine_transition_active,%d1
         cmpi.l  #GK_MT_KIND_EVENT,%d1
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_step_finish_report_fatal
         cmp.b   __gk_machine_transition_track,%d0
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_step_finish_report_fatal
         moveq   #0,%d1
         move.b  __gk_machine_transition_stage,%d1
         cmpi.l  #GK_MT_STAGE_EVENT_ARMED,%d1
         beq.s   .Lgk_mt_event_step_ok
         cmpi.l  #GK_MT_STAGE_EVENT_WRITTEN,%d1
-        bne.w   gk_machine_transition_fatal_event
+        bne.w   gk_machine_transition_event_step_finish_report_fatal
 .Lgk_mt_event_step_ok:
         clr.b   __gk_machine_transition_stage
         moveq   #0,%d1
@@ -1118,7 +1118,7 @@ gk_machine_transition_event_step_finish:
 gk_machine_transition_fatal_release_abort_d0:
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_machine_transition_fatal
+        bne.w   gk_machine_transition_fatal_release_abort_d0_report
         bra.s gk_machine_transition_fatal_abort
 gk_machine_transition_fatal_release_abort:
         move.l  %d6,%d0
@@ -1126,21 +1126,121 @@ gk_machine_transition_fatal_release_abort:
 gk_machine_transition_fatal_abort:
         jsr     gk_workspace_abort_update
         bsr.w   gk_machine_transition_state_clear
-        bra.s gk_machine_transition_fatal
+        bra.s gk_machine_transition_fatal_abort_report
 gk_machine_transition_fatal_abort_only:
         jsr     gk_workspace_abort_update
         bsr.w   gk_machine_transition_state_clear
-        bra.s gk_machine_transition_fatal
+        bra.s gk_machine_transition_fatal_abort_only_report
 gk_machine_transition_fatal_claimed:
         bsr.w   gk_machine_transition_state_clear
+        .global gk_machine_transition_entry_validate_report_fatal
+        .type gk_machine_transition_entry_validate_report_fatal,@function
+gk_machine_transition_entry_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_entry_validate_report_fatal,.-gk_machine_transition_entry_validate_report_fatal
+        .global gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry
+        .type gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry,@function
+gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry:
+        illegal
+        .size gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry,.-gk_machine_transition_prepare_report_fatal_machine_transition_fatal_entry
 gk_machine_transition_fatal_entry:
+        .global gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim
+        .type gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim,@function
+gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim:
+        illegal
+        .size gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim,.-gk_machine_transition_prepare_report_fatal_machine_transition_fatal_claim
 gk_machine_transition_fatal_claim:
+        .global gk_machine_transition_current_tuple_validate_report_fatal
+        .type gk_machine_transition_current_tuple_validate_report_fatal,@function
+gk_machine_transition_current_tuple_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_current_tuple_validate_report_fatal,.-gk_machine_transition_current_tuple_validate_report_fatal
+        .global gk_machine_transition_state_validate_report_fatal
+        .type gk_machine_transition_state_validate_report_fatal,@function
+gk_machine_transition_state_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_state_validate_report_fatal,.-gk_machine_transition_state_validate_report_fatal
 gk_machine_transition_fatal_state:
+        .global gk_machine_transition_finish_report_fatal
+        .type gk_machine_transition_finish_report_fatal,@function
+gk_machine_transition_finish_report_fatal:
+        illegal
+        .size gk_machine_transition_finish_report_fatal,.-gk_machine_transition_finish_report_fatal
 gk_machine_transition_fatal_finish:
+        .global gk_machine_transition_terminal_validate_report_fatal
+        .type gk_machine_transition_terminal_validate_report_fatal,@function
+gk_machine_transition_terminal_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_terminal_validate_report_fatal,.-gk_machine_transition_terminal_validate_report_fatal
 gk_machine_transition_fatal_terminal:
+        .global gk_machine_transition_count_increment_report_fatal
+        .type gk_machine_transition_count_increment_report_fatal,@function
+gk_machine_transition_count_increment_report_fatal:
+        illegal
+        .size gk_machine_transition_count_increment_report_fatal,.-gk_machine_transition_count_increment_report_fatal
+        .global gk_machine_transition_helper_dirty_marker_d1_report_fatal
+        .type gk_machine_transition_helper_dirty_marker_d1_report_fatal,@function
+gk_machine_transition_helper_dirty_marker_d1_report_fatal:
+        illegal
+        .size gk_machine_transition_helper_dirty_marker_d1_report_fatal,.-gk_machine_transition_helper_dirty_marker_d1_report_fatal
+        .global gk_machine_transition_helper_marker_validate_report_fatal
+        .type gk_machine_transition_helper_marker_validate_report_fatal,@function
+gk_machine_transition_helper_marker_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_helper_marker_validate_report_fatal,.-gk_machine_transition_helper_marker_validate_report_fatal
+        .global gk_machine_transition_primary_marker_validate_report_fatal
+        .type gk_machine_transition_primary_marker_validate_report_fatal,@function
+gk_machine_transition_primary_marker_validate_report_fatal:
+        illegal
+        .size gk_machine_transition_primary_marker_validate_report_fatal,.-gk_machine_transition_primary_marker_validate_report_fatal
+        .global macro_gk_mt_primary_marker_report_fatal
+        .type macro_gk_mt_primary_marker_report_fatal,@function
+macro_gk_mt_primary_marker_report_fatal:
+        illegal
+        .size macro_gk_mt_primary_marker_report_fatal,.-macro_gk_mt_primary_marker_report_fatal
 gk_machine_transition_fatal_marker:
+        .global gk_machine_transition_event_arm_report_fatal
+        .type gk_machine_transition_event_arm_report_fatal,@function
+gk_machine_transition_event_arm_report_fatal:
+        illegal
+        .size gk_machine_transition_event_arm_report_fatal,.-gk_machine_transition_event_arm_report_fatal
+        .global gk_machine_transition_event_step_finish_report_fatal
+        .type gk_machine_transition_event_step_finish_report_fatal,@function
+gk_machine_transition_event_step_finish_report_fatal:
+        illegal
+        .size gk_machine_transition_event_step_finish_report_fatal,.-gk_machine_transition_event_step_finish_report_fatal
 gk_machine_transition_fatal_event:
         .global gk_machine_transition_fatal
+        .global gk_machine_transition_fatal_abort_only_report
+        .type gk_machine_transition_fatal_abort_only_report,@function
+gk_machine_transition_fatal_abort_only_report:
+        illegal
+        .size gk_machine_transition_fatal_abort_only_report,.-gk_machine_transition_fatal_abort_only_report
+        .global gk_machine_transition_fatal_abort_report
+        .type gk_machine_transition_fatal_abort_report,@function
+gk_machine_transition_fatal_abort_report:
+        illegal
+        .size gk_machine_transition_fatal_abort_report,.-gk_machine_transition_fatal_abort_report
+        .global gk_machine_transition_fatal_claimed_report
+        .type gk_machine_transition_fatal_claimed_report,@function
+gk_machine_transition_fatal_claimed_report:
+        illegal
+        .size gk_machine_transition_fatal_claimed_report,.-gk_machine_transition_fatal_claimed_report
+        .global gk_machine_transition_fatal_release_abort_d0_report
+        .type gk_machine_transition_fatal_release_abort_d0_report,@function
+gk_machine_transition_fatal_release_abort_d0_report:
+        illegal
+        .size gk_machine_transition_fatal_release_abort_d0_report,.-gk_machine_transition_fatal_release_abort_d0_report
+        .global gk_machine_transition_fatal_report
+        .type gk_machine_transition_fatal_report,@function
+gk_machine_transition_fatal_report:
+        illegal
+        .size gk_machine_transition_fatal_report,.-gk_machine_transition_fatal_report
+        .global gk_stock_part_event_publish_report_fatal
+        .type gk_stock_part_event_publish_report_fatal,@function
+gk_stock_part_event_publish_report_fatal:
+        illegal
+        .size gk_stock_part_event_publish_report_fatal,.-gk_stock_part_event_publish_report_fatal
 gk_machine_transition_fatal:
         illegal
-        bra.s gk_machine_transition_fatal
+        bra.s gk_machine_transition_fatal_report

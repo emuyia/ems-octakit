@@ -219,8 +219,8 @@ gk_stock_midi_ctrl2_single:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl2_single_lifecycle_active:
-        .incbin "stock/0251.bin", 0, 4
-        .incbin "stock/0251.bin", 4, 4
+        .incbin "stock/0252.bin", 0, 4
+        .incbin "stock/0252.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -266,8 +266,8 @@ gk_stock_midi_ctrl2_direct:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl2_direct_lifecycle_active:
-        .incbin "stock/0252.bin", 0, 4
-        .incbin "stock/0252.bin", 4, 4
+        .incbin "stock/0253.bin", 0, 4
+        .incbin "stock/0253.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -283,7 +283,7 @@ gk_stock_midi_ctrl2_direct:
         move.l  %d0,-(%sp)
         .global gk_midi_ctrl2_direct_stock_call
 gk_midi_ctrl2_direct_stock_call:
-        .incbin "stock/0253.bin", 0, 6
+        .incbin "stock/0254.bin", 0, 6
         move.l  %d0,56(%sp)
         move.l  8(%sp),%d0
         lea     12(%sp),%sp
@@ -311,8 +311,8 @@ gk_stock_midi_ctrl2_commit:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl2_commit_lifecycle_active:
-        .incbin "stock/0254.bin", 0, 4
-        .incbin "stock/0254.bin", 4, 4
+        .incbin "stock/0255.bin", 0, 4
+        .incbin "stock/0255.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -360,8 +360,8 @@ gk_stock_midi_ctrl1_single:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl1_single_lifecycle_active:
-        .incbin "stock/0255.bin", 0, 4
-        .incbin "stock/0255.bin", 4, 4
+        .incbin "stock/0256.bin", 0, 4
+        .incbin "stock/0256.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -406,8 +406,8 @@ gk_stock_midi_ctrl1_direct:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl1_direct_lifecycle_active:
-        .incbin "stock/0256.bin", 0, 4
-        .incbin "stock/0256.bin", 4, 4
+        .incbin "stock/0257.bin", 0, 4
+        .incbin "stock/0257.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -423,7 +423,7 @@ gk_stock_midi_ctrl1_direct:
         move.l  %d0,-(%sp)
         .global gk_midi_ctrl1_direct_stock_call
 gk_midi_ctrl1_direct_stock_call:
-        .incbin "stock/0257.bin", 0, 6
+        .incbin "stock/0258.bin", 0, 6
         move.l  %d0,56(%sp)
         move.l  8(%sp),%d0
         lea     12(%sp),%sp
@@ -451,8 +451,8 @@ gk_stock_midi_ctrl1_commit:
         beq.w   gk_midi_ctrl_busy_early
         bra.w   gk_midi_ctrl_fatal
 .Lgk_midi_ctrl1_commit_lifecycle_active:
-        .incbin "stock/0258.bin", 0, 4
-        .incbin "stock/0258.bin", 4, 4
+        .incbin "stock/0259.bin", 0, 4
+        .incbin "stock/0259.bin", 4, 4
         moveq   #0,%d0
         move.b  GK_STOCK_CURRENT_TRACK_PRIMARY,%d0
         bsr.w   gk_midi_ctrl_prepare
@@ -512,7 +512,7 @@ gk_midi_ctrl2_single_write_marker:
         move.l  (%sp)+,%d0
         .global gk_midi_ctrl2_single_stock_dirty_store
 gk_midi_ctrl2_single_stock_dirty_store:
-        .incbin "stock/0259.bin", 0, 6
+        .incbin "stock/0260.bin", 0, 6
         rts
         .size   gk_midi_ctrl2_single_write_marker,.-gk_midi_ctrl2_single_write_marker
         .global gk_midi_ctrl2_direct_write_marker
@@ -538,7 +538,7 @@ gk_midi_ctrl2_direct_write_marker:
         move.l  (%sp)+,%d0
         .global gk_midi_ctrl2_direct_stock_dirty_store
 gk_midi_ctrl2_direct_stock_dirty_store:
-        .incbin "stock/0260.bin", 0, 6
+        .incbin "stock/0261.bin", 0, 6
         rts
         .size   gk_midi_ctrl2_direct_write_marker,.-gk_midi_ctrl2_direct_write_marker
         .global gk_midi_ctrl1_single_write_marker
@@ -564,7 +564,7 @@ gk_midi_ctrl1_single_write_marker:
         move.l  (%sp)+,%d0
         .global gk_midi_ctrl1_single_stock_dirty_store
 gk_midi_ctrl1_single_stock_dirty_store:
-        .incbin "stock/0261.bin", 0, 6
+        .incbin "stock/0262.bin", 0, 6
         rts
         .size   gk_midi_ctrl1_single_write_marker,.-gk_midi_ctrl1_single_write_marker
         .global gk_midi_ctrl1_direct_write_marker
@@ -592,7 +592,7 @@ gk_midi_ctrl1_direct_write_marker:
         move.l  (%sp)+,%d0
         .global gk_midi_ctrl1_direct_stock_dirty_store
 gk_midi_ctrl1_direct_stock_dirty_store:
-        .incbin "stock/0262.bin", 0, 6
+        .incbin "stock/0263.bin", 0, 6
         rts
         .size   gk_midi_ctrl1_direct_write_marker,.-gk_midi_ctrl1_direct_write_marker
         .global gk_midi_ctrl2_commit_write_marker
@@ -630,7 +630,7 @@ gk_midi_ctrl2_commit_write_marker:
         move.l  (%sp)+,%d1
         .global gk_midi_ctrl2_commit_stock_dirty_store
 gk_midi_ctrl2_commit_stock_dirty_store:
-        .incbin "stock/0263.bin", 0, 6
+        .incbin "stock/0264.bin", 0, 6
         rts
         .size   gk_midi_ctrl2_commit_write_marker,.-gk_midi_ctrl2_commit_write_marker
         .global gk_midi_ctrl1_commit_write_marker
@@ -668,7 +668,7 @@ gk_midi_ctrl1_commit_write_marker:
         move.l  (%sp)+,%d1
         .global gk_midi_ctrl1_commit_stock_dirty_store
 gk_midi_ctrl1_commit_stock_dirty_store:
-        .incbin "stock/0264.bin", 0, 6
+        .incbin "stock/0265.bin", 0, 6
         rts
         .size   gk_midi_ctrl1_commit_write_marker,.-gk_midi_ctrl1_commit_write_marker
         .global gk_midi_ctrl_fatal

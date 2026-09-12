@@ -4,8 +4,8 @@
         .global gk_sequencer_latch_begin
         .type   gk_sequencer_latch_begin,@function
 gk_sequencer_latch_begin:
-        .incbin "stock/0161.bin", 0, 4
-        .incbin "stock/0161.bin", 4, 4
+        .incbin "stock/0162.bin", 0, 4
+        .incbin "stock/0162.bin", 4, 4
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
         jsr     gk_sequencer_engine_acquire
         tst.l   %d0
@@ -348,8 +348,8 @@ gk_audio_latch_ready:
         beq.s   .Lgk_audio_latch_ready_stable
         jmp     gk_pattern_queue_audio_handoff_ready
 .Lgk_audio_latch_ready_stable:
-        .incbin "stock/0162.bin", 0, 4
-        .incbin "stock/0162.bin", 4, 4
+        .incbin "stock/0163.bin", 0, 4
+        .incbin "stock/0163.bin", 4, 4
         moveq   #0,%d2
         move.w  __gk_lease_sidecars + GK_SIDECAR_SEQUENCER_LATCH_OFFSET,%d2
         move.l  %d2,%d0
@@ -450,8 +450,8 @@ gk_stock_sequencer_latch_begin:
         bne.s   .Lgk_stock_latch_begin_unavailable
         movem.l (%sp),%d0-%d3/%d5-%d7/%a0-%a6
         lea     56(%sp),%sp
-        .incbin "stock/0163.bin", 0, 2
-        .incbin "stock/0163.bin", 2, 6
+        .incbin "stock/0164.bin", 0, 2
+        .incbin "stock/0164.bin", 2, 6
         jmp     GK_STOCK_SEQUENCER_LATCH_BEGIN_CONTINUE
 .Lgk_stock_latch_begin_unavailable:
         move.l  __gk_lifecycle_state,%d0
@@ -459,8 +459,8 @@ gk_stock_sequencer_latch_begin:
         bne.s   gk_sequencer_latch_begin_fatal
         movem.l (%sp),%d0-%d3/%d5-%d7/%a0-%a6
         lea     56(%sp),%sp
-        .incbin "stock/0164.bin", 0, 2
-        .incbin "stock/0164.bin", 2, 6
+        .incbin "stock/0165.bin", 0, 2
+        .incbin "stock/0165.bin", 2, 6
         jmp     GK_STOCK_SEQUENCER_LATCH_BEGIN_CONTINUE
         .global gk_sequencer_latch_begin_fatal
 gk_sequencer_latch_begin_fatal:
@@ -489,9 +489,19 @@ gk_stock_sequencer_latch_commit_stock_only:
 .Lgk_stock_latch_commit_quiesced:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0165.bin", 0, 6
+        .incbin "stock/0166.bin", 0, 6
         jmp     GK_STOCK_SEQUENCER_LATCH_COMMIT_CONTINUE
         .global gk_sequencer_latch_commit_fatal
+        .global gk_sequencer_latch_final_store_hook_report_fatal
+        .type gk_sequencer_latch_final_store_hook_report_fatal,@function
+gk_sequencer_latch_final_store_hook_report_fatal:
+        illegal
+        .size gk_sequencer_latch_final_store_hook_report_fatal,.-gk_sequencer_latch_final_store_hook_report_fatal
+        .global gk_sequencer_latch_queue_commit_deferred_report_fatal
+        .type gk_sequencer_latch_queue_commit_deferred_report_fatal,@function
+gk_sequencer_latch_queue_commit_deferred_report_fatal:
+        illegal
+        .size gk_sequencer_latch_queue_commit_deferred_report_fatal,.-gk_sequencer_latch_queue_commit_deferred_report_fatal
 gk_sequencer_latch_commit_fatal:
         illegal
         bra.s   gk_sequencer_latch_commit_fatal
@@ -499,7 +509,7 @@ gk_sequencer_latch_commit_fatal:
         .global gk_stock_audio_latch_gate
         .type   gk_stock_audio_latch_gate,@function
 gk_stock_audio_latch_gate:
-        .incbin "stock/0166.bin", 0, 6
+        .incbin "stock/0167.bin", 0, 6
         beq.s   .Lgk_stock_audio_gate_continue
         lea     -12(%sp),%sp
         movem.l %d1/%a0-%a1,(%sp)
@@ -507,7 +517,7 @@ gk_stock_audio_latch_gate:
         bmi.s   .Lgk_stock_audio_gate_skip_restore
         movem.l (%sp),%d1/%a0-%a1
         lea     12(%sp),%sp
-        .incbin "stock/0167.bin", 0, 6
+        .incbin "stock/0168.bin", 0, 6
 .Lgk_stock_audio_gate_continue:
         jmp     GK_STOCK_AUDIO_LATCH_GATE_CONTINUE
 .Lgk_stock_audio_gate_skip_restore:
@@ -524,7 +534,7 @@ gk_stock_audio_scene_a_store:
         moveq   #0x10,%d1
         bsr.w   gk_audio_latch_store_byte
         tst.l   %d0
-        bne.s   gk_audio_latch_store_fatal
+        bne.s   gk_stock_audio_scene_a_store_report_fatal
         lea     GK_STOCK_AUDIO_SCENE_A_VALUE,%a1
         jmp     GK_STOCK_AUDIO_SCENE_A_CONTINUE
         .size   gk_stock_audio_scene_a_store,.-gk_stock_audio_scene_a_store
@@ -536,11 +546,21 @@ gk_stock_audio_scene_b_store:
         moveq   #0x11,%d1
         bsr.w   gk_audio_latch_store_byte
         tst.l   %d0
-        bne.s   gk_audio_latch_store_fatal
+        bne.s   gk_stock_audio_scene_b_store_report_fatal
         lea     GK_STOCK_AUDIO_SCENE_B_VALUE,%a1
         jmp     GK_STOCK_AUDIO_SCENE_B_CONTINUE
         .size   gk_stock_audio_scene_b_store,.-gk_stock_audio_scene_b_store
         .global gk_audio_latch_store_fatal
+        .global gk_stock_audio_scene_a_store_report_fatal
+        .type gk_stock_audio_scene_a_store_report_fatal,@function
+gk_stock_audio_scene_a_store_report_fatal:
+        illegal
+        .size gk_stock_audio_scene_a_store_report_fatal,.-gk_stock_audio_scene_a_store_report_fatal
+        .global gk_stock_audio_scene_b_store_report_fatal
+        .type gk_stock_audio_scene_b_store_report_fatal,@function
+gk_stock_audio_scene_b_store_report_fatal:
+        illegal
+        .size gk_stock_audio_scene_b_store_report_fatal,.-gk_stock_audio_scene_b_store_report_fatal
 gk_audio_latch_store_fatal:
         illegal
         bra.s   gk_audio_latch_store_fatal

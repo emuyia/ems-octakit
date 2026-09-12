@@ -6,8 +6,8 @@
 gk_stock_latest_engine_context_validate:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         bhi.w   .Lgk_latest_range
-        .incbin "stock/0083.bin", 0, 4
-        .incbin "stock/0083.bin", 4, 4
+        .incbin "stock/0084.bin", 0, 4
+        .incbin "stock/0084.bin", 4, 4
         move.l  %d0,%d7
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
@@ -168,8 +168,8 @@ gk_ui_transition_prepare_entry_patch:
         .global gk_ui_transition_prepare_after_entry_compare
 gk_ui_transition_prepare_after_entry_compare:
         bhi.w   .Lgk_ui_transition_prepare_range
-        .incbin "stock/0084.bin", 0, 4
-        .incbin "stock/0084.bin", 4, 4
+        .incbin "stock/0085.bin", 0, 4
+        .incbin "stock/0085.bin", 4, 4
         move.l  %d0,%d7
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
@@ -369,7 +369,7 @@ gk_ui_transition_prepare_capture:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a4
         adda.l  %d0,%a4
-        .incbin "stock/0085.bin", 0, 6
+        .incbin "stock/0086.bin", 0, 6
         btst    #7,%d2
         bne.s   .Lgk_ui_transition_prepare_bank_pointer_valid
         cmpa.l  %a4,%a0
@@ -498,8 +498,8 @@ gk_ui_transition_prepare_corrupt:
 gk_ui_transition_event_begin:
         tst.l   %a0
         beq.w   .Lgk_ui_event_invalid_fast
-        .incbin "stock/0086.bin", 0, 4
-        .incbin "stock/0086.bin", 4, 4
+        .incbin "stock/0087.bin", 0, 4
+        .incbin "stock/0087.bin", 4, 4
         movea.l %a0,%a5
         lea     __gk_lease_sidecars,%a0
         bsr.w   gk_selector_acquire
@@ -527,7 +527,7 @@ gk_ui_transition_event_begin:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0087.bin", 0, 6
+        .incbin "stock/0088.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w   .Lgk_ui_event_release_busy
         move.l  %d4,%d0
@@ -740,7 +740,7 @@ gk_stock_part_event_publish:
         move.l  %a6,%d0
         cmp.l   %d6,%d0
         beq.s   .Lgk_stock_part_event_machine_owner_ok
-        jmp     gk_machine_transition_fatal
+        jmp     gk_stock_part_event_publish_report_fatal
 .Lgk_stock_part_event_machine_owner_ok:
         moveq   #0,%d2
 .Lgk_stock_part_event_track_loop:
@@ -766,12 +766,12 @@ gk_stock_part_event_machine_return:
         bne.s   .Lgk_stock_part_event_track_loop
         .global gk_stock_part_event_commit_call
 gk_stock_part_event_commit_call:
-        .incbin "stock/0088.bin", 0, 6
-        .incbin "stock/0088.bin", 6, 2
+        .incbin "stock/0089.bin", 0, 6
+        .incbin "stock/0089.bin", 6, 2
         .global gk_stock_part_event_transition_refresh_call
 gk_stock_part_event_transition_refresh_call:
-        .incbin "stock/0088.bin", 8, 6
-        .incbin "stock/0088.bin", 14, 2
+        .incbin "stock/0089.bin", 8, 6
+        .incbin "stock/0089.bin", 14, 2
         jsr     gk_machine_transition_finish
         bra.s   .Lgk_stock_part_event_dirty
 .Lgk_stock_part_event_equal:
@@ -790,17 +790,17 @@ gk_stock_part_event_equal_b_call:
         bne.s   .Lgk_stock_part_event_dirty_loop
         .global gk_stock_part_event_redraw_call
 gk_stock_part_event_redraw_call:
-        .incbin "stock/0089.bin", 0, 6
-        .incbin "stock/0090.bin", 0, 4
+        .incbin "stock/0090.bin", 0, 6
+        .incbin "stock/0091.bin", 0, 4
         .global gk_stock_part_event_track_redraw_call
 gk_stock_part_event_track_redraw_call:
-        .incbin "stock/0090.bin", 4, 6
+        .incbin "stock/0091.bin", 4, 6
         addq.l  #4,%sp
-        .incbin "stock/0091.bin", 0, 6
-        .incbin "stock/0091.bin", 6, 6
-        .incbin "stock/0091.bin", 12, 6
-        .incbin "stock/0091.bin", 18, 4
-        .incbin "stock/0091.bin", 22, 6
+        .incbin "stock/0092.bin", 0, 6
+        .incbin "stock/0092.bin", 6, 6
+        .incbin "stock/0092.bin", 12, 6
+        .incbin "stock/0092.bin", 18, 4
+        .incbin "stock/0092.bin", 22, 6
         addq.l  #4,%sp
         pea     (-1).w
         jsr     GK_STOCK_PART_EVENT_REFRESH_E

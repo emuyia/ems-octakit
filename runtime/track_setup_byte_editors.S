@@ -910,29 +910,29 @@ gk_track_setup_byte_busy_return:
         .global gk_track_setup_playback_trampoline
         .type   gk_track_setup_playback_trampoline,@function
 gk_track_setup_playback_trampoline:
-        .incbin "stock/0356.bin", 0, 4
-        .incbin "stock/0356.bin", 4, 4
+        .incbin "stock/0357.bin", 0, 4
+        .incbin "stock/0357.bin", 4, 4
         jmp     GK_STOCK_PLAYBACK_SETUP_CONTINUE
         .size   gk_track_setup_playback_trampoline,.-gk_track_setup_playback_trampoline
         .global gk_track_setup_effect2_trampoline
         .type   gk_track_setup_effect2_trampoline,@function
 gk_track_setup_effect2_trampoline:
-        .incbin "stock/0357.bin", 0, 4
-        .incbin "stock/0357.bin", 4, 4
+        .incbin "stock/0358.bin", 0, 4
+        .incbin "stock/0358.bin", 4, 4
         jmp     GK_STOCK_EFFECT2_SETUP_CONTINUE
         .size   gk_track_setup_effect2_trampoline,.-gk_track_setup_effect2_trampoline
         .global gk_track_setup_effect1_trampoline
         .type   gk_track_setup_effect1_trampoline,@function
 gk_track_setup_effect1_trampoline:
-        .incbin "stock/0358.bin", 0, 4
-        .incbin "stock/0358.bin", 4, 4
+        .incbin "stock/0359.bin", 0, 4
+        .incbin "stock/0359.bin", 4, 4
         jmp     GK_STOCK_EFFECT1_SETUP_CONTINUE
         .size   gk_track_setup_effect1_trampoline,.-gk_track_setup_effect1_trampoline
         .global gk_track_setup_amp_trampoline
         .type   gk_track_setup_amp_trampoline,@function
 gk_track_setup_amp_trampoline:
-        .incbin "stock/0359.bin", 0, 4
-        .incbin "stock/0359.bin", 4, 4
+        .incbin "stock/0360.bin", 0, 4
+        .incbin "stock/0360.bin", 4, 4
         jmp     GK_STOCK_AMP_SETUP_CONTINUE
         .size   gk_track_setup_amp_trampoline,.-gk_track_setup_amp_trampoline
         .type   gk_track_setup_byte_marker_validate,@function
@@ -1137,7 +1137,7 @@ gk_track_setup_byte_write_marker:
         lea     GK_TSBM_SAVED_BYTES(%sp),%sp
         .global gk_track_setup_byte_stock_dirty_store_d1
 gk_track_setup_byte_stock_dirty_store_d1:
-        .incbin "stock/0360.bin", 0, 6
+        .incbin "stock/0361.bin", 0, 6
         rts
 .Lgk_tsbm_restore_playback:
         move.w  GK_TSBM_SR(%sp),%d0
@@ -1146,6 +1146,6 @@ gk_track_setup_byte_stock_dirty_store_d1:
         lea     GK_TSBM_SAVED_BYTES(%sp),%sp
         .global gk_track_setup_byte_stock_dirty_store_d5
 gk_track_setup_byte_stock_dirty_store_d5:
-        .incbin "stock/0361.bin", 0, 6
+        .incbin "stock/0362.bin", 0, 6
         rts
         .size   gk_track_setup_byte_write_marker,.-gk_track_setup_byte_write_marker

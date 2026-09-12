@@ -6,8 +6,8 @@
 gk_physical_validate:
         cmpi.l  #GK_PHYSICAL_COUNT - 1,%d0
         bhi.w   .Lgk_physical_validate_range
-        .incbin "stock/0092.bin", 0, 4
-        .incbin "stock/0092.bin", 4, 4
+        .incbin "stock/0093.bin", 0, 4
+        .incbin "stock/0093.bin", 4, 4
         move.l  %d0,%d2
         move.l  %d2,%d0
         lsl.l   #2,%d0
@@ -139,8 +139,8 @@ gk_physical_acquire:
         bhi.w   .Lgk_physical_acquire_range
         cmpi.l  #3,%d1
         bhi.w   .Lgk_physical_acquire_range
-        .incbin "stock/0093.bin", 0, 4
-        .incbin "stock/0093.bin", 4, 4
+        .incbin "stock/0094.bin", 0, 4
+        .incbin "stock/0094.bin", 4, 4
         move.l  %d0,%d2
         lsl.l   #2,%d2
         add.l   %d1,%d2
@@ -177,9 +177,9 @@ gk_physical_acquire_reader_publication:
         moveq   #GK_ERR_OVERFLOW,%d0
 .Lgk_physical_acquire_restore:
         move.w  %d4,%sr
-        .incbin "stock/0094.bin", 0, 4
-        .incbin "stock/0094.bin", 4, 4
-        .incbin "stock/0094.bin", 8, 2
+        .incbin "stock/0095.bin", 0, 4
+        .incbin "stock/0095.bin", 4, 4
+        .incbin "stock/0095.bin", 8, 2
 .Lgk_physical_acquire_range:
         moveq   #GK_ERR_RANGE,%d0
         rts
@@ -194,8 +194,8 @@ gk_physical_reserve:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d1
         bhi.w   .Lgk_reserve_range
 .Lgk_reserve_arguments_ok:
-        .incbin "stock/0095.bin", 0, 4
-        .incbin "stock/0095.bin", 4, 4
+        .incbin "stock/0096.bin", 0, 4
+        .incbin "stock/0096.bin", 4, 4
         move.l  %d0,%d2
         lsl.l   #2,%d2
         move.l  %d1,%d3
@@ -367,8 +367,8 @@ gk_physical_reserve:
         move.l  (%a0,%d0.l),%a0
         move.l  %d6,%d0
 .Lgk_reserve_restore:
-        .incbin "stock/0096.bin", 0, 4
-        .incbin "stock/0096.bin", 4, 4
+        .incbin "stock/0097.bin", 0, 4
+        .incbin "stock/0097.bin", 4, 4
         rts
 .Lgk_reserve_range:
         moveq   #GK_ERR_RANGE,%d0
@@ -386,8 +386,8 @@ gk_stage_canonical:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d2
         bhi.w   .Lgk_stage_range
 .Lgk_stage_arguments_ok:
-        .incbin "stock/0097.bin", 0, 4
-        .incbin "stock/0097.bin", 4, 4
+        .incbin "stock/0098.bin", 0, 4
+        .incbin "stock/0098.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d3,%d0
@@ -411,8 +411,8 @@ gk_stage_canonical:
         move.l  %d5,%d1
         move.l  %a3,%a0
 .Lgk_stage_restore:
-        .incbin "stock/0098.bin", 0, 4
-        .incbin "stock/0098.bin", 4, 4
+        .incbin "stock/0099.bin", 0, 4
+        .incbin "stock/0099.bin", 4, 4
         rts
 .Lgk_stage_range:
         moveq   #GK_ERR_RANGE,%d0
@@ -425,8 +425,8 @@ gk_clone_stage_to_bank:
         bhi.w   .Lgk_clone_stage_range
         cmpi.l  #15,%d1
         bhi.w   .Lgk_clone_stage_range
-        .incbin "stock/0099.bin", 0, 4
-        .incbin "stock/0099.bin", 4, 4
+        .incbin "stock/0100.bin", 0, 4
+        .incbin "stock/0100.bin", 4, 4
         move.l  %d0,%d2
         move.l  %d1,%d3
         move.l %d2,%d0
@@ -530,8 +530,8 @@ gk_clone_stage_to_bank:
 .Lgk_clone_stage_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_clone_stage_restore:
-        .incbin "stock/0100.bin", 0, 4
-        .incbin "stock/0100.bin", 4, 4
+        .incbin "stock/0101.bin", 0, 4
+        .incbin "stock/0101.bin", 4, 4
         rts
 .Lgk_clone_stage_range:
         moveq   #GK_ERR_RANGE,%d0
@@ -544,8 +544,8 @@ gk_clone_to_bank:
         bhi.w   .Lgk_clone_to_bank_range
         cmpi.l  #15,%d1
         bhi.w   .Lgk_clone_to_bank_range
-        .incbin "stock/0101.bin", 0, 4
-        .incbin "stock/0101.bin", 4, 4
+        .incbin "stock/0102.bin", 0, 4
+        .incbin "stock/0102.bin", 4, 4
         move.l  %d0,%d2
         move.l  %d1,%d3
         move.l %d2,%d0
@@ -630,8 +630,8 @@ gk_clone_to_bank:
 .Lgk_clone_to_bank_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_clone_to_bank_restore:
-        .incbin "stock/0102.bin", 0, 4
-        .incbin "stock/0102.bin", 4, 4
+        .incbin "stock/0103.bin", 0, 4
+        .incbin "stock/0103.bin", 4, 4
         rts
 .Lgk_clone_to_bank_range:
         moveq   #GK_ERR_RANGE,%d0

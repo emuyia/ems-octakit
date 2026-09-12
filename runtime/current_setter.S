@@ -3,8 +3,8 @@
         .align  4
         .type   gk_current_setter_stable_resolve,@function
 gk_current_setter_stable_resolve:
-        .incbin "stock/0057.bin", 0, 4
-        .incbin "stock/0057.bin", 4, 4
+        .incbin "stock/0058.bin", 0, 4
+        .incbin "stock/0058.bin", 4, 4
         tst.l   __gk_lifecycle_state
         bne.w .Lgk_setter_stable_corrupt
         moveq   #0,%d0
@@ -50,7 +50,7 @@ gk_current_setter_stable_resolve:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0058.bin", 0, 6
+        .incbin "stock/0059.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w .Lgk_setter_stable_corrupt
         move.l  %d5,%d0
@@ -176,8 +176,8 @@ gk_current_setter_stable_resolve:
 gk_current_setter_pending_resolve:
         cmpi.l  #3,%d0
         bhi.w .Lgk_setter_pending_range
-        .incbin "stock/0059.bin", 0, 4
-        .incbin "stock/0059.bin", 4, 4
+        .incbin "stock/0060.bin", 0, 4
+        .incbin "stock/0060.bin", 4, 4
         move.l  %d0,%d4
         tst.l   __gk_lifecycle_state
         bne.w .Lgk_setter_pending_corrupt
@@ -230,7 +230,7 @@ gk_current_setter_pending_resolve:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0060.bin", 0, 6
+        .incbin "stock/0061.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w .Lgk_setter_pending_corrupt
         moveq   #0,%d2
@@ -364,9 +364,9 @@ gk_current_setter_pending_resolve:
 .Lgk_setter_pending_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_setter_pending_restore:
-        .incbin "stock/0061.bin", 0, 4
-        .incbin "stock/0061.bin", 4, 4
-        .incbin "stock/0061.bin", 8, 2
+        .incbin "stock/0062.bin", 0, 4
+        .incbin "stock/0062.bin", 4, 4
+        .incbin "stock/0062.bin", 8, 2
 .Lgk_setter_pending_range:
         moveq   #GK_ERR_RANGE,%d0
         rts
@@ -375,8 +375,8 @@ gk_current_setter_pending_resolve:
 gk_current_setter_lifecycle_pending_resolve:
         cmpi.l  #3,%d0
         bhi.w .Lgk_setter_lifecycle_range
-        .incbin "stock/0062.bin", 0, 4
-        .incbin "stock/0062.bin", 4, 4
+        .incbin "stock/0063.bin", 0, 4
+        .incbin "stock/0063.bin", 4, 4
         move.l  %d0,%d4
         tst.l   __gk_lifecycle_state
         beq.s .Lgk_project_load_diag_pass_78
@@ -506,7 +506,7 @@ gk_project_load_diag_pattern_primary:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0063.bin", 0, 6
+        .incbin "stock/0064.bin", 0, 6
         cmpa.l  %a2,%a0
         beq.s .Lgk_project_load_diag_pass_94
         .global gk_project_load_diag_bank_pointer
@@ -691,9 +691,9 @@ gk_project_load_diag_lease_sidecars:
 .Lgk_setter_lifecycle_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_setter_lifecycle_restore:
-        .incbin "stock/0064.bin", 0, 4
-        .incbin "stock/0064.bin", 4, 4
-        .incbin "stock/0064.bin", 8, 2
+        .incbin "stock/0065.bin", 0, 4
+        .incbin "stock/0065.bin", 4, 4
+        .incbin "stock/0065.bin", 8, 2
 .Lgk_setter_lifecycle_range:
         moveq   #GK_ERR_RANGE,%d0
         rts
@@ -702,8 +702,8 @@ gk_project_load_diag_lease_sidecars:
 gk_current_setter_refresh_pending_resolve:
         cmpi.l  #3,%d0
         bhi.w .Lgk_setter_refresh_range
-        .incbin "stock/0065.bin", 0, 4
-        .incbin "stock/0065.bin", 4, 4
+        .incbin "stock/0066.bin", 0, 4
+        .incbin "stock/0066.bin", 4, 4
         tst.l   __gk_lifecycle_state
         bne.w .Lgk_setter_refresh_corrupt
         moveq   #0,%d0
@@ -767,7 +767,7 @@ gk_current_setter_refresh_pending_resolve:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a2
         adda.l  %d0,%a2
-        .incbin "stock/0066.bin", 0, 6
+        .incbin "stock/0067.bin", 0, 6
         cmpa.l  %a2,%a0
         bne.w .Lgk_setter_refresh_corrupt
         move.l  %d4,%d0
@@ -879,9 +879,9 @@ gk_current_setter_refresh_pending_resolve:
 .Lgk_setter_refresh_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_setter_refresh_restore:
-        .incbin "stock/0067.bin", 0, 4
-        .incbin "stock/0067.bin", 4, 4
-        .incbin "stock/0067.bin", 8, 2
+        .incbin "stock/0068.bin", 0, 4
+        .incbin "stock/0068.bin", 4, 4
+        .incbin "stock/0068.bin", 8, 2
 .Lgk_setter_refresh_range:
         moveq   #GK_ERR_RANGE,%d0
         rts
@@ -1029,8 +1029,8 @@ gk_stock_current_pattern_part_set:
         beq.s   .Lgk_stock_setter_active
         bra.w gk_current_pattern_part_set_fatal
 .Lgk_stock_setter_active:
-        .incbin "stock/0068.bin", 0, 4
-        .incbin "stock/0068.bin", 4, 4
+        .incbin "stock/0069.bin", 0, 4
+        .incbin "stock/0069.bin", 4, 4
         move.l  48(%sp),%d4
         cmpi.l  #3,%d4
         bhi.w gk_current_pattern_part_set_fatal
@@ -1100,15 +1100,15 @@ gk_stock_current_pattern_part_set:
         tst.l   %d0
         bne.w gk_current_pattern_part_set_fatal
 .Lgk_stock_setter_success:
-        .incbin "stock/0069.bin", 0, 4
-        .incbin "stock/0069.bin", 4, 4
-        .incbin "stock/0069.bin", 8, 2
+        .incbin "stock/0070.bin", 0, 4
+        .incbin "stock/0070.bin", 4, 4
+        .incbin "stock/0070.bin", 8, 2
         .size   gk_stock_current_pattern_part_set,.-gk_stock_current_pattern_part_set
         .global gk_stock_current_pattern_part_set_trampoline
         .type   gk_stock_current_pattern_part_set_trampoline,@function
 gk_stock_current_pattern_part_set_trampoline:
-        .incbin "stock/0070.bin", 0, 2
-        .incbin "stock/0070.bin", 2, 4
+        .incbin "stock/0071.bin", 0, 2
+        .incbin "stock/0071.bin", 2, 4
         .global gk_stock_current_pattern_part_set_trampoline_jump
 gk_stock_current_pattern_part_set_trampoline_jump:
         jmp     GK_STOCK_CURRENT_PATTERN_PART_SET + 6
@@ -1121,8 +1121,8 @@ gk_stock_pattern_payload_store:
         beq.s   .Lgk_stock_pattern_store_active
         bra.w gk_current_pattern_part_set_fatal
 .Lgk_stock_pattern_store_active:
-        .incbin "stock/0071.bin", 0, 4
-        .incbin "stock/0071.bin", 4, 4
+        .incbin "stock/0072.bin", 0, 4
+        .incbin "stock/0072.bin", 4, 4
         move.l  48(%sp),%a6
         move.l  52(%sp),%d7
         tst.l   %a6
@@ -1173,15 +1173,15 @@ gk_stock_pattern_payload_store:
         moveq   #1,%d0
         move.b  %d0,__gk_pattern_kit_armed
 .Lgk_stock_pattern_store_pattern_kit_done:
-        .incbin "stock/0072.bin", 0, 4
-        .incbin "stock/0072.bin", 4, 4
-        .incbin "stock/0072.bin", 8, 2
+        .incbin "stock/0073.bin", 0, 4
+        .incbin "stock/0073.bin", 4, 4
+        .incbin "stock/0073.bin", 8, 2
         .size   gk_stock_pattern_payload_store,.-gk_stock_pattern_payload_store
         .global gk_stock_pattern_payload_store_trampoline
         .type   gk_stock_pattern_payload_store_trampoline,@function
 gk_stock_pattern_payload_store_trampoline:
-        .incbin "stock/0073.bin", 0, 4
-        .incbin "stock/0073.bin", 4, 4
+        .incbin "stock/0074.bin", 0, 4
+        .incbin "stock/0074.bin", 4, 4
         .global gk_stock_pattern_payload_store_trampoline_jump
 gk_stock_pattern_payload_store_trampoline_jump:
         jmp     GK_STOCK_PATTERN_PAYLOAD_STORE_CONTINUE

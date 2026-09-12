@@ -21,8 +21,8 @@ gk_lfo_store_release_abort_fatal:
 gk_stock_lfo_store:
         tst.l   __gk_lifecycle_state
         bne.w   gk_lfo_store_fatal
-        .incbin "stock/0246.bin", 0, 4
-        .incbin "stock/0246.bin", 4, 4
+        .incbin "stock/0247.bin", 0, 4
+        .incbin "stock/0247.bin", 4, 4
         movea.l 48(%sp),%a2
         movea.l 52(%sp),%a5
         movea.l 56(%sp),%a4
@@ -174,15 +174,15 @@ gk_lfo_store_stock_call:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_lfo_store_fatal
-        .incbin "stock/0247.bin", 0, 4
-        .incbin "stock/0247.bin", 4, 4
-        .incbin "stock/0247.bin", 8, 2
+        .incbin "stock/0248.bin", 0, 4
+        .incbin "stock/0248.bin", 4, 4
+        .incbin "stock/0248.bin", 8, 2
         .size   gk_stock_lfo_store,.-gk_stock_lfo_store
         .global gk_stock_lfo_store_trampoline
         .type   gk_stock_lfo_store_trampoline,@function
 gk_stock_lfo_store_trampoline:
-        .incbin "stock/0248.bin", 0, 4
-        .incbin "stock/0248.bin", 4, 4
+        .incbin "stock/0249.bin", 0, 4
+        .incbin "stock/0249.bin", 4, 4
         .global gk_stock_lfo_store_trampoline_jump
 gk_stock_lfo_store_trampoline_jump:
         jmp     GK_STOCK_LFO_STORE_CONTINUE

@@ -11,8 +11,8 @@ gk_persistence_snapshot_begin:
 gk_persistence_work_snapshot_begin:
         moveq   #1,%d0
 .Lgk_snapshot_begin_common:
-        .incbin "stock/0189.bin", 0, 4
-        .incbin "stock/0189.bin", 4, 4
+        .incbin "stock/0190.bin", 0, 4
+        .incbin "stock/0190.bin", 4, 4
         move.l  %d0,%d5
         move.w  %sr,%d4
         move.w  #0x2700,%sr

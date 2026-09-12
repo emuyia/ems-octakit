@@ -10,8 +10,8 @@ gk_selector_begin_physical:
         bhi.w   .Lgk_begin_physical_range
         cmpi.l  #0xff,%d2
         bhi.w   .Lgk_begin_physical_range
-        .incbin "stock/0103.bin", 0, 4
-        .incbin "stock/0103.bin", 4, 4
+        .incbin "stock/0104.bin", 0, 4
+        .incbin "stock/0104.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d2,%d5
@@ -55,8 +55,8 @@ gk_selector_commit_physical_part:
         bhi.w   .Lgk_commit_physical_range
         cmpi.l  #15,%d1
         bhi.w   .Lgk_commit_physical_range
-        .incbin "stock/0104.bin", 0, 4
-        .incbin "stock/0104.bin", 4, 4
+        .incbin "stock/0105.bin", 0, 4
+        .incbin "stock/0105.bin", 4, 4
         move.l  %d0,%d6
         move.l  %d1,%d7
         lsl.l   #2,%d7
@@ -204,8 +204,8 @@ gk_selector_physical_sidecar_publication:
 .Lgk_commit_physical_busy:
         moveq   #GK_ERR_BUSY,%d0
 .Lgk_commit_physical_restore:
-        .incbin "stock/0105.bin", 0, 4
-        .incbin "stock/0105.bin", 4, 4
+        .incbin "stock/0106.bin", 0, 4
+        .incbin "stock/0106.bin", 4, 4
         rts
 .Lgk_commit_physical_range:
         moveq   #GK_ERR_RANGE,%d0
@@ -218,8 +218,8 @@ gk_selector_acquire_physical:
         bhi.w   .Lgk_acquire_physical_range
         cmpi.l  #3,%d1
         bhi.w   .Lgk_acquire_physical_range
-        .incbin "stock/0106.bin", 0, 4
-        .incbin "stock/0106.bin", 4, 4
+        .incbin "stock/0107.bin", 0, 4
+        .incbin "stock/0107.bin", 4, 4
         move.l  %d0,%d2
         move.l  %d1,%d3
         bsr.w   gk_selector_acquire
@@ -255,8 +255,8 @@ gk_selector_acquire_physical:
         .global gk_midi_refresh_begin
         .type   gk_midi_refresh_begin,@function
 gk_midi_refresh_begin:
-        .incbin "stock/0107.bin", 0, 4
-        .incbin "stock/0107.bin", 4, 4
+        .incbin "stock/0108.bin", 0, 4
+        .incbin "stock/0108.bin", 4, 4
         moveq   #0,%d3
         move.b  GK_STOCK_SEQUENCER_CURRENT_BANK,%d3
         cmpi.l  #15,%d3
@@ -306,12 +306,12 @@ gk_stock_midi_refresh_begin:
         beq.s   .Lgk_stock_midi_begin_publish
         move.l  __gk_lifecycle_state,%d0
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_midi_refresh_fatal
+        bne.w   gk_stock_midi_refresh_begin_report_fatal
 .Lgk_stock_midi_begin_publish:
         movem.l (%sp),%d0-%d1/%d3-%d7/%a0-%a6
         lea     56(%sp),%sp
-        .incbin "stock/0108.bin", 0, 2
-        .incbin "stock/0108.bin", 2, 6
+        .incbin "stock/0109.bin", 0, 2
+        .incbin "stock/0109.bin", 2, 6
         jmp     GK_STOCK_MIDI_REFRESH_BEGIN_CONTINUE
         .size   gk_stock_midi_refresh_begin,.-gk_stock_midi_refresh_begin
         .global gk_stock_midi_refresh_commit
@@ -332,7 +332,7 @@ gk_stock_midi_refresh_commit:
         lea     GK_STOCK_MIDI_REFRESH_PART,%a1
         bsr.w   gk_selector_commit_physical_part
         tst.l   %d0
-        bne.w   gk_midi_refresh_fatal
+        bne.w   gk_stock_midi_refresh_commit_report_fatal
         bra.s   .Lgk_stock_midi_commit_restore
 .Lgk_stock_midi_commit_stock_only:
         move.b  %d0,GK_STOCK_MIDI_REFRESH_PART
@@ -362,17 +362,17 @@ gk_stock_midi_refresh_consume:
         move.l  %d0,%d4
         movem.l (%sp),%d0-%d3/%d5-%d7/%a0-%a6
         lea     56(%sp),%sp
-        .incbin "stock/0109.bin", 0, 6
-        .incbin "stock/0109.bin", 6, 6
-        .incbin "stock/0109.bin", 12, 2
-        .incbin "stock/0109.bin", 14, 6
-        .incbin "stock/0109.bin", 20, 2
-        .incbin "stock/0109.bin", 22, 6
-        .incbin "stock/0109.bin", 28, 2
+        .incbin "stock/0110.bin", 0, 6
+        .incbin "stock/0110.bin", 6, 6
+        .incbin "stock/0110.bin", 12, 2
+        .incbin "stock/0110.bin", 14, 6
+        .incbin "stock/0110.bin", 20, 2
+        .incbin "stock/0110.bin", 22, 6
+        .incbin "stock/0110.bin", 28, 2
         move.l  %d4,%d0
         bsr.w   gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_midi_refresh_fatal
+        bne.w   gk_stock_midi_refresh_consume_report_fatal
         move.l  (%sp)+,%d4
         jmp     GK_STOCK_MIDI_REFRESH_CONSUME_CONTINUE
 .Lgk_midi_consume_skip:
@@ -382,6 +382,21 @@ gk_stock_midi_refresh_consume:
         jmp     GK_STOCK_MIDI_REFRESH_CONSUME_CONTINUE
         .size   gk_stock_midi_refresh_consume,.-gk_stock_midi_refresh_consume
         .global gk_midi_refresh_fatal
+        .global gk_stock_midi_refresh_begin_report_fatal
+        .type gk_stock_midi_refresh_begin_report_fatal,@function
+gk_stock_midi_refresh_begin_report_fatal:
+        illegal
+        .size gk_stock_midi_refresh_begin_report_fatal,.-gk_stock_midi_refresh_begin_report_fatal
+        .global gk_stock_midi_refresh_commit_report_fatal
+        .type gk_stock_midi_refresh_commit_report_fatal,@function
+gk_stock_midi_refresh_commit_report_fatal:
+        illegal
+        .size gk_stock_midi_refresh_commit_report_fatal,.-gk_stock_midi_refresh_commit_report_fatal
+        .global gk_stock_midi_refresh_consume_report_fatal
+        .type gk_stock_midi_refresh_consume_report_fatal,@function
+gk_stock_midi_refresh_consume_report_fatal:
+        illegal
+        .size gk_stock_midi_refresh_consume_report_fatal,.-gk_stock_midi_refresh_consume_report_fatal
 gk_midi_refresh_fatal:
         illegal
         bra.s   gk_midi_refresh_fatal

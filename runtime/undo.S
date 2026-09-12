@@ -37,8 +37,8 @@ gk_undo_kit_active_payload:
         .global gk_undo_kit_capture_workspace
         .type   gk_undo_kit_capture_workspace,@function
 gk_undo_kit_capture_workspace:
-        .incbin "stock/0199.bin", 0, 4
-        .incbin "stock/0199.bin", 4, 4
+        .incbin "stock/0200.bin", 0, 4
+        .incbin "stock/0200.bin", 4, 4
         tst.b   __gk_workspace_bound
         beq.w   .Lgk_undo_workspace_ok
         tst.b   __gk_undo_kit_loading
@@ -144,8 +144,8 @@ gk_undo_kit_capture_workspace:
 gk_undo_kit_capture_save_target:
         cmpi.l  #GK_KIT_COUNT - 1,%d0
         bhi.w   .Lgk_undo_save_range
-        .incbin "stock/0200.bin", 0, 4
-        .incbin "stock/0200.bin", 4, 4
+        .incbin "stock/0201.bin", 0, 4
+        .incbin "stock/0201.bin", 4, 4
         move.l  %d0,%d2
         move.l  %d1,%d5
         tst.b   __gk_undo_kit_loading

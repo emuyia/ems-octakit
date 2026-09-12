@@ -21,8 +21,8 @@ gk_scene_parameter_release_abort_fatal:
 gk_stock_scene_parameter_write:
         tst.l   __gk_lifecycle_state
         bne.w   gk_scene_parameter_fatal
-        .incbin "stock/0275.bin", 0, 4
-        .incbin "stock/0275.bin", 4, 4
+        .incbin "stock/0276.bin", 0, 4
+        .incbin "stock/0276.bin", 4, 4
         movea.l 48(%sp),%a6
         movea.l 52(%sp),%a4
         movea.l 56(%sp),%a2
@@ -134,15 +134,15 @@ gk_scene_parameter_stock_call:
         tst.l   %d0
         bne.w   gk_scene_parameter_fatal
 .Lgk_scene_parameter_return:
-        .incbin "stock/0276.bin", 0, 4
-        .incbin "stock/0276.bin", 4, 4
-        .incbin "stock/0276.bin", 8, 2
+        .incbin "stock/0277.bin", 0, 4
+        .incbin "stock/0277.bin", 4, 4
+        .incbin "stock/0277.bin", 8, 2
         .size   gk_stock_scene_parameter_write,.-gk_stock_scene_parameter_write
         .global gk_stock_scene_parameter_write_trampoline
         .type   gk_stock_scene_parameter_write_trampoline,@function
 gk_stock_scene_parameter_write_trampoline:
-        .incbin "stock/0277.bin", 0, 4
-        .incbin "stock/0277.bin", 4, 4
+        .incbin "stock/0278.bin", 0, 4
+        .incbin "stock/0278.bin", 4, 4
         .global gk_stock_scene_parameter_write_trampoline_jump
 gk_stock_scene_parameter_write_trampoline_jump:
         jmp     GK_STOCK_SCENE_PARAMETER_CONTINUE

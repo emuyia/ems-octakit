@@ -166,7 +166,7 @@ gk_stock_scene_a_selector:
         bne.w   GK_SA_ACQUIRE_MISMATCH_FATAL
         move.l  GK_SA_PART(%sp),%d0
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
-        .incbin "stock/0311.bin", 0, 6
+        .incbin "stock/0312.bin", 0, 6
         adda.l  %d0,%a0
         adda.l  #GK_STOCK_BANK_WORKING_OFFSET,%a0
         cmpa.l  %a1,%a0
@@ -193,9 +193,9 @@ gk_stock_scene_a_selector:
         .global gk_stock_scene_a_selector_trampoline
         .type   gk_stock_scene_a_selector_trampoline,@function
 gk_stock_scene_a_selector_trampoline:
-        .incbin "stock/0312.bin", 0, 2
-        .incbin "stock/0312.bin", 2, 2
-        .incbin "stock/0312.bin", 4, 4
+        .incbin "stock/0313.bin", 0, 2
+        .incbin "stock/0313.bin", 2, 2
+        .incbin "stock/0313.bin", 4, 4
         jmp     GK_SCENE_A_SELECTOR_CONTINUE
         .size   gk_stock_scene_a_selector_trampoline,.-gk_stock_scene_a_selector_trampoline
         .type   gk_scene_a_selector_validate_stock_publication,@function
@@ -226,7 +226,7 @@ gk_scene_a_selector_validate_stock_publication:
         moveq   #1,%d1
         move.l  GK_SA_PART(%a6),%d0
         lsl.l   %d0,%d1
-        .incbin "stock/0313.bin", 0, 6
+        .incbin "stock/0314.bin", 0, 6
         adda.l  #0x95048,%a0
         moveq   #0,%d0
         move.b  (%a0),%d0
@@ -236,7 +236,7 @@ gk_scene_a_selector_validate_stock_publication:
         move.b  GK_SCENE_A_SELECTOR_WORKING_EDITED,%d0
         and.l   %d1,%d0
         beq.w   .Lgk_scene_a_selector_publication_invalid
-        .incbin "stock/0314.bin", 0, 6
+        .incbin "stock/0315.bin", 0, 6
         move.l  #0x9b332,%d0
         move.l  (%a0,%d0.l),%d0
         cmpi.l  #1,%d0
@@ -317,14 +317,14 @@ gk_scene_a_selector_post_commit_check:
         movem.l (%sp),%d0-%d3/%a0-%a1
         lea     28(%sp),%sp
         movea.l GK_SA_SAVED_A6(%a6),%a6
-        .incbin "stock/0315.bin", 0, 2
-        .incbin "stock/0315.bin", 2, 2
-        .incbin "stock/0315.bin", 4, 6
         .incbin "stock/0316.bin", 0, 2
-        .incbin "stock/0316.bin", 2, 6
-        .incbin "stock/0316.bin", 8, 2
-        .incbin "stock/0316.bin", 10, 2
-        .byte 0x45,0xd1,0xdf,0x1c
+        .incbin "stock/0316.bin", 2, 2
+        .incbin "stock/0316.bin", 4, 6
+        .incbin "stock/0317.bin", 0, 2
+        .incbin "stock/0317.bin", 2, 6
+        .incbin "stock/0317.bin", 8, 2
+        .incbin "stock/0317.bin", 10, 2
+        .byte 0x45,0xd1,0xe0,0x08
         jmp     0x40052aa0
         .size   gk_stock_scene_a_selector_pre_refresh,.-gk_stock_scene_a_selector_pre_refresh
         .type   gk_scene_a_selector_release_committed,@function
@@ -404,8 +404,8 @@ gk_stock_scene_a_selector_finish:
         movem.l GK_SA_OUTPUT_D0(%a6),%d0-%d3/%a0-%a1
         move.w  %d4,%sr
         movem.l GK_SA_SAVED_D4(%a6),%d4-%d7/%a2-%a6
-        .incbin "stock/0317.bin", 0, 2
-        .incbin "stock/0317.bin", 2, 4
+        .incbin "stock/0318.bin", 0, 2
+        .incbin "stock/0318.bin", 2, 4
         jmp     GK_SCENE_A_SELECTOR_TAIL_CONTINUE
         .size   gk_stock_scene_a_selector_finish,.-gk_stock_scene_a_selector_finish
         .global gk_scene_a_selector_fatal

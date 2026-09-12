@@ -38,8 +38,8 @@ gk_ui_transition_retry_ensure:
 gk_ui_transition_context_retry_ensure:
         moveq   #1,%d0
 .Lgk_retry_entry:
-        .incbin "stock/0341.bin", 0, 4
-        .incbin "stock/0341.bin", 4, 4
+        .incbin "stock/0342.bin", 0, 4
+        .incbin "stock/0342.bin", 4, 4
         movea.l %d0,%a5
         move.w  %sr,%d2
         move.w  #0x2700,%sr

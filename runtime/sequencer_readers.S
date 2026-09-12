@@ -22,16 +22,16 @@ gk_sequencer_condition_quiesced_pointer:
 gk_stock_sequencer_condition_enter:
         move.l  %d6,-(%sp)
         move.l  %a4,-(%sp)
-        .incbin "stock/0168.bin", 0, 4
-        .incbin "stock/0168.bin", 4, 4
+        .incbin "stock/0169.bin", 0, 4
+        .incbin "stock/0169.bin", 4, 4
         move.l  36(%sp),%d5
         cmpi.l  #GK_SIDECAR_SEQUENCER_TRACK_COUNT - 1,%d5
-        bhi.w   gk_sequencer_reader_fatal
+        bhi.w   gk_stock_sequencer_condition_enter_report_fatal
         moveq   #-1,%d6
         move.l  __gk_lifecycle_state,%d0
         beq.s   .Lgk_condition_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_sequencer_reader_fatal
+        bne.w   gk_stock_sequencer_condition_enter_report_fatal
         bsr.w   gk_sequencer_condition_quiesced_pointer
         jmp     GK_STOCK_SEQUENCER_CONDITION_CONTINUE
 .Lgk_condition_active:
@@ -45,7 +45,7 @@ gk_stock_sequencer_condition_enter:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.s   .Lgk_condition_unavailable
         tst.l   %d0
-        bmi.w   gk_sequencer_reader_fatal
+        bmi.w   gk_stock_sequencer_condition_enter_report_fatal
         move.l  %d0,%d6
         movea.l %a0,%a4
         adda.l  #GK_STOCK_SEQUENCER_PART_CONDITION_OFFSET,%a4
@@ -64,7 +64,7 @@ gk_stock_sequencer_condition_return:
         bmi.s   .Lgk_condition_return_restore
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.w   gk_sequencer_reader_fatal
+        bne.w   gk_stock_sequencer_condition_return_report_fatal
 .Lgk_condition_return_restore:
         movem.l 20(%sp),%d2-%d5/%a2-%a3
         movea.l 44(%sp),%a4
@@ -98,17 +98,17 @@ gk_sequencer_advance_quiesced_pointer:
 gk_stock_sequencer_advance_enter:
         move.l  %a5,-(%sp)
         move.l  %a6,-(%sp)
-        .incbin "stock/0169.bin", 0, 4
-        .incbin "stock/0169.bin", 4, 4
+        .incbin "stock/0170.bin", 0, 4
+        .incbin "stock/0170.bin", 4, 4
         move.l  48(%sp),%d3
         movea.l 52(%sp),%a4
         cmpi.l  #GK_SIDECAR_SEQUENCER_TRACK_COUNT - 1,%d3
-        bhi.w   gk_sequencer_reader_fatal
+        bhi.w   gk_stock_sequencer_advance_enter_report_fatal
         movea.l #-1,%a6
         move.l  __gk_lifecycle_state,%d0
         beq.s   .Lgk_advance_active
         cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
-        bne.w   gk_sequencer_reader_fatal
+        bne.w   gk_stock_sequencer_advance_enter_report_fatal
         bsr.w   gk_sequencer_advance_quiesced_pointer
         jmp     GK_STOCK_SEQUENCER_ADVANCE_CONTINUE
 .Lgk_advance_active:
@@ -122,7 +122,7 @@ gk_stock_sequencer_advance_enter:
         cmpi.l  #GK_ERR_UPDATING,%d0
         beq.s   .Lgk_advance_unavailable
         tst.l   %d0
-        bmi.w   gk_sequencer_reader_fatal
+        bmi.w   gk_stock_sequencer_advance_enter_report_fatal
         movea.l %d0,%a6
         movea.l %a0,%a5
         adda.l  #GK_STOCK_SEQUENCER_PART_CONDITION_OFFSET,%a5
@@ -141,7 +141,7 @@ gk_stock_sequencer_advance_return:
         bmi.s   .Lgk_advance_return_restore
         jsr     gk_descriptor_release
         tst.l   %d0
-        bne.s   gk_sequencer_reader_fatal
+        bne.s   gk_stock_sequencer_advance_return_report_fatal
 .Lgk_advance_return_restore:
         movem.l 20(%sp),%d2-%d7/%a2-%a4
         movea.l 56(%sp),%a6
@@ -155,6 +155,26 @@ gk_stock_sequencer_advance_return:
         rts
         .size   gk_stock_sequencer_advance_return,.-gk_stock_sequencer_advance_return
         .global gk_sequencer_reader_fatal
+        .global gk_stock_sequencer_advance_enter_report_fatal
+        .type gk_stock_sequencer_advance_enter_report_fatal,@function
+gk_stock_sequencer_advance_enter_report_fatal:
+        illegal
+        .size gk_stock_sequencer_advance_enter_report_fatal,.-gk_stock_sequencer_advance_enter_report_fatal
+        .global gk_stock_sequencer_advance_return_report_fatal
+        .type gk_stock_sequencer_advance_return_report_fatal,@function
+gk_stock_sequencer_advance_return_report_fatal:
+        illegal
+        .size gk_stock_sequencer_advance_return_report_fatal,.-gk_stock_sequencer_advance_return_report_fatal
+        .global gk_stock_sequencer_condition_enter_report_fatal
+        .type gk_stock_sequencer_condition_enter_report_fatal,@function
+gk_stock_sequencer_condition_enter_report_fatal:
+        illegal
+        .size gk_stock_sequencer_condition_enter_report_fatal,.-gk_stock_sequencer_condition_enter_report_fatal
+        .global gk_stock_sequencer_condition_return_report_fatal
+        .type gk_stock_sequencer_condition_return_report_fatal,@function
+gk_stock_sequencer_condition_return_report_fatal:
+        illegal
+        .size gk_stock_sequencer_condition_return_report_fatal,.-gk_stock_sequencer_condition_return_report_fatal
 gk_sequencer_reader_fatal:
         illegal
         bra.s   gk_sequencer_reader_fatal
