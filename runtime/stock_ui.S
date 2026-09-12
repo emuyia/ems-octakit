@@ -527,6 +527,12 @@ gk_stock_engine_context_validate:
         .global gk_stock_load_kit_transaction
         .type   gk_stock_load_kit_transaction,@function
 gk_stock_load_kit_transaction:
+        move.l  %d3,-(%sp)
+        moveq   #0,%d3
+        bsr.w   .Lgk_stock_load_transaction_mode
+        move.l  (%sp)+,%d3
+        rts
+.Lgk_stock_load_transaction_mode:
         cmpi.l  #15,%d0
         bhi.w   .Lgk_stock_load_transaction_range
         cmpi.l  #15,%d1
@@ -552,6 +558,8 @@ gk_stock_load_kit_transaction:
         moveq   #1,%d0
         movea.l %d0,%a5
 .Lgk_stock_load_target_ready:
+        tst.l   %d3
+        bne.s   .Lgk_stock_load_force_assigned
         move.l  %d4,-(%sp)
         move.l  %d5,-(%sp)
         .global gk_stock_pattern_has_content_call
@@ -564,6 +572,14 @@ gk_stock_pattern_has_content_call:
         move.l  %d4,%d0
         move.l  %d5,%d1
         move.l  %d6,%d2
+        bra.s   .Lgk_stock_load_assignment_mode_ready
+.Lgk_stock_load_force_assigned:
+        moveq   #1,%d0
+        move.l  %d0,%a6
+        move.l  %d4,%d0
+        move.l  %d5,%d1
+        move.l  %d6,%d2
+.Lgk_stock_load_assignment_mode_ready:
         tst.l   %a5
         beq.s   .Lgk_stock_load_prepare_normal
         moveq   #GK_TRANSITION_UNDO_PREPARE_FLAGS,%d3
@@ -639,6 +655,16 @@ gk_stock_load_transaction_restore:
         moveq   #GK_ERR_RANGE,%d0
         rts
         .size   gk_stock_load_kit_transaction,.-gk_stock_load_kit_transaction
+        .align  4
+        .global gk_stock_load_kit_assign_transaction
+        .type   gk_stock_load_kit_assign_transaction,@function
+gk_stock_load_kit_assign_transaction:
+        move.l  %d3,-(%sp)
+        moveq   #1,%d3
+        bsr.w   .Lgk_stock_load_transaction_mode
+        move.l  (%sp)+,%d3
+        rts
+        .size   gk_stock_load_kit_assign_transaction,.-gk_stock_load_kit_assign_transaction
         .align  4
         .global gk_stock_load_kit_commit_unassigned
         .type   gk_stock_load_kit_commit_unassigned,@function
@@ -900,7 +926,7 @@ gk_load_confirm_context_validate_call:
         move.l  %d4,%d0
         move.l  %d5,%d1
         move.l  %d6,%d2
-        bsr.w   gk_stock_load_kit_transaction
+        bsr.w   gk_stock_load_kit_assign_transaction
         bra.s   .Lgk_load_confirm_finish
 .Lgk_load_confirm_invalid:
         moveq   #GK_ERR_INVALID,%d0

@@ -162,12 +162,65 @@ gk_func_part_yes_function_release:
         .type   gk_mki_bank_quick_save_dispatch,@function
 gk_mki_bank_quick_save_dispatch:
         move.l  %d0,-(%sp)
+        bsr.w   gk_recording_setup_owned
+        cmpi.l  #1,%d0
+        beq.s   .Lgk_mki_bank_recording_edit
+        move.l  (%sp)+,%d0
+        move.l  %d0,-(%sp)
         moveq   #GK_QUICK_SAVE_INITIATOR_BANK,%d0
         move.b  %d0,__gk_ui_state_pad + 2
         move.l  (%sp)+,%d0
         .byte 0x4e,0xf9
         .incbin "stock/0120.bin", 0, 4
+.Lgk_mki_bank_recording_edit:
+        move.l  (%sp)+,%d0
+        .global gk_recording_edit_menu_open_jump
+gk_recording_edit_menu_open_jump:
+        jmp     GK_STOCK_RECORDING_EDIT_MENU_OPEN
         .size   gk_mki_bank_quick_save_dispatch,.-gk_mki_bank_quick_save_dispatch
+        .align  4
+        .global gk_recording_setup_owned
+        .type   gk_recording_setup_owned,@function
+gk_recording_setup_owned:
+        lea     -20(%sp),%sp
+        movem.l %d1/%a0-%a3,(%sp)
+        movea.l GK_STOCK_RECORDING_SETUP_OBJECT,%a0
+        tst.l   %a0
+        beq.s   .Lgk_recording_setup_not_owned
+        lea     GK_STOCK_POPUP_OBJECTS,%a1
+        lea     GK_STOCK_POPUP_CALLBACKS,%a2
+        lea     GK_STOCK_POPUP_PRIORITIES,%a3
+        moveq   #GK_STOCK_POPUP_SLOT_COUNT,%d1
+.Lgk_recording_setup_object_scan:
+        cmpa.l  %a1,%a0
+        beq.s   .Lgk_recording_setup_object_found
+        adda.l  #GK_STOCK_POPUP_OBJECT_STRIDE,%a1
+        addq.l  #4,%a2
+        addq.l  #4,%a3
+        subq.l  #1,%d1
+        bne.s   .Lgk_recording_setup_object_scan
+        bra.s   .Lgk_recording_setup_not_owned
+.Lgk_recording_setup_object_found:
+        move.l  GK_STOCK_POPUP_OBJECT_FLAGS(%a1),%d0
+        btst    #GK_STOCK_POPUP_OBJECT_ACTIVE_BIT,%d0
+        beq.s   .Lgk_recording_setup_not_owned
+        move.l  (%a2),%d0
+        cmpi.l  #GK_STOCK_RECORDING_SETUP_CLOSE,%d0
+        bne.s   .Lgk_recording_setup_not_owned
+        move.l  (%a3),%d0
+        cmpi.l  #GK_STOCK_PART_POPUP_PRIORITY,%d0
+        bne.s   .Lgk_recording_setup_not_owned
+        movea.l #GK_STOCK_MKI_RECORDING_SETUP_INPUT_MAP,%a0
+        bsr.w   gk_stock_input_map_registered
+        cmpi.l  #1,%d0
+        beq.s   .Lgk_recording_setup_restore
+.Lgk_recording_setup_not_owned:
+        moveq   #0,%d0
+.Lgk_recording_setup_restore:
+        movem.l (%sp),%d1/%a0-%a3
+        lea     20(%sp),%sp
+        rts
+        .size   gk_recording_setup_owned,.-gk_recording_setup_owned
         .global gk_kit_menu_conflicting_owner_active
         .type   gk_kit_menu_conflicting_owner_active,@function
 gk_kit_menu_conflicting_owner_active:

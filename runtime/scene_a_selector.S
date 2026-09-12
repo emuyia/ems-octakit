@@ -324,7 +324,7 @@ gk_scene_a_selector_post_commit_check:
         .incbin "stock/0316.bin", 2, 6
         .incbin "stock/0316.bin", 8, 2
         .incbin "stock/0316.bin", 10, 2
-        .byte 0x45,0xd1,0xde,0x64
+        .byte 0x45,0xd1,0xdf,0x1c
         jmp     0x40052aa0
         .size   gk_stock_scene_a_selector_pre_refresh,.-gk_stock_scene_a_selector_pre_refresh
         .type   gk_scene_a_selector_release_committed,@function
