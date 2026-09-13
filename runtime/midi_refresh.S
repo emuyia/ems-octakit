@@ -98,8 +98,6 @@ gk_selector_commit_physical_part:
         adda.l %d0,%a1
         btst    #0,GK_DESC_FLAGS(%a1)
         beq.w   .Lgk_commit_physical_corrupt
-        btst    #2,GK_DESC_FLAGS(%a1)
-        bne.w   .Lgk_commit_physical_corrupt
         tst.l   GK_DESC_PAYLOAD(%a1)
         beq.w   .Lgk_commit_physical_corrupt
         moveq   #0,%d0
@@ -176,6 +174,9 @@ gk_selector_physical_commit_pre_mask:
 .Lgk_commit_physical_old_distinct:
         tst.w   GK_DESC_ROOTS(%a1)
         beq.w   .Lgk_commit_physical_masked_corrupt
+        bsr.w   gk_selector_outgoing_spill_validate
+        tst.l   %d0
+        bne.w   .Lgk_commit_physical_masked_corrupt
         .global gk_selector_physical_part_publication
 gk_selector_physical_part_publication:
 .Lgk_commit_physical_publish:
@@ -211,6 +212,50 @@ gk_selector_physical_sidecar_publication:
         moveq   #GK_ERR_RANGE,%d0
         rts
         .size   gk_selector_commit_physical_part,.-gk_selector_commit_physical_part
+        .global gk_selector_outgoing_spill_validate
+        .type   gk_selector_outgoing_spill_validate,@function
+gk_selector_outgoing_spill_validate:
+        btst    #0,GK_DESC_FLAGS(%a1)
+        beq.w   .Lgk_outgoing_spill_corrupt
+        btst    #7,GK_DESC_FLAGS(%a1)
+        bne.w   .Lgk_outgoing_spill_corrupt
+        tst.l   GK_DESC_PAYLOAD(%a1)
+        beq.w   .Lgk_outgoing_spill_corrupt
+        btst    #2,GK_DESC_FLAGS(%a1)
+        beq.w   .Lgk_outgoing_spill_success
+        moveq   #0,%d0
+        move.b  GK_DESC_FLAGS(%a1),%d0
+        andi.l  #0xe2,%d0
+        bne.w   .Lgk_outgoing_spill_corrupt
+        tst.l   GK_DESC_CANDIDATE(%a1)
+        bne.w   .Lgk_outgoing_spill_corrupt
+        moveq   #0,%d0
+        move.b  GK_DESC_PHYSICAL(%a1),%d0
+        cmpi.l  #GK_ID_NONE,%d0
+        bne.w   .Lgk_outgoing_spill_corrupt
+        moveq   #0,%d4
+        move.b  GK_DESC_SPILL(%a1),%d4
+        cmpi.l  #GK_SPILL_ALLOC_COUNT - 1,%d4
+        bhi.w   .Lgk_outgoing_spill_corrupt
+        move.l  %d4,%d0
+        mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
+        lea     __gk_spill_payloads,%a0
+        adda.l  %d0,%a0
+        cmpa.l  GK_DESC_PAYLOAD(%a1),%a0
+        bne.w   .Lgk_outgoing_spill_corrupt
+        move.l  %d4,%d1
+        andi.l  #7,%d1
+        lsr.l   #3,%d4
+        lea     __gk_spill_bitmap,%a0
+        btst    %d1,(%a0,%d4.l)
+        beq.w   .Lgk_outgoing_spill_corrupt
+.Lgk_outgoing_spill_success:
+        moveq   #GK_OK,%d0
+        rts
+.Lgk_outgoing_spill_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+        rts
+        .size   gk_selector_outgoing_spill_validate,.-gk_selector_outgoing_spill_validate
         .global gk_selector_acquire_physical
         .type   gk_selector_acquire_physical,@function
 gk_selector_acquire_physical:

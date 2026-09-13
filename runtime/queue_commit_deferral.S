@@ -1328,7 +1328,7 @@ gk_pattern_queue_retry_event_epilogue_stock_replay:
         .global __gk_pattern_queue_retry_event
 __gk_pattern_queue_retry_event:
         .byte   GK_PATTERN_QUEUE_RETRY_EVENT_ID,0
-        .byte 0x45,0xd2,0xd5
+        .byte 0x45,0xd2,0xd6
         .incbin "stock/0392.bin", 0, 1
         .incbin "stock/0392.bin", 1, 4
         .incbin "stock/0392.bin", 5, 4

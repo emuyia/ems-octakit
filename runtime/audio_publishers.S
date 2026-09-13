@@ -796,5 +796,6 @@ gk_stock_audio_periodic_secondary_commit_report_fatal:
 gk_audio_publisher_fatal:
         illegal
         bra.s   gk_audio_publisher_fatal
+        .section .runtime,"ax"
         .byte 0x00
         .incbin "stock/0026.bin", 0, 1
