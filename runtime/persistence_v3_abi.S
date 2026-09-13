@@ -140,7 +140,8 @@ gk_persistence_peer_validate:
         lea 4(%sp),%a1
         move.l %a1,-(%sp)
         move.l %a0,-(%sp)
-        move.l #0,-(%sp)
+        .byte 0x2f,0x3c
+        .incbin "stock/0151.bin", 0, 4
         movea.l #gk_v3_compat_peer_read_impl,%a0
         jsr (%a0)
         lea 16(%sp),%sp

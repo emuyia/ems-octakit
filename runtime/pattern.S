@@ -178,11 +178,11 @@ gk_pattern_stock_engine_call:
 .Lgk_pattern_schedule_boot_stock:
         .global gk_pattern_schedule_boot_stock_passthrough
 gk_pattern_schedule_boot_stock_passthrough:
-        .incbin "stock/0149.bin", 0, 6
-        .incbin "stock/0149.bin", 6, 4
-        .incbin "stock/0149.bin", 10, 2
-        .incbin "stock/0149.bin", 12, 2
-        .incbin "stock/0149.bin", 14, 6
+        .incbin "stock/0150.bin", 0, 6
+        .incbin "stock/0150.bin", 6, 4
+        .incbin "stock/0150.bin", 10, 2
+        .incbin "stock/0150.bin", 12, 2
+        .incbin "stock/0150.bin", 14, 6
         jmp     GK_STOCK_PATTERN_SCHEDULE_CONTINUE
         .global gk_pattern_transition_pre_engine_fatal
         .global gk_pattern_schedule_global_kit_entry_report_fatal_pattern_transition_pre_engine_fatal

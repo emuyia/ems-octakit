@@ -58,8 +58,8 @@ gk_queue_entry_handoff_wait_interruptible:
         .global gk_pattern_queue_commit_guard_enter
         .type   gk_pattern_queue_commit_guard_enter,@function
 gk_pattern_queue_commit_guard_enter:
-        .incbin "stock/0384.bin", 0, 4
-        .incbin "stock/0384.bin", 4, 4
+        .incbin "stock/0417.bin", 0, 4
+        .incbin "stock/0417.bin", 4, 4
         move.w  %sr,%d4
         move.w  #0x2700,%sr
         tst.w   __gk_arranger_guard_reserved
@@ -116,16 +116,16 @@ gk_pattern_queue_commit_guard_enter:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_queue_guard_restore:
         move.w  %d4,%sr
-        .incbin "stock/0385.bin", 0, 4
-        .incbin "stock/0385.bin", 4, 4
-        .incbin "stock/0385.bin", 8, 2
+        .incbin "stock/0418.bin", 0, 4
+        .incbin "stock/0418.bin", 4, 4
+        .incbin "stock/0418.bin", 8, 2
         .size   gk_pattern_queue_commit_guard_enter,.-gk_pattern_queue_commit_guard_enter
-        .incbin "stock/0386.bin", 0, 2
+        .incbin "stock/0419.bin", 0, 2
         .global gk_pattern_queue_handoff_marker_publish
         .type   gk_pattern_queue_handoff_marker_publish,@function
 gk_pattern_queue_handoff_marker_publish:
-        .incbin "stock/0386.bin", 2, 4
-        .incbin "stock/0386.bin", 6, 3
+        .incbin "stock/0419.bin", 2, 4
+        .incbin "stock/0419.bin", 6, 3
         .byte 0x06
         move.w  %sr,%d2
         move.w  %d2,8(%sp)
@@ -491,8 +491,8 @@ gk_stock_pattern_queue_request_ipl_restore:
 .Lgk_queue_request_replay:
         .global gk_pattern_queue_request_stock_replay
 gk_pattern_queue_request_stock_replay:
-        .incbin "stock/0387.bin", 0, 2
-        .incbin "stock/0387.bin", 2, 4
+        .incbin "stock/0420.bin", 0, 2
+        .incbin "stock/0420.bin", 2, 4
         jmp     GK_STOCK_PATTERN_SCHEDULE_REQUEST_CONTINUE
 .Lgk_queue_request_corrupt:
         movem.l (%sp),%d0-%d2
@@ -658,15 +658,15 @@ gk_pattern_queue_commit_cancel_deferred:
         move.w  8(%sp),%d1
         move.w  %d1,%sr
         movem.l (%sp),%d1-%d2
-        .incbin "stock/0388.bin", 0, 4
-        .incbin "stock/0388.bin", 4, 2
+        .incbin "stock/0421.bin", 0, 4
+        .incbin "stock/0421.bin", 4, 2
         .size   gk_pattern_queue_commit_cancel_deferred,.-gk_pattern_queue_commit_cancel_deferred
-        .incbin "stock/0388.bin", 6, 2
+        .incbin "stock/0421.bin", 6, 2
         .global gk_pattern_queue_retry_event_ensure
         .type   gk_pattern_queue_retry_event_ensure,@function
 gk_pattern_queue_retry_event_ensure:
-        .incbin "stock/0389.bin", 0, 4
-        .incbin "stock/0389.bin", 4, 4
+        .incbin "stock/0422.bin", 0, 4
+        .incbin "stock/0422.bin", 4, 4
         move.w  %sr,%d2
         move.w  #0x2700,%sr
         moveq   #0,%d0
@@ -1086,8 +1086,8 @@ gk_pattern_queue_audio_handoff_ready:
         .global gk_pattern_queue_audio_handoff_finish
         .type   gk_pattern_queue_audio_handoff_finish,@function
 gk_pattern_queue_audio_handoff_finish:
-        .incbin "stock/0390.bin", 0, 4
-        .incbin "stock/0390.bin", 4, 4
+        .incbin "stock/0423.bin", 0, 4
+        .incbin "stock/0423.bin", 4, 4
         moveq   #1,%d0
         cmp.l   GK_STOCK_SCHEDULER_STATE,%d0
         bne.w   .Lgk_playback_audio_finish_corrupt
@@ -1321,7 +1321,7 @@ gk_stock_pattern_queue_retry_event_epilogue:
 .Lgk_queue_retry_epilogue_stock:
         .global gk_pattern_queue_retry_event_epilogue_stock_replay
 gk_pattern_queue_retry_event_epilogue_stock_replay:
-        .incbin "stock/0391.bin", 0, 6
+        .incbin "stock/0424.bin", 0, 6
         jmp     GK_STOCK_UI_EVENT_EPILOGUE_CONTINUE
         .size   gk_stock_pattern_queue_retry_event_epilogue,.-gk_stock_pattern_queue_retry_event_epilogue
         .align  2
@@ -1329,24 +1329,24 @@ gk_pattern_queue_retry_event_epilogue_stock_replay:
 __gk_pattern_queue_retry_event:
         .byte   GK_PATTERN_QUEUE_RETRY_EVENT_ID,0
         .byte 0x45,0xd2,0xd6
-        .incbin "stock/0392.bin", 0, 1
-        .incbin "stock/0392.bin", 1, 4
-        .incbin "stock/0392.bin", 5, 4
-        .incbin "stock/0392.bin", 9, 4
-        .incbin "stock/0392.bin", 13, 4
-        .incbin "stock/0392.bin", 17, 4
+        .incbin "stock/0425.bin", 0, 1
+        .incbin "stock/0426.bin", 0, 4
+        .incbin "stock/0427.bin", 0, 4
+        .incbin "stock/0428.bin", 0, 4
+        .incbin "stock/0429.bin", 0, 4
+        .incbin "stock/0430.bin", 0, 4
         .global __gk_pattern_queue_retry_event_end
 __gk_pattern_queue_retry_event_end:
         .global gk_pattern_queue_commit_prepared_take
         .type   gk_pattern_queue_commit_prepared_take,@function
 gk_pattern_queue_commit_prepared_take:
-        .incbin "stock/0393.bin", 0, 1
+        .incbin "stock/0431.bin", 0, 1
         .byte 0x80,0x00,0x00,0x00,0x0f
         bhi.w   .Lgk_queue_take_range
         cmpi.l  #15,%d1
         bhi.w   .Lgk_queue_take_range
-        .incbin "stock/0394.bin", 0, 4
-        .incbin "stock/0394.bin", 4, 4
+        .incbin "stock/0432.bin", 0, 4
+        .incbin "stock/0432.bin", 4, 4
         move.l  %d0,%d4
         move.l  %d1,%d5
         moveq   #0,%d3
@@ -1443,8 +1443,8 @@ gk_pattern_queue_commit_prepared_take:
 .Lgk_queue_take_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_queue_take_restore:
-        .incbin "stock/0395.bin", 0, 4
-        .incbin "stock/0395.bin", 4, 4
+        .incbin "stock/0433.bin", 0, 4
+        .incbin "stock/0433.bin", 4, 4
         rts
 .Lgk_queue_take_range:
         moveq   #GK_ERR_RANGE,%d0

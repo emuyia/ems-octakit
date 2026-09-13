@@ -151,8 +151,8 @@ gk_machine_transition_current_tuple_validate:
         bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
         cmpi.l  #7,%d2
         bhi.w   gk_machine_transition_current_tuple_validate_report_fatal
-        .incbin "stock/0369.bin", 0, 4
-        .incbin "stock/0369.bin", 4, 4
+        .incbin "stock/0402.bin", 0, 4
+        .incbin "stock/0402.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d2,%d5
@@ -777,23 +777,23 @@ gk_stock_machine_setup:
         .size gk_stock_machine_setup,.-gk_stock_machine_setup
         .global gk_machine_commit_a_trampoline
 gk_machine_commit_a_trampoline:
-        .incbin "stock/0370.bin", 0, 4
-        .incbin "stock/0370.bin", 4, 4
+        .incbin "stock/0403.bin", 0, 4
+        .incbin "stock/0403.bin", 4, 4
         jmp     GK_STOCK_MACHINE_COMMIT_A_CONTINUE
         .global gk_machine_temporary_trampoline
 gk_machine_temporary_trampoline:
-        .incbin "stock/0371.bin", 0, 4
-        .incbin "stock/0371.bin", 4, 4
+        .incbin "stock/0404.bin", 0, 4
+        .incbin "stock/0404.bin", 4, 4
         jmp     GK_STOCK_MACHINE_TEMPORARY_CONTINUE
         .global gk_machine_commit_b_trampoline
 gk_machine_commit_b_trampoline:
-        .incbin "stock/0372.bin", 0, 4
-        .incbin "stock/0372.bin", 4, 4
+        .incbin "stock/0405.bin", 0, 4
+        .incbin "stock/0405.bin", 4, 4
         jmp     GK_STOCK_MACHINE_COMMIT_B_CONTINUE
         .global gk_machine_setup_trampoline
 gk_machine_setup_trampoline:
-        .incbin "stock/0373.bin", 0, 4
-        .incbin "stock/0373.bin", 4, 4
+        .incbin "stock/0406.bin", 0, 4
+        .incbin "stock/0406.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SETUP_CONTINUE
         .type   gk_machine_transition_count_increment,@function
 gk_machine_transition_count_increment:
@@ -1014,7 +1014,7 @@ gk_machine_transition_dirty_marker_d1:
         bsr.w gk_machine_transition_primary_marker_validate
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0374.bin", 0, 6
+        .incbin "stock/0407.bin", 0, 6
         rts
         .size gk_machine_transition_dirty_marker_d1,.-gk_machine_transition_dirty_marker_d1
         .global gk_machine_transition_dirty_marker_d2
@@ -1028,7 +1028,7 @@ gk_machine_transition_dirty_marker_d2:
         bsr.w gk_machine_transition_primary_marker_validate
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0375.bin", 0, 6
+        .incbin "stock/0408.bin", 0, 6
         rts
         .size gk_machine_transition_dirty_marker_d2,.-gk_machine_transition_dirty_marker_d2
         .global gk_machine_transition_dirty_marker_d3
@@ -1042,7 +1042,7 @@ gk_machine_transition_dirty_marker_d3:
         bsr.w gk_machine_transition_primary_marker_validate
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0376.bin", 0, 6
+        .incbin "stock/0409.bin", 0, 6
         rts
         .size gk_machine_transition_dirty_marker_d3,.-gk_machine_transition_dirty_marker_d3
         .global gk_machine_transition_helper_dirty_marker_d1
@@ -1067,7 +1067,7 @@ gk_machine_transition_helper_dirty_marker_d1:
         bsr.w   gk_machine_transition_helper_marker_validate
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea     GK_MT_MARKER_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0377.bin", 0, 6
+        .incbin "stock/0410.bin", 0, 6
         rts
         .size   gk_machine_transition_helper_dirty_marker_d1,.-gk_machine_transition_helper_dirty_marker_d1
         .global gk_machine_transition_event_arm

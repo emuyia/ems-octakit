@@ -70,11 +70,11 @@ gk_engine_track_reset_atomic_begin:
 .Lgk_engine_reset_stock:
         .global gk_engine_track_reset_stock_bank
 gk_engine_track_reset_stock_bank:
-        .incbin "stock/0111.bin", 0, 4
-        .incbin "stock/0111.bin", 4, 2
+        .incbin "stock/0112.bin", 0, 4
+        .incbin "stock/0112.bin", 4, 2
         .global gk_engine_track_reset_stock_part
 gk_engine_track_reset_stock_part:
-        .incbin "stock/0111.bin", 6, 4
+        .incbin "stock/0112.bin", 6, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_engine_reset_restore
         movea.l %a2,%a0
@@ -145,11 +145,11 @@ gk_audio_command_track_reset_atomic_begin:
 .Lgk_audio_command_reset_stock:
         .global gk_audio_command_track_reset_stock_bank
 gk_audio_command_track_reset_stock_bank:
-        .incbin "stock/0112.bin", 0, 4
-        .incbin "stock/0112.bin", 4, 2
+        .incbin "stock/0113.bin", 0, 4
+        .incbin "stock/0113.bin", 4, 2
         .global gk_audio_command_track_reset_stock_part
 gk_audio_command_track_reset_stock_part:
-        .incbin "stock/0112.bin", 6, 4
+        .incbin "stock/0113.bin", 6, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_audio_command_reset_restore
         movea.l %a2,%a0
@@ -227,10 +227,10 @@ gk_sequencer_track_reset_atomic_begin:
         move.l  (%sp),%d0
         .global gk_sequencer_track_reset_stock_bank
 gk_sequencer_track_reset_stock_bank:
-        .incbin "stock/0113.bin", 0, 4
+        .incbin "stock/0114.bin", 0, 4
         .global gk_sequencer_track_reset_stock_part
 gk_sequencer_track_reset_stock_part:
-        .incbin "stock/0113.bin", 4, 4
+        .incbin "stock/0114.bin", 4, 4
         cmpi.l  #GK_ID_NONE,%d3
         beq.s   .Lgk_sequencer_reset_restore
         movea.l %a2,%a0

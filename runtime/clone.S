@@ -264,7 +264,8 @@ gk_descriptor_finish_clone:
         beq.w   .Lgk_clone_finish_corrupt
         moveq   #0,%d0
         move.w  GK_DESC_READERS(%a2),%d0
-        cmpi.l  #0,%d0
+        .byte 0x0c,0x80
+        .incbin "stock/0056.bin", 0, 4
         beq.s   .Lgk_clone_finish_readers_valid
         cmpi.l  #1,%d0
         bne.w   .Lgk_clone_finish_busy
@@ -307,8 +308,8 @@ gk_descriptor_clone_publication:
 gk_descriptor_abort_clone:
         cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d0
         bhi.w   .Lgk_clone_abort_range
-        .incbin "stock/0056.bin", 0, 4
-        .incbin "stock/0056.bin", 4, 4
+        .incbin "stock/0057.bin", 0, 4
+        .incbin "stock/0057.bin", 4, 4
         move.l  %d0,%d2
         move.l %d2,%d0
         andi.l #0xff,%d0
@@ -364,9 +365,9 @@ gk_descriptor_abort_clone:
         moveq   #GK_ERR_CORRUPT,%d0
 .Lgk_clone_abort_restore:
         move.w  %d4,%sr
-        .incbin "stock/0057.bin", 0, 4
-        .incbin "stock/0057.bin", 4, 4
-        .incbin "stock/0057.bin", 8, 2
+        .incbin "stock/0058.bin", 0, 4
+        .incbin "stock/0058.bin", 4, 4
+        .incbin "stock/0058.bin", 8, 2
 .Lgk_clone_abort_range:
         moveq   #GK_ERR_RANGE,%d0
         rts

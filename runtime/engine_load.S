@@ -147,8 +147,8 @@ gk_engine_current_selector_begin:
         bhi.w   .Lgk_engine_current_begin_range
         cmpi.l  #3,%d2
         bhi.w   .Lgk_engine_current_begin_range
-        .incbin "stock/0075.bin", 0, 4
-        .incbin "stock/0075.bin", 4, 4
+        .incbin "stock/0076.bin", 0, 4
+        .incbin "stock/0076.bin", 4, 4
         move.l  %d0,%d3
         move.l  %d1,%d4
         move.l  %d2,%d5
@@ -469,10 +469,10 @@ gk_stock_engine_part_load_and_publish:
         beq.w   gk_stock_engine_part_load_trampoline
         bra.w   gk_stock_engine_part_load_and_publish_report_fatal
 .Lgk_stock_engine_load_active:
-        .incbin "stock/0076.bin", 0, 4
-        .incbin "stock/0076.bin", 4, 4
         .incbin "stock/0077.bin", 0, 4
         .incbin "stock/0077.bin", 4, 4
+        .incbin "stock/0078.bin", 0, 4
+        .incbin "stock/0078.bin", 4, 4
         cmpi.l  #15,%d4
         bhi.w   gk_stock_engine_part_load_and_publish_report_fatal
         cmpi.l  #3,%d5
@@ -507,9 +507,9 @@ gk_stock_engine_part_load_and_publish:
         bsr.w   gk_engine_load_publish
         tst.l   %d0
         bne.w   gk_stock_engine_part_load_and_publish_report_fatal
-        .incbin "stock/0078.bin", 0, 4
-        .incbin "stock/0078.bin", 4, 4
-        .incbin "stock/0078.bin", 8, 2
+        .incbin "stock/0079.bin", 0, 4
+        .incbin "stock/0079.bin", 4, 4
+        .incbin "stock/0079.bin", 8, 2
 .Lgk_stock_engine_load_abort_current_fatal:
         tst.l   %d7
         beq.s   .Lgk_stock_engine_load_release_fatal
@@ -525,8 +525,8 @@ gk_stock_engine_part_load_and_publish:
         .global gk_stock_engine_part_load_trampoline
         .type   gk_stock_engine_part_load_trampoline,@function
 gk_stock_engine_part_load_trampoline:
-        .incbin "stock/0079.bin", 0, 4
-        .incbin "stock/0079.bin", 4, 4
+        .incbin "stock/0080.bin", 0, 4
+        .incbin "stock/0080.bin", 4, 4
         .global gk_stock_engine_part_load_trampoline_jump
 gk_stock_engine_part_load_trampoline_jump:
         jmp     GK_STOCK_ENGINE_PART_LOAD_CONTINUE
@@ -541,10 +541,10 @@ gk_stock_engine_saved_part_reload:
         beq.w   gk_stock_engine_saved_part_reload_trampoline
         bra.w   gk_stock_engine_saved_part_reload_report_fatal
 .Lgk_stock_engine_saved_reload_active:
-        .incbin "stock/0080.bin", 0, 4
-        .incbin "stock/0080.bin", 4, 4
         .incbin "stock/0081.bin", 0, 4
         .incbin "stock/0081.bin", 4, 4
+        .incbin "stock/0082.bin", 0, 4
+        .incbin "stock/0082.bin", 4, 4
         cmpi.l  #15,%d4
         bhi.w   gk_stock_engine_saved_part_reload_report_fatal
         cmpi.l  #3,%d5
@@ -579,9 +579,9 @@ gk_stock_engine_saved_part_reload:
         bsr.w   gk_engine_saved_reload_publish
         tst.l   %d0
         bne.w   gk_stock_engine_saved_part_reload_report_fatal
-        .incbin "stock/0082.bin", 0, 4
-        .incbin "stock/0082.bin", 4, 4
-        .incbin "stock/0082.bin", 8, 2
+        .incbin "stock/0083.bin", 0, 4
+        .incbin "stock/0083.bin", 4, 4
+        .incbin "stock/0083.bin", 8, 2
 .Lgk_stock_engine_saved_abort_current_fatal:
         tst.l   %d7
         beq.s   .Lgk_stock_engine_saved_release_fatal
@@ -597,8 +597,8 @@ gk_stock_engine_saved_part_reload:
         .global gk_stock_engine_saved_part_reload_trampoline
         .type   gk_stock_engine_saved_part_reload_trampoline,@function
 gk_stock_engine_saved_part_reload_trampoline:
-        .incbin "stock/0083.bin", 0, 4
-        .incbin "stock/0083.bin", 4, 4
+        .incbin "stock/0084.bin", 0, 4
+        .incbin "stock/0084.bin", 4, 4
         .global gk_stock_engine_saved_part_reload_trampoline_jump
 gk_stock_engine_saved_part_reload_trampoline_jump:
         jmp     GK_STOCK_ENGINE_SAVED_PART_RELOAD_CONTINUE

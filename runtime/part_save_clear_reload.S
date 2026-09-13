@@ -29,8 +29,8 @@ gk_stock_part_working_to_saved_store:
         beq.w   .Lgk_part_save_join_clear
         cmpi.l  #GK_STOCK_PART_SAVE_SELECTED_RETURN,%d0
         bne.w   gk_stock_part_working_to_saved_store_report_fatal
-        .incbin "stock/0138.bin", 0, 4
-        .incbin "stock/0138.bin", 4, 4
+        .incbin "stock/0139.bin", 0, 4
+        .incbin "stock/0139.bin", 4, 4
         move.l  48(%sp),%d6
         cmpi.l  #3,%d6
         bhi.w   gk_stock_part_working_to_saved_store_report_fatal
@@ -56,12 +56,12 @@ gk_stock_part_working_to_saved_store:
         jsr     gk_stock_dirty_mark_bank_mask
         tst.l   %d0
         bne.w   gk_stock_part_working_to_saved_store_report_fatal
-        .incbin "stock/0139.bin", 0, 4
-        .incbin "stock/0139.bin", 4, 4
-        .incbin "stock/0139.bin", 8, 2
-.Lgk_part_save_join_clear:
         .incbin "stock/0140.bin", 0, 4
         .incbin "stock/0140.bin", 4, 4
+        .incbin "stock/0140.bin", 8, 2
+.Lgk_part_save_join_clear:
+        .incbin "stock/0141.bin", 0, 4
+        .incbin "stock/0141.bin", 4, 4
         move.l  48(%sp),%d7
         cmpi.l  #3,%d7
         bhi.w   gk_stock_part_working_to_saved_store_report_fatal
@@ -140,9 +140,9 @@ gk_stock_part_working_to_saved_store:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_stock_part_working_to_saved_store_report_fatal
-        .incbin "stock/0141.bin", 0, 4
-        .incbin "stock/0141.bin", 4, 4
-        .incbin "stock/0141.bin", 8, 2
+        .incbin "stock/0142.bin", 0, 4
+        .incbin "stock/0142.bin", 4, 4
+        .incbin "stock/0142.bin", 8, 2
 .Lgk_part_save_release_fatal:
         move.l  %d3,%d0
         jsr     gk_descriptor_release
@@ -156,8 +156,8 @@ gk_stock_part_clear:
         beq.s   .Lgk_part_clear_active
         bra.w   gk_stock_part_clear_report_fatal
 .Lgk_part_clear_active:
-        .incbin "stock/0142.bin", 0, 4
-        .incbin "stock/0142.bin", 4, 4
+        .incbin "stock/0143.bin", 0, 4
+        .incbin "stock/0143.bin", 4, 4
         move.l  44(%sp),%d0
         cmpi.l  #GK_STOCK_PART_CLEAR_CALL_RETURN,%d0
         bne.w   gk_stock_part_clear_report_fatal
@@ -233,9 +233,9 @@ gk_part_clear_stock_return:
         jsr     gk_descriptor_release
         tst.l   %d0
         bne.w   gk_part_clear_stock_return_report_fatal
-        .incbin "stock/0143.bin", 0, 4
-        .incbin "stock/0143.bin", 4, 4
-        .incbin "stock/0143.bin", 8, 2
+        .incbin "stock/0144.bin", 0, 4
+        .incbin "stock/0144.bin", 4, 4
+        .incbin "stock/0144.bin", 8, 2
         .size   gk_stock_part_clear,.-gk_stock_part_clear
         .global gk_stock_part_saved_to_working_reload
         .type   gk_stock_part_saved_to_working_reload,@function
@@ -251,8 +251,8 @@ gk_stock_part_saved_to_working_reload:
         cmpi.l  #GK_STOCK_PART_RELOAD_SHORTCUT_RETURN,%d0
         bne.w   gk_stock_part_saved_to_working_reload_report_fatal
 .Lgk_part_reload_caller_valid:
-        .incbin "stock/0144.bin", 0, 4
-        .incbin "stock/0144.bin", 4, 4
+        .incbin "stock/0145.bin", 0, 4
+        .incbin "stock/0145.bin", 4, 4
         move.l  48(%sp),%d6
         cmpi.l  #3,%d6
         bhi.w   gk_stock_part_saved_to_working_reload_report_fatal
@@ -319,15 +319,15 @@ gk_part_reload_load_transaction_return:
         .global gk_part_reload_pattern_interlock_release
 gk_part_reload_pattern_interlock_release:
         move.w  %d7,%sr
-        .incbin "stock/0145.bin", 0, 4
-        .incbin "stock/0145.bin", 4, 4
-        .incbin "stock/0145.bin", 8, 2
+        .incbin "stock/0146.bin", 0, 4
+        .incbin "stock/0146.bin", 4, 4
+        .incbin "stock/0146.bin", 8, 2
         .size   gk_stock_part_saved_to_working_reload,.-gk_stock_part_saved_to_working_reload
         .global gk_stock_part_working_to_saved_store_trampoline
         .type   gk_stock_part_working_to_saved_store_trampoline,@function
 gk_stock_part_working_to_saved_store_trampoline:
-        .incbin "stock/0146.bin", 0, 4
-        .incbin "stock/0146.bin", 4, 4
+        .incbin "stock/0147.bin", 0, 4
+        .incbin "stock/0147.bin", 4, 4
         .global gk_stock_part_working_to_saved_store_trampoline_jump
 gk_stock_part_working_to_saved_store_trampoline_jump:
         jmp     GK_STOCK_PART_WORKING_TO_SAVED_STORE_CONTINUE
@@ -335,8 +335,8 @@ gk_stock_part_working_to_saved_store_trampoline_jump:
         .global gk_stock_part_clear_trampoline
         .type   gk_stock_part_clear_trampoline,@function
 gk_stock_part_clear_trampoline:
-        .incbin "stock/0147.bin", 0, 4
-        .incbin "stock/0147.bin", 4, 4
+        .incbin "stock/0148.bin", 0, 4
+        .incbin "stock/0148.bin", 4, 4
         .global gk_stock_part_clear_trampoline_jump
 gk_stock_part_clear_trampoline_jump:
         jmp     GK_STOCK_PART_CLEAR_CONTINUE
@@ -344,8 +344,8 @@ gk_stock_part_clear_trampoline_jump:
         .global gk_stock_part_saved_to_working_reload_trampoline
         .type   gk_stock_part_saved_to_working_reload_trampoline,@function
 gk_stock_part_saved_to_working_reload_trampoline:
-        .incbin "stock/0148.bin", 0, 4
-        .incbin "stock/0148.bin", 4, 4
+        .incbin "stock/0149.bin", 0, 4
+        .incbin "stock/0149.bin", 4, 4
         .global gk_stock_part_saved_to_working_reload_trampoline_jump
 gk_stock_part_saved_to_working_reload_trampoline_jump:
         jmp     GK_STOCK_PART_SAVED_TO_WORKING_RELOAD_CONTINUE

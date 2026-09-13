@@ -114,13 +114,15 @@ gk_track_setup_byte_read_selector:
         beq.w   .Lgk_tsb_selector_amp
         movea.l GK_TSB_PAYLOAD(%a6),%a0
         move.l  GK_TSB_TRACK(%a6),%d3
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d2
+        .byte 0x0c,0x82
+        .incbin "stock/0379.bin", 0, 4
         beq.s   .Lgk_tsb_selector_playback
         cmpi.l  #GK_TRACK_SETUP_EFFECT2,%d2
         beq.s   .Lgk_tsb_selector_effect2
         cmpi.l  #GK_TRACK_SETUP_EFFECT1,%d2
         bne.w   .Lgk_tsb_selector_corrupt
-        adda.l  #GK_STOCK_EFFECT1_MACHINE_OFFSET,%a0
+        .byte 0xd1,0xfc
+        .incbin "stock/0380.bin", 0, 4
         bra.s   .Lgk_tsb_selector_payload
 .Lgk_tsb_selector_effect2:
         adda.l  #GK_STOCK_EFFECT2_MACHINE_OFFSET,%a0
@@ -135,11 +137,13 @@ gk_track_setup_byte_read_selector:
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d1
         lea     GK_STOCK_WORKING_PART_MIRROR_BASE,%a1
         adda.l  %d1,%a1
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d2
+        .byte 0x0c,0x82
+        .incbin "stock/0381.bin", 0, 4
         beq.s   .Lgk_tsb_selector_mirror_playback
         cmpi.l  #GK_TRACK_SETUP_EFFECT2,%d2
         beq.s   .Lgk_tsb_selector_mirror_effect2
-        adda.l  #GK_STOCK_EFFECT1_MACHINE_OFFSET,%a1
+        .byte 0xd3,0xfc
+        .incbin "stock/0382.bin", 0, 4
         bra.s   .Lgk_tsb_selector_mirror_ready
 .Lgk_tsb_selector_mirror_effect2:
         adda.l  #GK_STOCK_EFFECT2_MACHINE_OFFSET,%a1
@@ -152,7 +156,8 @@ gk_track_setup_byte_read_selector:
         move.b  (%a1),%d1
         cmp.l   %d1,%d0
         bne.s   .Lgk_tsb_selector_corrupt
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d2
+        .byte 0x0c,0x82
+        .incbin "stock/0383.bin", 0, 4
         bne.s   .Lgk_tsb_selector_fx_range
         cmpi.l  #4,%d0
         bhi.s   .Lgk_tsb_selector_corrupt
@@ -195,7 +200,8 @@ gk_track_setup_byte_pointers:
         sub.l   %d0,%d1
         add.l   GK_TSB_ARGUMENT(%a6),%d1
         move.l  GK_TSB_FAMILY(%a6),%d2
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d2
+        .byte 0x0c,0x82
+        .incbin "stock/0384.bin", 0, 4
         bne.s   .Lgk_tsb_pointer_not_playback
         move.l  GK_TSB_SELECTOR(%a6),%d0
         move.l  %d0,%d3
@@ -238,7 +244,8 @@ gk_track_setup_byte_ui_pointer:
         add.l   %d1,%d0
         add.l   GK_TSB_ARGUMENT(%a6),%d0
         move.l  GK_TSB_FAMILY(%a6),%d1
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d1
+        .byte 0x0c,0x81
+        .incbin "stock/0385.bin", 0, 4
         bne.s   .Lgk_tsb_ui_not_playback
         lea     GK_STOCK_PLAYBACK_SETUP_UI_CACHE,%a0
         bra.s   .Lgk_tsb_ui_ready
@@ -273,7 +280,8 @@ gk_track_setup_byte_event_pointer:
         .type   gk_track_setup_byte_tail_expected,@function
 gk_track_setup_byte_tail_expected:
         move.l  GK_TSB_FAMILY(%a6),%d0
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d0
+        .byte 0x0c,0x80
+        .incbin "stock/0386.bin", 0, 4
         bne.s   .Lgk_tsb_tail_not_playback
         move.l  #GK_STOCK_PLAYBACK_SETUP_TAIL,%d0
         rts
@@ -790,7 +798,8 @@ gk_track_setup_byte_dispatch:
         bne.w   gk_track_setup_byte_fatal
 .Lgk_tsb_dispatch_stock:
         move.l  GK_TSB_FAMILY(%a6),%d0
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d0
+        .byte 0x0c,0x80
+        .incbin "stock/0387.bin", 0, 4
         beq.w   .Lgk_tsb_call_playback
         cmpi.l  #GK_TRACK_SETUP_EFFECT2,%d0
         beq.w   .Lgk_tsb_call_effect2
@@ -910,29 +919,29 @@ gk_track_setup_byte_busy_return:
         .global gk_track_setup_playback_trampoline
         .type   gk_track_setup_playback_trampoline,@function
 gk_track_setup_playback_trampoline:
-        .incbin "stock/0357.bin", 0, 4
-        .incbin "stock/0357.bin", 4, 4
+        .incbin "stock/0388.bin", 0, 4
+        .incbin "stock/0388.bin", 4, 4
         jmp     GK_STOCK_PLAYBACK_SETUP_CONTINUE
         .size   gk_track_setup_playback_trampoline,.-gk_track_setup_playback_trampoline
         .global gk_track_setup_effect2_trampoline
         .type   gk_track_setup_effect2_trampoline,@function
 gk_track_setup_effect2_trampoline:
-        .incbin "stock/0358.bin", 0, 4
-        .incbin "stock/0358.bin", 4, 4
+        .incbin "stock/0389.bin", 0, 4
+        .incbin "stock/0389.bin", 4, 4
         jmp     GK_STOCK_EFFECT2_SETUP_CONTINUE
         .size   gk_track_setup_effect2_trampoline,.-gk_track_setup_effect2_trampoline
         .global gk_track_setup_effect1_trampoline
         .type   gk_track_setup_effect1_trampoline,@function
 gk_track_setup_effect1_trampoline:
-        .incbin "stock/0359.bin", 0, 4
-        .incbin "stock/0359.bin", 4, 4
+        .incbin "stock/0390.bin", 0, 4
+        .incbin "stock/0390.bin", 4, 4
         jmp     GK_STOCK_EFFECT1_SETUP_CONTINUE
         .size   gk_track_setup_effect1_trampoline,.-gk_track_setup_effect1_trampoline
         .global gk_track_setup_amp_trampoline
         .type   gk_track_setup_amp_trampoline,@function
 gk_track_setup_amp_trampoline:
-        .incbin "stock/0360.bin", 0, 4
-        .incbin "stock/0360.bin", 4, 4
+        .incbin "stock/0391.bin", 0, 4
+        .incbin "stock/0391.bin", 4, 4
         jmp     GK_STOCK_AMP_SETUP_CONTINUE
         .size   gk_track_setup_amp_trampoline,.-gk_track_setup_amp_trampoline
         .type   gk_track_setup_byte_marker_validate,@function
@@ -951,7 +960,8 @@ gk_track_setup_byte_marker_validate:
         move.l  GK_TSBM_D4(%a1),%d0
         cmp.l   GK_TSB_TRACK(%a6),%d0
         bne.w   .Lgk_tsbm_corrupt
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d4
+        .byte 0x0c,0x84
+        .incbin "stock/0392.bin", 0, 4
         bne.s   .Lgk_tsbm_not_playback
         cmpi.l  #GK_STOCK_PLAYBACK_SETUP_DIRTY_RETURN,%d3
         bne.w   .Lgk_tsbm_corrupt
@@ -1129,7 +1139,8 @@ gk_track_setup_byte_write_marker:
         tst.l   %d0
         bne.w   gk_track_setup_byte_release_abort_fatal
         move.l  GK_TSB_FAMILY(%a6),%d7
-        cmpi.l  #GK_TRACK_SETUP_PLAYBACK,%d7
+        .byte 0x0c,0x87
+        .incbin "stock/0393.bin", 0, 4
         beq.s   .Lgk_tsbm_restore_playback
         move.w  GK_TSBM_SR(%sp),%d0
         move.w  %d0,%sr
@@ -1137,7 +1148,7 @@ gk_track_setup_byte_write_marker:
         lea     GK_TSBM_SAVED_BYTES(%sp),%sp
         .global gk_track_setup_byte_stock_dirty_store_d1
 gk_track_setup_byte_stock_dirty_store_d1:
-        .incbin "stock/0361.bin", 0, 6
+        .incbin "stock/0394.bin", 0, 6
         rts
 .Lgk_tsbm_restore_playback:
         move.w  GK_TSBM_SR(%sp),%d0
@@ -1146,6 +1157,6 @@ gk_track_setup_byte_stock_dirty_store_d1:
         lea     GK_TSBM_SAVED_BYTES(%sp),%sp
         .global gk_track_setup_byte_stock_dirty_store_d5
 gk_track_setup_byte_stock_dirty_store_d5:
-        .incbin "stock/0362.bin", 0, 6
+        .incbin "stock/0395.bin", 0, 6
         rts
         .size   gk_track_setup_byte_write_marker,.-gk_track_setup_byte_write_marker
