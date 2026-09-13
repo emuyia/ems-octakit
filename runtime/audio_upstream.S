@@ -182,7 +182,7 @@ gk_stock_audio_primary_type_read:
         lea 64(%sp),%sp
         .global gk_audio_primary_type_read_active_stock
 gk_audio_primary_type_read_active_stock:
-        .incbin "stock/0219.bin", 0, 6
+        .incbin "stock/0222.bin", 0, 6
         adda.l  %d6,%a0
         mvs.b   (%a0,%d3.l),%d0
         suba.l  %d6,%a0
@@ -192,7 +192,7 @@ gk_audio_primary_type_read_active_stock:
         move.w %d0,%sr
         movem.l 4(%sp),%d0-%d7/%a0-%a6
         lea 64(%sp),%sp
-        .incbin "stock/0220.bin", 0, 6
+        .incbin "stock/0223.bin", 0, 6
         jmp     GK_STOCK_AUDIO_PRIMARY_TYPE_SKIP
 .Lgk_audio_primary_type_stock_restore:
         move.w (%sp),%d0
@@ -201,8 +201,8 @@ gk_audio_primary_type_read_active_stock:
         lea 64(%sp),%sp
         .global gk_audio_primary_type_read_stock
 gk_audio_primary_type_read_stock:
-        .incbin "stock/0221.bin", 0, 6
-        .incbin "stock/0221.bin", 6, 4
+        .incbin "stock/0224.bin", 0, 6
+        .incbin "stock/0224.bin", 6, 4
         .global gk_audio_primary_type_read_stock_end
 gk_audio_primary_type_read_stock_end:
         jmp     GK_STOCK_AUDIO_PRIMARY_TYPE_READ_CONTINUE
@@ -213,8 +213,8 @@ gk_audio_primary_type_read_stock_end:
 gk_stock_audio_primary_type_decision:
         .global gk_audio_primary_type_decision_stock
 gk_audio_primary_type_decision_stock:
-        .incbin "stock/0222.bin", 0, 6
-        .incbin "stock/0222.bin", 6, 6
+        .incbin "stock/0225.bin", 0, 6
+        .incbin "stock/0225.bin", 6, 6
         .global gk_audio_primary_type_decision_stock_end
 gk_audio_primary_type_decision_stock_end:
         bra.w   .Lgk_audio_primary_type_equal
@@ -410,8 +410,8 @@ gk_audio_snapshot_type_read_active_stock:
         lea 64(%sp),%sp
         .global gk_audio_snapshot_type_read_stock
 gk_audio_snapshot_type_read_stock:
-        .incbin "stock/0223.bin", 0, 4
-        .incbin "stock/0223.bin", 4, 4
+        .incbin "stock/0226.bin", 0, 4
+        .incbin "stock/0226.bin", 4, 4
         .global gk_audio_snapshot_type_read_stock_end
 gk_audio_snapshot_type_read_stock_end:
         jmp     GK_STOCK_AUDIO_SNAPSHOT_TYPE_READ_CONTINUE
@@ -422,8 +422,8 @@ gk_audio_snapshot_type_read_stock_end:
 gk_stock_audio_snapshot_type_decision:
         .global gk_audio_snapshot_type_decision_stock
 gk_audio_snapshot_type_decision_stock:
-        .incbin "stock/0224.bin", 0, 8
-        .incbin "stock/0224.bin", 8, 6
+        .incbin "stock/0227.bin", 0, 8
+        .incbin "stock/0227.bin", 8, 6
         .global gk_audio_snapshot_type_decision_stock_end
 gk_audio_snapshot_type_decision_stock_end:
         bra.w   .Lgk_audio_snapshot_type_equal

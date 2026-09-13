@@ -131,7 +131,7 @@ gk_reload_page_classify:
         tst.l   GK_RP_MODE(%a6)
         bne.s   .Lgk_rp_route_midi
         .byte 0x0c,0x80
-        .incbin "stock/0339.bin", 0, 4
+        .incbin "stock/0342.bin", 0, 4
         beq.w   .Lgk_rp_route_audio_0
         cmpi.l  #2,%d0
         beq.w   .Lgk_rp_route_audio_2
@@ -148,7 +148,7 @@ gk_reload_page_classify:
         rts
 .Lgk_rp_route_midi:
         .byte 0x0c,0x80
-        .incbin "stock/0340.bin", 0, 4
+        .incbin "stock/0343.bin", 0, 4
         beq.w   .Lgk_rp_route_midi_0
         cmpi.l  #2,%d0
         beq.w   .Lgk_rp_route_midi_2
@@ -821,7 +821,7 @@ gk_reload_page_write_marker_d0:
         move.l  (%sp)+,%d1
         .global gk_reload_page_stock_dirty_store_d0
 gk_reload_page_stock_dirty_store_d0:
-        .incbin "stock/0341.bin", 0, 6
+        .incbin "stock/0344.bin", 0, 6
         rts
         .size   gk_reload_page_write_marker_d0,.-gk_reload_page_write_marker_d0
         .global gk_reload_page_write_marker_d2
@@ -908,7 +908,7 @@ gk_reload_page_write_marker_d2:
         move.l  (%sp)+,%d0
         .global gk_reload_page_stock_dirty_store_d2
 gk_reload_page_stock_dirty_store_d2:
-        .incbin "stock/0342.bin", 0, 6
+        .incbin "stock/0345.bin", 0, 6
         rts
         .size   gk_reload_page_write_marker_d2,.-gk_reload_page_write_marker_d2
         .global gk_reload_page_fatal

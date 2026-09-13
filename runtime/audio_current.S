@@ -202,7 +202,7 @@ gk_stock_audio_current_begin:
         lea 64(%sp),%sp
         .global gk_audio_current_begin_stock
 gk_audio_current_begin_stock:
-        .incbin "stock/0238.bin", 0, 6
+        .incbin "stock/0241.bin", 0, 6
         .global gk_audio_current_begin_stock_end
 gk_audio_current_begin_stock_end:
         jmp     GK_STOCK_AUDIO_CURRENT_BEGIN_CONTINUE
@@ -225,7 +225,7 @@ gk_audio_current_begin_stock_end:
 gk_stock_audio_current_redirect_first:
         .global gk_audio_current_redirect_first_stock
 gk_audio_current_redirect_first_stock:
-        .incbin "stock/0239.bin", 0, 6
+        .incbin "stock/0242.bin", 0, 6
         .global gk_audio_current_redirect_first_stock_end
 gk_audio_current_redirect_first_stock_end:
         adda.l  %a6,%a0
@@ -236,7 +236,7 @@ gk_audio_current_redirect_first_stock_end:
 gk_stock_audio_current_redirect_second:
         .global gk_audio_current_redirect_second_stock
 gk_audio_current_redirect_second_stock:
-        .incbin "stock/0240.bin", 0, 6
+        .incbin "stock/0243.bin", 0, 6
         .global gk_audio_current_redirect_second_stock_end
 gk_audio_current_redirect_second_stock_end:
         adda.l  %a6,%a0
@@ -275,7 +275,7 @@ gk_stock_audio_current_gate:
         lea 64(%sp),%sp
         .global gk_audio_current_gate_stock
 gk_audio_current_gate_stock:
-        .incbin "stock/0241.bin", 0, 6
+        .incbin "stock/0244.bin", 0, 6
         .global gk_audio_current_gate_stock_end
 gk_audio_current_gate_stock_end:
         jmp     GK_STOCK_AUDIO_CURRENT_GATE_CONTINUE
@@ -285,7 +285,7 @@ gk_audio_current_gate_stock_end:
 gk_stock_audio_current_redirect_track:
         .global gk_audio_current_redirect_track_stock
 gk_audio_current_redirect_track_stock:
-        .incbin "stock/0242.bin", 0, 6
+        .incbin "stock/0245.bin", 0, 6
         .global gk_audio_current_redirect_track_stock_end
 gk_audio_current_redirect_track_stock_end:
         adda.l  %a6,%a0

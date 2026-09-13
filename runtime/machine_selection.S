@@ -84,7 +84,7 @@ gk_machine_selection_prepare:
         lea     GK_STOCK_MACHINE_SELECT_FX1_DEFINITIONS,%a1
 .Lgk_machine_prepare_definition:
         .byte 0xbd,0xfc
-        .incbin "stock/0298.bin", 0, 4
+        .incbin "stock/0301.bin", 0, 4
         beq.w   gk_machine_selection_fatal
         move.l  (%a6),%d1
         cmpi.l  #28,%d1
@@ -514,15 +514,15 @@ gk_machine_selection_busy_saved:
         .global gk_stock_machine_select_fx1_trampoline
         .type   gk_stock_machine_select_fx1_trampoline,@function
 gk_stock_machine_select_fx1_trampoline:
-        .incbin "stock/0299.bin", 0, 4
-        .incbin "stock/0299.bin", 4, 4
+        .incbin "stock/0302.bin", 0, 4
+        .incbin "stock/0302.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SELECT_FX1_CONTINUE
         .size   gk_stock_machine_select_fx1_trampoline,.-gk_stock_machine_select_fx1_trampoline
         .global gk_stock_machine_select_fx2_trampoline
         .type   gk_stock_machine_select_fx2_trampoline,@function
 gk_stock_machine_select_fx2_trampoline:
-        .incbin "stock/0300.bin", 0, 4
-        .incbin "stock/0300.bin", 4, 4
+        .incbin "stock/0303.bin", 0, 4
+        .incbin "stock/0303.bin", 4, 4
         jmp     GK_STOCK_MACHINE_SELECT_FX2_CONTINUE
         .size   gk_stock_machine_select_fx2_trampoline,.-gk_stock_machine_select_fx2_trampoline
         .global gk_machine_selection_fatal

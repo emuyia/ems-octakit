@@ -22,8 +22,8 @@ gk_sequencer_condition_quiesced_pointer:
 gk_stock_sequencer_condition_enter:
         move.l  %d6,-(%sp)
         move.l  %a4,-(%sp)
-        .incbin "stock/0171.bin", 0, 4
-        .incbin "stock/0171.bin", 4, 4
+        .incbin "stock/0174.bin", 0, 4
+        .incbin "stock/0174.bin", 4, 4
         move.l  36(%sp),%d5
         cmpi.l  #GK_SIDECAR_SEQUENCER_TRACK_COUNT - 1,%d5
         bhi.w   gk_stock_sequencer_condition_enter_report_fatal
@@ -98,8 +98,8 @@ gk_sequencer_advance_quiesced_pointer:
 gk_stock_sequencer_advance_enter:
         move.l  %a5,-(%sp)
         move.l  %a6,-(%sp)
-        .incbin "stock/0172.bin", 0, 4
-        .incbin "stock/0172.bin", 4, 4
+        .incbin "stock/0175.bin", 0, 4
+        .incbin "stock/0175.bin", 4, 4
         move.l  48(%sp),%d3
         movea.l 52(%sp),%a4
         cmpi.l  #GK_SIDECAR_SEQUENCER_TRACK_COUNT - 1,%d3

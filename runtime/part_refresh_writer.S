@@ -36,8 +36,8 @@ gk_stock_part_refresh_writer:
         move.w  %d1,%sr
         movem.l (%sp),%d0-%d1/%a0
         lea     12(%sp),%sp
-        .incbin "stock/0365.bin", 0, 4
-        .incbin "stock/0365.bin", 4, 4
+        .incbin "stock/0368.bin", 0, 4
+        .incbin "stock/0368.bin", 4, 4
         move.l  68(%sp),%d0
         moveq   #0,%d3
         cmpi.l  #GK_STOCK_PART_REFRESH_WRITER_RETURN_UI_A,%d0
@@ -241,8 +241,8 @@ gk_part_refresh_stock_call:
         .global gk_stock_part_refresh_writer_trampoline
         .type   gk_stock_part_refresh_writer_trampoline,@function
 gk_stock_part_refresh_writer_trampoline:
-        .incbin "stock/0366.bin", 0, 4
-        .incbin "stock/0366.bin", 4, 4
+        .incbin "stock/0369.bin", 0, 4
+        .incbin "stock/0369.bin", 4, 4
         .global gk_stock_part_refresh_writer_trampoline_jump
 gk_stock_part_refresh_writer_trampoline_jump:
         jmp     GK_STOCK_PART_REFRESH_WRITER_CONTINUE
@@ -290,7 +290,7 @@ gk_part_refresh_write_marker:
         move.l  (%sp)+,%d1
         .global gk_part_refresh_stock_dirty_store
 gk_part_refresh_stock_dirty_store:
-        .incbin "stock/0367.bin", 0, 6
+        .incbin "stock/0370.bin", 0, 6
         rts
         .size   gk_part_refresh_write_marker,.-gk_part_refresh_write_marker
         .global gk_part_refresh_fatal_caller

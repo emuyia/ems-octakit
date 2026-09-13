@@ -82,7 +82,7 @@ gk_slice_lock_state_validate:
         muls.l  %d1,%d0
         lea     GK_STOCK_RESIDENT_BANK_BASE,%a1
         adda.l  %d0,%a1
-        .incbin "stock/0411.bin", 0, 6
+        .incbin "stock/0414.bin", 0, 6
         cmpa.l  %a1,%a0
         bne.w   gk_slice_lock_fatal_owned
         moveq   #0,%d1
@@ -384,7 +384,7 @@ gk_slice_lock_prepare_call:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0412.bin", 0, 6
+        .incbin "stock/0415.bin", 0, 6
         rts
         .size   gk_slice_lock_prepare_call,.-gk_slice_lock_prepare_call
         .type   gk_slice_lock_part_publication_validate,@function
@@ -479,7 +479,7 @@ gk_slice_lock_dirty_marker_d1:
         move.w  %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0413.bin", 0, 6
+        .incbin "stock/0416.bin", 0, 6
         rts
         .size   gk_slice_lock_dirty_marker_d1,.-gk_slice_lock_dirty_marker_d1
         .type   gk_slice_lock_finish,@function
@@ -563,7 +563,7 @@ gk_slice_lock_random_finish_tail:
         move.w %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0414.bin", 0, 6
+        .incbin "stock/0417.bin", 0, 6
         .size gk_slice_lock_random_finish_tail,.-gk_slice_lock_random_finish_tail
         .global gk_slice_lock_linear_finish_tail
         .type gk_slice_lock_linear_finish_tail,@function
@@ -578,7 +578,7 @@ gk_slice_lock_linear_finish_tail:
         move.w %d0,%sr
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea GK_SL_SAVE_BYTES(%sp),%sp
-        .incbin "stock/0415.bin", 0, 6
+        .incbin "stock/0418.bin", 0, 6
         .size gk_slice_lock_linear_finish_tail,.-gk_slice_lock_linear_finish_tail
 gk_slice_lock_fatal_release_returned_abort:
         jsr     gk_descriptor_release

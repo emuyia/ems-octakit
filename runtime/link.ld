@@ -1,6 +1,6 @@
 RUNTIME_START = 0x45d0dde0;
 RUNTIME_END = 0x46025de0;
-RUNTIME_CODE_BUDGET = 0
+RUNTIME_CODE_BUDGET = 1
     ? 0x00026000
     : 1
     ? 0x00025000
@@ -41,7 +41,7 @@ CROSS_BANK_PLAYBACK_CODE_EXTRA_SIZE =
 PATTERN_KIT_PASTE_CODE_EXTRA_SIZE =
     1 ? 0x00001000 : 0;
 INACTIVE_PATTERN_EDIT_CODE_EXTRA_SIZE =
-    0 ? 0x00001000 : 0;
+    1 ? 0x00001000 : 0;
 GUARD_SIZE = 0x00001000;
 KIT_V3_CLIPBOARD_SIZE = 1 ? 0x00003180 : 0;
 FIXED_RECORD_V3_SIZE = 1 ? 0x00002840 : 0;
@@ -609,29 +609,29 @@ SECTIONS
         /* Volatile held-key target and one-level inactive Pattern undo owner. */
         __gk_inactive_pattern_state_start = .;
         __gk_inactive_pattern_mode = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_target = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_target_trig = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_undo_action = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_undo_target = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_reserved = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_action_latch = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_pending_notice = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_clipboard_assignment_valid = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_clipboard_assignment_kit = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_undo_assignment_valid = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_undo_assignment_kit = .;
-        . += 0 ? 1 : 0;
+        . += 1 ? 1 : 0;
         __gk_inactive_pattern_state_end = .;
 
         . = __gk_ui_start + UI_SIZE;
@@ -844,10 +844,10 @@ ASSERT(__gk_ui_end - __gk_ui_start == UI_SIZE,
        "global-Kit UI exceeds its explicit budget")
 ASSERT(__gk_inactive_pattern_state_end -
        __gk_inactive_pattern_state_start ==
-       (0
-        ? (0
+       (1
+        ? (1
            ? 12
-           : (0 ? 8 : 7))
+           : (1 ? 8 : 7))
         : 0),
        "global-Kit inactive Pattern state geometry changed")
 ASSERT(__gk_io_buffer_end - __gk_io_buffer == IO_BUFFER_SIZE,

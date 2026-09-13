@@ -7,8 +7,8 @@
         .global gk_lifecycle_quiesce_reset
         .type   gk_lifecycle_quiesce_reset,@function
 gk_lifecycle_quiesce_reset:
-        .incbin "stock/0243.bin", 0, 4
-        .incbin "stock/0243.bin", 4, 4
+        .incbin "stock/0246.bin", 0, 4
+        .incbin "stock/0246.bin", 4, 4
         move.w  %sr,%d0
         move.w  %d0,44(%sp)
         clr.l   48(%sp)
@@ -16,8 +16,8 @@ gk_lifecycle_quiesce_reset:
         .global gk_lifecycle_quiesce_capture_reset
         .type   gk_lifecycle_quiesce_capture_reset,@function
 gk_lifecycle_quiesce_capture_reset:
-        .incbin "stock/0244.bin", 0, 4
-        .incbin "stock/0244.bin", 4, 4
+        .incbin "stock/0247.bin", 0, 4
+        .incbin "stock/0247.bin", 4, 4
         move.w  %sr,%d0
         move.w  %d0,44(%sp)
         moveq   #GK_LIFECYCLE_CAPTURE_LIBRARY,%d0

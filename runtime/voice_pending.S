@@ -60,9 +60,9 @@ gk_stock_voice_pending_pattern_begin:
 .Lgk_voice_pattern_begin_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0205.bin", 0, 2
-        .incbin "stock/0205.bin", 2, 4
-        .incbin "stock/0205.bin", 6, 2
+        .incbin "stock/0208.bin", 0, 2
+        .incbin "stock/0208.bin", 2, 4
+        .incbin "stock/0208.bin", 6, 2
         jmp     GK_STOCK_VOICE_PENDING_PATTERN_BEGIN_CONTINUE
 .Lgk_voice_pattern_begin_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
@@ -98,8 +98,8 @@ gk_stock_voice_pending_pattern_commit:
 .Lgk_voice_pattern_commit_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0206.bin", 0, 4
-        .incbin "stock/0206.bin", 4, 6
+        .incbin "stock/0209.bin", 0, 4
+        .incbin "stock/0209.bin", 4, 6
         jmp     GK_STOCK_VOICE_PENDING_PATTERN_COMMIT_CONTINUE
 .Lgk_voice_pattern_commit_success:
         movem.l (%sp),%d0-%d7/%a0-%a6
@@ -164,10 +164,10 @@ gk_stock_voice_pending_periodic_begin:
 .Lgk_voice_periodic_begin_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0207.bin", 0, 2
-        .incbin "stock/0207.bin", 2, 2
-        .incbin "stock/0207.bin", 4, 2
-        .incbin "stock/0207.bin", 6, 2
+        .incbin "stock/0210.bin", 0, 2
+        .incbin "stock/0210.bin", 2, 2
+        .incbin "stock/0210.bin", 4, 2
+        .incbin "stock/0210.bin", 6, 2
         jmp     GK_STOCK_VOICE_PENDING_PERIODIC_BEGIN_CONTINUE
 .Lgk_voice_periodic_begin_corrupt:
         moveq   #GK_ERR_CORRUPT,%d0
@@ -206,8 +206,8 @@ gk_stock_voice_pending_periodic_commit:
 .Lgk_voice_periodic_commit_stock:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     60(%sp),%sp
-        .incbin "stock/0208.bin", 0, 4
-        .incbin "stock/0208.bin", 4, 4
+        .incbin "stock/0211.bin", 0, 4
+        .incbin "stock/0211.bin", 4, 4
         jmp     GK_STOCK_VOICE_PENDING_PERIODIC_COMMIT_CONTINUE
 .Lgk_voice_periodic_commit_success:
         movem.l (%sp),%d0-%d7/%a0-%a6

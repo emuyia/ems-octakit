@@ -667,7 +667,7 @@ gk_page_clipboard_helper_marker_validate:
         bne.s   .Lgk_pcm_helper_corrupt
         move.l  GK_PC_ROUTE(%a2),%d0
         .byte 0x0c,0x80
-        .incbin "stock/0343.bin", 0, 4
+        .incbin "stock/0346.bin", 0, 4
         bne.s   .Lgk_pcm_helper_corrupt
         move.l  GK_PC_PRIMARY_COUNT(%a2),%d0
         cmpi.l  #2,%d0
@@ -773,8 +773,8 @@ gk_page_clipboard_validate_undo_context:
         .size   gk_page_clipboard_validate_undo_context,.-gk_page_clipboard_validate_undo_context
         .type   gk_page_clipboard_validate_result,@function
 gk_page_clipboard_validate_result:
-        .incbin "stock/0344.bin", 0, 4
-        .incbin "stock/0344.bin", 4, 4
+        .incbin "stock/0347.bin", 0, 4
+        .incbin "stock/0347.bin", 4, 4
         movea.l %a6,%a0
         bsr.w   gk_page_clipboard_validate_frame
         tst.l   %d0
@@ -791,7 +791,7 @@ gk_page_clipboard_validate_result:
         tst.l   GK_PC_HELPER_COUNT(%a6)
         beq.s   .Lgk_pc_result_helper_ready
         .byte 0x0c,0x87
-        .incbin "stock/0345.bin", 0, 4
+        .incbin "stock/0348.bin", 0, 4
         bne.w   .Lgk_pc_result_fail
         move.l  GK_PC_HELPER_COUNT(%a6),%d0
         cmpi.l  #1,%d0
@@ -1066,7 +1066,7 @@ gk_page_clipboard_clear_marker_d0:
         bne.w gk_page_clipboard_marker_fatal
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_PCM_SAVED_BYTES(%sp),%sp
-        .incbin "stock/0346.bin", 0, 6
+        .incbin "stock/0349.bin", 0, 6
         rts
         .size gk_page_clipboard_clear_marker_d0,.-gk_page_clipboard_clear_marker_d0
         .global gk_page_clipboard_clear_marker_d2
@@ -1081,7 +1081,7 @@ gk_page_clipboard_clear_marker_d2:
         bne.w gk_page_clipboard_marker_fatal
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_PCM_SAVED_BYTES(%sp),%sp
-        .incbin "stock/0347.bin", 0, 6
+        .incbin "stock/0350.bin", 0, 6
         rts
         .size gk_page_clipboard_clear_marker_d2,.-gk_page_clipboard_clear_marker_d2
         .global gk_page_clipboard_restore_marker_d0
@@ -1106,7 +1106,7 @@ gk_page_clipboard_restore_marker_d0:
         bne.w gk_page_clipboard_marker_fatal
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_PCM_SAVED_BYTES(%sp),%sp
-        .incbin "stock/0348.bin", 0, 6
+        .incbin "stock/0351.bin", 0, 6
         rts
         .size gk_page_clipboard_restore_marker_d0,.-gk_page_clipboard_restore_marker_d0
         .global gk_page_clipboard_restore_marker_d1
@@ -1131,7 +1131,7 @@ gk_page_clipboard_restore_marker_d1:
         bne.w gk_page_clipboard_marker_fatal
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_PCM_SAVED_BYTES(%sp),%sp
-        .incbin "stock/0349.bin", 0, 6
+        .incbin "stock/0352.bin", 0, 6
         rts
         .size gk_page_clipboard_restore_marker_d1,.-gk_page_clipboard_restore_marker_d1
         .global gk_page_clipboard_helper_marker_d1
@@ -1165,7 +1165,7 @@ gk_page_clipboard_helper_marker_d1:
         movem.l (%sp),%d0-%d7/%a0-%a2
         lea GK_PCM_SAVED_BYTES(%sp),%sp
 .Lgk_pcm_helper_stock:
-        .incbin "stock/0350.bin", 0, 6
+        .incbin "stock/0353.bin", 0, 6
         rts
         .size   gk_page_clipboard_helper_marker_d1,.-gk_page_clipboard_helper_marker_d1
         .global gk_page_clipboard_fatal

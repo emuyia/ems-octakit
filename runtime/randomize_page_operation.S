@@ -139,7 +139,7 @@ gk_randomize_page_classify:
         tst.l   GK_RZ_MODE(%a6)
         bne.s   .Lgk_rz_route_midi
         .byte 0x0c,0x80
-        .incbin "stock/0351.bin", 0, 4
+        .incbin "stock/0354.bin", 0, 4
         beq.w   .Lgk_rz_route_audio_0
         cmpi.l  #2,%d0
         beq.w   .Lgk_rz_route_audio_2
@@ -156,7 +156,7 @@ gk_randomize_page_classify:
         rts
 .Lgk_rz_route_midi:
         .byte 0x0c,0x80
-        .incbin "stock/0352.bin", 0, 4
+        .incbin "stock/0355.bin", 0, 4
         beq.w   .Lgk_rz_route_midi_0
         cmpi.l  #2,%d0
         beq.w   .Lgk_rz_route_midi_2
@@ -886,17 +886,17 @@ gk_randomize_page_regular_returns:
         .long   0x4005bb36
         .long   0x4005bc52
         .long   0x4005bd7a
-        .incbin "stock/0353.bin", 0, 4
-        .incbin "stock/0354.bin", 0, 4
-        .incbin "stock/0355.bin", 0, 4
+        .incbin "stock/0356.bin", 0, 4
+        .incbin "stock/0357.bin", 0, 4
+        .incbin "stock/0358.bin", 0, 4
         .long   0x4005c1ba
         .long   0x4005c2dc
         .long   0x4005c41a
         .long   0x4005c516
         .long   0x4005c618
-        .incbin "stock/0356.bin", 0, 4
-        .incbin "stock/0357.bin", 0, 4
-        .incbin "stock/0358.bin", 0, 4
+        .incbin "stock/0359.bin", 0, 4
+        .incbin "stock/0360.bin", 0, 4
+        .incbin "stock/0361.bin", 0, 4
         .long   0x4005ca38
         .long   0x4005cb66
         .global gk_randomize_page_marker_validate
@@ -915,7 +915,7 @@ gk_randomize_page_marker_validate:
         cmpi.l  #GK_RANDOMIZE_PAGE_ROUTE_MIDI_PAGE_4,%d4
         bhi.w   .Lgk_rzm_corrupt
         .byte 0x0c,0x87
-        .incbin "stock/0359.bin", 0, 4
+        .incbin "stock/0362.bin", 0, 4
         bne.s   .Lgk_rzm_source_d2
         move.l  GK_RZM_D0(%a1),%d0
         cmpi.l  #1,%d0
@@ -1072,7 +1072,7 @@ gk_randomize_page_write_marker_d0:
         lea GK_RZM_SAVED_BYTES(%sp),%sp
         .global gk_randomize_page_stock_dirty_store_d0
 gk_randomize_page_stock_dirty_store_d0:
-        .incbin "stock/0360.bin", 0, 6
+        .incbin "stock/0363.bin", 0, 6
         rts
         .size gk_randomize_page_write_marker_d0,.-gk_randomize_page_write_marker_d0
         .global gk_randomize_page_write_marker_d2
@@ -1091,7 +1091,7 @@ gk_randomize_page_write_marker_d2:
         lea GK_RZM_SAVED_BYTES(%sp),%sp
         .global gk_randomize_page_stock_dirty_store_d2
 gk_randomize_page_stock_dirty_store_d2:
-        .incbin "stock/0361.bin", 0, 6
+        .incbin "stock/0364.bin", 0, 6
         rts
         .size gk_randomize_page_write_marker_d2,.-gk_randomize_page_write_marker_d2
         .global gk_randomize_page_fatal

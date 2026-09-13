@@ -240,8 +240,8 @@ gk_kit_list_stock_refresh_call:
         .global gk_kit_list_copy
         .type   gk_kit_list_copy,@function
 gk_kit_list_copy:
-        .incbin "stock/0368.bin", 0, 4
-        .incbin "stock/0368.bin", 4, 4
+        .incbin "stock/0371.bin", 0, 4
+        .incbin "stock/0371.bin", 4, 4
         bsr.w   gk_kit_list_target_validate
         tst.l   %d0
         bmi.s   .Lgk_kit_list_copy_restore
@@ -421,23 +421,35 @@ gk_kit_list_clear:
         .global gk_kit_list_copy_dispatch
         .type gk_kit_list_copy_dispatch,@function
 gk_kit_list_copy_dispatch:
+        moveq #GK_INACTIVE_PATTERN_ACTION_COPY,%d0
+        bsr.w gk_inactive_pattern_action_dispatch
+        tst.l %d0
+        beq.s .Ldone_gk_kit_list_copy_dispatch
         bsr.w gk_kit_list_owned
         tst.l %d0
         beq.s .Lstock_gk_kit_list_copy_dispatch
         jmp gk_kit_list_copy
 .Lstock_gk_kit_list_copy_dispatch:
         jmp gk_stock_global_copy_callback_trampoline
+.Ldone_gk_kit_list_copy_dispatch:
+        rts
         .size gk_kit_list_copy_dispatch,.-gk_kit_list_copy_dispatch
         .align 4
         .global gk_kit_list_clear_dispatch
         .type gk_kit_list_clear_dispatch,@function
 gk_kit_list_clear_dispatch:
+        moveq #GK_INACTIVE_PATTERN_ACTION_CLEAR,%d0
+        bsr.w gk_inactive_pattern_action_dispatch
+        tst.l %d0
+        beq.s .Ldone_gk_kit_list_clear_dispatch
         bsr.w gk_kit_list_owned
         tst.l %d0
         beq.s .Lstock_gk_kit_list_clear_dispatch
         jmp gk_kit_list_clear
 .Lstock_gk_kit_list_clear_dispatch:
         jmp gk_stock_global_clear_callback_trampoline
+.Ldone_gk_kit_list_clear_dispatch:
+        rts
         .size gk_kit_list_clear_dispatch,.-gk_kit_list_clear_dispatch
         .align  4
         .global gk_kit_list_paste_dispatch
@@ -447,38 +459,44 @@ gk_kit_list_paste_dispatch:
         bne.s   .Lgk_kit_list_pattern_paste_press
         clr.b   __gk_pattern_kit_armed
 .Lgk_kit_list_pattern_paste_press:
+        moveq   #GK_INACTIVE_PATTERN_ACTION_PASTE,%d0
+        bsr.w   gk_inactive_pattern_action_dispatch
+        tst.l   %d0
+        beq.s   .Lgk_kit_list_pattern_paste_done
         bsr.w   gk_kit_list_owned
         tst.l   %d0
         beq.s   .Lgk_kit_list_pattern_paste_stock
         jmp     gk_kit_list_paste
 .Lgk_kit_list_pattern_paste_stock:
         jmp     gk_stock_global_paste_callback_trampoline
+.Lgk_kit_list_pattern_paste_done:
+        rts
         .size   gk_kit_list_paste_dispatch,.-gk_kit_list_paste_dispatch
         .align 4
         .global gk_stock_global_copy_callback_trampoline
         .type gk_stock_global_copy_callback_trampoline,@function
 gk_stock_global_copy_callback_trampoline:
-        .incbin "stock/0369.bin", 0, 2
-        .incbin "stock/0369.bin", 2, 2
-        .incbin "stock/0369.bin", 4, 4
+        .incbin "stock/0372.bin", 0, 2
+        .incbin "stock/0372.bin", 2, 2
+        .incbin "stock/0372.bin", 4, 4
         jmp GK_STOCK_GLOBAL_COPY_CALLBACK_CONTINUE
         .size gk_stock_global_copy_callback_trampoline,.-gk_stock_global_copy_callback_trampoline
         .align 4
         .global gk_stock_global_clear_callback_trampoline
         .type gk_stock_global_clear_callback_trampoline,@function
 gk_stock_global_clear_callback_trampoline:
-        .incbin "stock/0370.bin", 0, 2
-        .incbin "stock/0370.bin", 2, 2
-        .incbin "stock/0370.bin", 4, 4
+        .incbin "stock/0373.bin", 0, 2
+        .incbin "stock/0373.bin", 2, 2
+        .incbin "stock/0373.bin", 4, 4
         jmp GK_STOCK_GLOBAL_CLEAR_CALLBACK_CONTINUE
         .size gk_stock_global_clear_callback_trampoline,.-gk_stock_global_clear_callback_trampoline
         .align 4
         .global gk_stock_global_paste_callback_trampoline
         .type gk_stock_global_paste_callback_trampoline,@function
 gk_stock_global_paste_callback_trampoline:
-        .incbin "stock/0371.bin", 0, 2
-        .incbin "stock/0371.bin", 2, 2
-        .incbin "stock/0371.bin", 4, 4
+        .incbin "stock/0374.bin", 0, 2
+        .incbin "stock/0374.bin", 2, 2
+        .incbin "stock/0374.bin", 4, 4
         jmp GK_STOCK_GLOBAL_PASTE_CALLBACK_CONTINUE
         .size gk_stock_global_paste_callback_trampoline,.-gk_stock_global_paste_callback_trampoline
         .global gk_kit_list_render_dispatch
@@ -523,7 +541,7 @@ gk_kit_list_v7_stock_menu_close_call:
         move.l  %d2,-(%sp)
         .global gk_kit_list_v7_stock_popup_create_call
 gk_kit_list_v7_stock_popup_create_call:
-        .incbin "stock/0372.bin", 0, 6
+        .incbin "stock/0375.bin", 0, 6
         lea     24(%sp),%sp
         move.l  %d0,GK_STOCK_CALLBACK_MENU_OBJECT
         movea.l %d0,%a2
@@ -574,16 +592,16 @@ gk_kit_list_title_panel_draw_call:
         .global gk_stock_scrolling_callback_menu_refresh
         .type   gk_stock_scrolling_callback_menu_refresh,@function
 gk_stock_scrolling_callback_menu_refresh:
-        .incbin "stock/0373.bin", 0, 4
-        .incbin "stock/0373.bin", 4, 4
+        .incbin "stock/0376.bin", 0, 4
+        .incbin "stock/0376.bin", 4, 4
         jmp     GK_STOCK_SCROLLING_CALLBACK_MENU_REFRESH_CONTINUE
         .size   gk_stock_scrolling_callback_menu_refresh,.-gk_stock_scrolling_callback_menu_refresh
 .Lgk_kit_list_load_title:
-        .incbin "stock/0374.bin", 0, 4
+        .incbin "stock/0377.bin", 0, 4
         .byte 0x20,0x4b,0x49,0x54,0x00
 .Lgk_kit_list_message_copy:
-        .incbin "stock/0375.bin", 0, 5
+        .incbin "stock/0378.bin", 0, 5
 .Lgk_kit_list_message_paste:
-        .incbin "stock/0376.bin", 0, 6
+        .incbin "stock/0379.bin", 0, 6
 .Lgk_kit_list_message_clear:
-        .incbin "stock/0377.bin", 0, 6
+        .incbin "stock/0380.bin", 0, 6

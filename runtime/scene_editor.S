@@ -36,11 +36,11 @@ gk_scene_editor_prepare:
         bhi.w   gk_scene_editor_fatal
         movea.l %d0,%a6
         move.l  %a5,%d0
-        .incbin "stock/0271.bin", 0, 6
-        .incbin "stock/0271.bin", 6, 4
-        .incbin "stock/0271.bin", 10, 6
-        .incbin "stock/0271.bin", 16, 2
-        .incbin "stock/0271.bin", 18, 6
+        .incbin "stock/0274.bin", 0, 6
+        .incbin "stock/0274.bin", 6, 4
+        .incbin "stock/0274.bin", 10, 6
+        .incbin "stock/0274.bin", 16, 2
+        .incbin "stock/0274.bin", 18, 6
         adda.l  %a2,%a0
         moveq   #0,%d3
         move.b  (%a0),%d3
@@ -166,11 +166,11 @@ gk_scene_editor_finish:
         cmp.l   %d1,%d0
         bne.w   gk_scene_editor_fatal
         move.l  %a5,%d0
-        .incbin "stock/0272.bin", 0, 6
-        .incbin "stock/0272.bin", 6, 4
-        .incbin "stock/0272.bin", 10, 6
-        .incbin "stock/0272.bin", 16, 2
-        .incbin "stock/0272.bin", 18, 6
+        .incbin "stock/0275.bin", 0, 6
+        .incbin "stock/0275.bin", 6, 4
+        .incbin "stock/0275.bin", 10, 6
+        .incbin "stock/0275.bin", 16, 2
+        .incbin "stock/0275.bin", 18, 6
         move.l  %a2,%d1
         andi.l  #0xff,%d1
         adda.l  %d1,%a0
@@ -204,11 +204,11 @@ gk_stock_scene_b_encoder:
         beq.w .Lgk_scene_editor_busy_early0
         bra.w gk_scene_editor_fatal
 .Lgk_scene_editor_lifecycle_active0:
-        .incbin "stock/0273.bin", 0, 4
-        .incbin "stock/0273.bin", 4, 4
+        .incbin "stock/0276.bin", 0, 4
+        .incbin "stock/0276.bin", 4, 4
         move.l 48(%sp),%d0
         .byte 0x0c,0x80
-        .incbin "stock/0274.bin", 0, 4
+        .incbin "stock/0277.bin", 0, 4
         blo.w gk_scene_editor_fatal
         cmpi.l #6,%d0
         bhi.w gk_scene_editor_fatal
@@ -229,9 +229,9 @@ gk_scene_b_encoder_stock_call:
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish
-        .incbin "stock/0275.bin", 0, 4
-        .incbin "stock/0275.bin", 4, 4
-        .incbin "stock/0275.bin", 8, 2
+        .incbin "stock/0278.bin", 0, 4
+        .incbin "stock/0278.bin", 4, 4
+        .incbin "stock/0278.bin", 8, 2
 .Lgk_scene_editor_busy_saved0:
         movem.l (%sp),%d2-%d7/%a2-%a6
         lea 44(%sp),%sp
@@ -249,11 +249,11 @@ gk_stock_scene_a_encoder:
         beq.w .Lgk_scene_editor_busy_early1
         bra.w gk_scene_editor_fatal
 .Lgk_scene_editor_lifecycle_active1:
-        .incbin "stock/0276.bin", 0, 4
-        .incbin "stock/0276.bin", 4, 4
+        .incbin "stock/0279.bin", 0, 4
+        .incbin "stock/0279.bin", 4, 4
         move.l 48(%sp),%d0
         .byte 0x0c,0x80
-        .incbin "stock/0277.bin", 0, 4
+        .incbin "stock/0280.bin", 0, 4
         blo.w gk_scene_editor_fatal
         cmpi.l #6,%d0
         bhi.w gk_scene_editor_fatal
@@ -274,9 +274,9 @@ gk_scene_a_encoder_stock_call:
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish
-        .incbin "stock/0278.bin", 0, 4
-        .incbin "stock/0278.bin", 4, 4
-        .incbin "stock/0278.bin", 8, 2
+        .incbin "stock/0281.bin", 0, 4
+        .incbin "stock/0281.bin", 4, 4
+        .incbin "stock/0281.bin", 8, 2
 .Lgk_scene_editor_busy_saved1:
         movem.l (%sp),%d2-%d7/%a2-%a6
         lea 44(%sp),%sp
@@ -294,8 +294,8 @@ gk_stock_scene_b_button:
         beq.w .Lgk_scene_editor_busy_early2
         bra.w gk_scene_editor_fatal
 .Lgk_scene_editor_lifecycle_active2:
-        .incbin "stock/0279.bin", 0, 4
-        .incbin "stock/0279.bin", 4, 4
+        .incbin "stock/0282.bin", 0, 4
+        .incbin "stock/0282.bin", 4, 4
         move.l 48(%sp),%d0
         cmpi.l #0x38,%d0
         blo.w gk_scene_editor_fatal
@@ -318,9 +318,9 @@ gk_scene_b_button_stock_call:
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish
-        .incbin "stock/0280.bin", 0, 4
-        .incbin "stock/0280.bin", 4, 4
-        .incbin "stock/0280.bin", 8, 2
+        .incbin "stock/0283.bin", 0, 4
+        .incbin "stock/0283.bin", 4, 4
+        .incbin "stock/0283.bin", 8, 2
 .Lgk_scene_editor_busy_saved2:
         movem.l (%sp),%d2-%d7/%a2-%a6
         lea 44(%sp),%sp
@@ -338,8 +338,8 @@ gk_stock_scene_a_button:
         beq.w .Lgk_scene_editor_busy_early3
         bra.w gk_scene_editor_fatal
 .Lgk_scene_editor_lifecycle_active3:
-        .incbin "stock/0281.bin", 0, 4
-        .incbin "stock/0281.bin", 4, 4
+        .incbin "stock/0284.bin", 0, 4
+        .incbin "stock/0284.bin", 4, 4
         move.l 48(%sp),%d0
         cmpi.l #0x38,%d0
         blo.w gk_scene_editor_fatal
@@ -362,9 +362,9 @@ gk_scene_a_button_stock_call:
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish
-        .incbin "stock/0282.bin", 0, 4
-        .incbin "stock/0282.bin", 4, 4
-        .incbin "stock/0282.bin", 8, 2
+        .incbin "stock/0285.bin", 0, 4
+        .incbin "stock/0285.bin", 4, 4
+        .incbin "stock/0285.bin", 8, 2
 .Lgk_scene_editor_busy_saved3:
         movem.l (%sp),%d2-%d7/%a2-%a6
         lea 44(%sp),%sp

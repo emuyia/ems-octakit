@@ -54,7 +54,7 @@ gk_stock_background_banks_save_work:
         move.l  24(%sp),-(%sp)
         .global gk_background_stock_banks_save_call
 gk_background_stock_banks_save_call:
-        .incbin "stock/0152.bin", 0, 6
+        .incbin "stock/0155.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -147,7 +147,7 @@ gk_stock_current_project_card_sync:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_card_sync_call
 gk_lifecycle_stock_card_sync_call:
-        .incbin "stock/0153.bin", 0, 6
+        .incbin "stock/0156.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -179,7 +179,7 @@ gk_stock_project_store_work_to_strd:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_project_store_call
 gk_lifecycle_stock_project_store_call:
-        .incbin "stock/0154.bin", 0, 6
+        .incbin "stock/0157.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -209,7 +209,7 @@ gk_stock_banks_store_work_to_strd:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_bank_store_call
 gk_lifecycle_stock_bank_store_call:
-        .incbin "stock/0155.bin", 0, 6
+        .incbin "stock/0158.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -235,7 +235,7 @@ gk_stock_project_restore_strd_to_work:
         move.l  20(%sp),-(%sp)
         .global gk_lifecycle_stock_project_reload_call
 gk_lifecycle_stock_project_reload_call:
-        .incbin "stock/0156.bin", 0, 6
+        .incbin "stock/0159.bin", 0, 6
         lea     12(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -262,7 +262,7 @@ gk_stock_banks_restore_strd_to_work:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_bank_reload_call
 gk_lifecycle_stock_bank_reload_call:
-        .incbin "stock/0157.bin", 0, 6
+        .incbin "stock/0160.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2
@@ -288,7 +288,7 @@ gk_stock_boot_resident_banks_initialize_all:
         move.l  %d0,-(%sp)
         .global gk_lifecycle_stock_boot_banks_init_call
 gk_lifecycle_stock_boot_banks_init_call:
-        .incbin "stock/0158.bin", 0, 6
+        .incbin "stock/0161.bin", 0, 6
         addq.l  #4,%sp
         rts
         .size   gk_stock_boot_resident_banks_initialize_all,.-gk_stock_boot_resident_banks_initialize_all
@@ -298,18 +298,18 @@ gk_stock_empty_project_runtime_initialize:
         bsr.w   gk_lifecycle_quiesce_reset
         tst.l   %d0
         bne.w   gk_stock_empty_project_runtime_initialize_report_fatal
-        .incbin "stock/0159.bin", 0, 2
-        .incbin "stock/0159.bin", 2, 2
+        .incbin "stock/0162.bin", 0, 2
+        .incbin "stock/0162.bin", 2, 2
         .global gk_lifecycle_stock_empty_banks_init_call
 gk_lifecycle_stock_empty_banks_init_call:
-        .incbin "stock/0159.bin", 4, 6
+        .incbin "stock/0162.bin", 4, 6
         jmp     GK_STOCK_EMPTY_PROJECT_RUNTIME_INITIALIZE_CONTINUE
         .size   gk_stock_empty_project_runtime_initialize,.-gk_stock_empty_project_runtime_initialize
         .global gk_stock_banks_load_work_trampoline
         .type   gk_stock_banks_load_work_trampoline,@function
 gk_stock_banks_load_work_trampoline:
-        .incbin "stock/0160.bin", 0, 4
-        .incbin "stock/0160.bin", 4, 4
+        .incbin "stock/0163.bin", 0, 4
+        .incbin "stock/0163.bin", 4, 4
         .global gk_lifecycle_stock_banks_load_trampoline_jump
 gk_lifecycle_stock_banks_load_trampoline_jump:
         jmp     GK_STOCK_BANKS_LOAD_WORK_CONTINUE
@@ -349,8 +349,8 @@ gk_lifecycle_partial_load_restore:
         .global gk_lifecycle_activate_current
         .type   gk_lifecycle_activate_current,@function
 gk_lifecycle_activate_current:
-        .incbin "stock/0161.bin", 0, 4
-        .incbin "stock/0161.bin", 4, 4
+        .incbin "stock/0164.bin", 0, 4
+        .incbin "stock/0164.bin", 4, 4
         move.w  %sr,%d0
         move.w  %d0,44(%sp)
         move.l  __gk_lifecycle_state,%d0
@@ -619,10 +619,10 @@ gk_stock_banks_load_work:
         tst.l   %d0
         bmi.w   .Lgk_banks_load_return
 .Lgk_banks_load_call_stock:
-        .incbin "stock/0162.bin", 0, 4
-        .incbin "stock/0162.bin", 4, 4
-        .incbin "stock/0162.bin", 8, 4
-        .incbin "stock/0162.bin", 12, 4
+        .incbin "stock/0165.bin", 0, 4
+        .incbin "stock/0165.bin", 4, 4
+        .incbin "stock/0165.bin", 8, 4
+        .incbin "stock/0165.bin", 12, 4
         bsr.w   gk_stock_banks_load_work_trampoline
         lea     16(%sp),%sp
         tst.l   %d0
@@ -670,7 +670,7 @@ gk_stock_create_empty_banks_save_work:
         move.l  28(%sp),-(%sp)
         .global gk_lifecycle_stock_destination_banks_save_call
 gk_lifecycle_stock_destination_banks_save_call:
-        .incbin "stock/0163.bin", 0, 6
+        .incbin "stock/0166.bin", 0, 6
         lea     16(%sp),%sp
         move.l  %d0,%d2
         tst.l   %d2

@@ -155,7 +155,7 @@ gk_stock_audio_secondary_begin:
         lea 64(%sp),%sp
         .global gk_audio_secondary_begin_stock
 gk_audio_secondary_begin_stock:
-        .incbin "stock/0213.bin", 0, 6
+        .incbin "stock/0216.bin", 0, 6
         .global gk_audio_secondary_begin_stock_end
 gk_audio_secondary_begin_stock_end:
         jmp     GK_STOCK_AUDIO_SECONDARY_BEGIN_CONTINUE
@@ -264,8 +264,8 @@ gk_stock_audio_secondary_acquire:
         lea 64(%sp),%sp
         .global gk_audio_secondary_acquire_stock
 gk_audio_secondary_acquire_stock:
-        .incbin "stock/0214.bin", 0, 2
-        .incbin "stock/0214.bin", 2, 6
+        .incbin "stock/0217.bin", 0, 2
+        .incbin "stock/0217.bin", 2, 6
         .global gk_audio_secondary_acquire_stock_end
 gk_audio_secondary_acquire_stock_end:
         jmp     GK_STOCK_AUDIO_SECONDARY_ACQUIRE_CONTINUE
@@ -275,8 +275,8 @@ gk_audio_secondary_acquire_stock_end:
 gk_stock_audio_secondary_cache_compare:
         .global gk_audio_secondary_cache_compare_stock
 gk_audio_secondary_cache_compare_stock:
-        .incbin "stock/0215.bin", 0, 8
-        .incbin "stock/0215.bin", 8, 8
+        .incbin "stock/0218.bin", 0, 8
+        .incbin "stock/0218.bin", 8, 8
         .global gk_audio_secondary_cache_compare_stock_end
 gk_audio_secondary_cache_compare_stock_end:
 .Lgk_audio_secondary_cache_mismatch_stub:
@@ -385,7 +385,7 @@ gk_audio_secondary_cache_equal_stub:
 gk_stock_audio_secondary_source:
         .global gk_audio_secondary_source_stock
 gk_audio_secondary_source_stock:
-        .incbin "stock/0216.bin", 0, 6
+        .incbin "stock/0219.bin", 0, 6
         .global gk_audio_secondary_source_stock_end
 gk_audio_secondary_source_stock_end:
         lea -64(%sp),%sp
@@ -459,7 +459,7 @@ gk_stock_audio_secondary_copy:
         lea 64(%sp),%sp
         .global gk_audio_secondary_copy_stock
 gk_audio_secondary_copy_stock:
-        .incbin "stock/0217.bin", 0, 6
+        .incbin "stock/0220.bin", 0, 6
         .global gk_audio_secondary_copy_stock_end
 gk_audio_secondary_copy_stock_end:
         lea -64(%sp),%sp
@@ -532,8 +532,8 @@ gk_stock_audio_secondary_release:
         lea 64(%sp),%sp
         .global gk_audio_secondary_release_stock
 gk_audio_secondary_release_stock:
-        .incbin "stock/0218.bin", 0, 2
-        .incbin "stock/0218.bin", 2, 4
+        .incbin "stock/0221.bin", 0, 2
+        .incbin "stock/0221.bin", 2, 4
         .global gk_audio_secondary_release_stock_end
 gk_audio_secondary_release_stock_end:
         jmp     GK_STOCK_AUDIO_SECONDARY_RELEASE_CONTINUE
