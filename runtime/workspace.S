@@ -1699,11 +1699,30 @@ gk_workspace_prepare:
         moveq   #GK_TRANSITION_NEW_DESCRIPTOR,%d0
 .Lgk_workspace_prepare_not_undo:
         btst    #7,%d7
-        beq.s   .Lgk_workspace_prepare_flags
+        beq.s   .Lgk_workspace_prepare_staged_payload_ready
         movea.l %a0,%a4
         lea     __gk_default_payload,%a0
         movea.l %a4,%a1
         jsr     gk_copy_payload_interruptible
+        movea.l %a4,%a0
+        moveq   #GK_TRANSITION_NEW_DESCRIPTOR,%d0
+.Lgk_workspace_prepare_staged_payload_ready:
+        btst    #2,%d7
+        bne.s   .Lgk_workspace_prepare_flags
+        movea.l %a0,%a4
+        move.l  %d6,%d0
+        move.l  %d6,%d1
+        lsr.l   #3,%d0
+        andi.l  #7,%d1
+        lea     __gk_initialized_bitmap,%a0
+        btst    %d1,(%a0,%d0.l)
+        bne.s   .Lgk_workspace_prepare_empty_slot_ready
+        move.l  %a4,-(%sp)
+        .global gk_workspace_empty_slot_initialize_call
+gk_workspace_empty_slot_initialize_call:
+        jsr     GK_STOCK_PART_PAYLOAD_INITIALIZE
+        addq.l  #4,%sp
+.Lgk_workspace_prepare_empty_slot_ready:
         movea.l %a4,%a0
         moveq   #GK_TRANSITION_NEW_DESCRIPTOR,%d0
 .Lgk_workspace_prepare_flags:
