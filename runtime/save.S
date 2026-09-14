@@ -8,7 +8,7 @@ gk_descriptor_begin_promotion:
         bhi.w   .Lgk_promotion_begin_range
         cmpi.l  #0xff,%d1
         bhi.w   .Lgk_promotion_begin_range
-        cmpi.l  #1,%d2
+        cmpi.l  #2,%d2
         bhi.w   .Lgk_promotion_begin_range
         lea     -44(%sp),%sp
         movem.l %d2-%d7/%a2-%a4,(%sp)
@@ -325,7 +325,7 @@ gk_workspace_save_atomic_begin:
         bhi.w   .Lgk_promotion_finish_corrupt
         moveq   #0,%d1
         move.b  __gk_promotion_assign,%d1
-        cmpi.l  #1,%d1
+        cmpi.l  #2,%d1
         bhi.w   .Lgk_promotion_finish_corrupt
         move.l  %d1,40(%sp)
         tst.l   %d1
@@ -449,9 +449,13 @@ gk_workspace_save_atomic_begin:
         cmp.l   __gk_workspace_name + 4,%d1
         bne.w   .Lgk_promotion_finish_corrupt
 .Lgk_promotion_finish_name_valid:
+        move.l  40(%sp),%d0
+        cmpi.l  #2,%d0
+        beq.s   .Lgk_promotion_finish_readers_safe_clone_target
         jsr     gk_workspace_save_as_latch_reader_validate
         tst.l   %d0
         bne.w   gk_workspace_finish_promotion_restore
+.Lgk_promotion_finish_readers_safe_clone_target:
         move.l  %d3,%d0
         lsl.l   #3,%d0
         lea     __gk_kit_names,%a0
@@ -468,14 +472,18 @@ gk_workspace_save_publication:
         andi.l  #7,%d1
         lea     __gk_initialized_bitmap,%a0
         bset    %d1,(%a0,%d0.l)
+        move.l  40(%sp),%d0
+        cmpi.l  #2,%d0
+        beq.s   .Lgk_promotion_finish_kit_identity_done
         cmp.l   %d6,%d3
         beq.s   .Lgk_promotion_finish_kit_identity_done
         move.b  %d3,GK_DESC_KIT(%a2)
         move.b  %d3,GK_PHYS_KIT(%a4)
         move.b  %d3,__gk_current_kit
 .Lgk_promotion_finish_kit_identity_done:
-        tst.l   40(%sp)
-        beq.s   .Lgk_promotion_finish_assignment_done
+        move.l  40(%sp),%d0
+        cmpi.l  #1,%d0
+        bne.s   .Lgk_promotion_finish_assignment_done
         move.b  %d3,(%a1)
         move.l  %d4,%d0
         lsl.l   #4,%d0
@@ -492,8 +500,18 @@ gk_workspace_save_publication:
 .Lgk_promotion_finish_assignment_done:
         clr.l   GK_DESC_CANDIDATE(%a2)
         move.b  #GK_ID_NONE,GK_DESC_SPILL(%a2)
+        move.l  40(%sp),%d0
+        cmpi.l  #2,%d0
+        bne.s   .Lgk_promotion_finish_workspace_saved
+        moveq   #0,%d0
+        move.b  GK_DESC_FLAGS(%a2),%d0
+        andi.l  #0xbd,%d0
+        move.b  %d0,GK_DESC_FLAGS(%a2)
+        bra.s   .Lgk_promotion_finish_workspace_state_done
+.Lgk_promotion_finish_workspace_saved:
         move.b  #GK_DESC_WORKSPACE_STABLE,GK_DESC_FLAGS(%a2)
         clr.b   __gk_workspace_dirty
+.Lgk_promotion_finish_workspace_state_done:
         moveq   #0,%d0
         move.b  __gk_runtime_flags,%d0
         ori.l   #GK_RUNTIME_STORAGE_DIRTY,%d0
@@ -527,8 +545,9 @@ gk_workspace_save_publication:
         .global gk_workspace_save_v3_kit_dirty_call
 gk_workspace_save_v3_kit_dirty_call:
         jsr     gk_persistence_v3_mark_kit_dirty
-        tst.l   40(%sp)
-        beq.s   .Lgk_promotion_finish_v3_dirty_done
+        move.l  40(%sp),%d0
+        cmpi.l  #1,%d0
+        bne.s   .Lgk_promotion_finish_v3_dirty_done
         move.l  %d4,%d0
         lsl.l   #4,%d0
         moveq   #0,%d1
@@ -631,6 +650,71 @@ gk_workspace_save_as_named:
         moveq   #GK_ERR_RANGE,%d0
         rts
         .size   gk_workspace_save_as_named,.-gk_workspace_save_as_named
+        .global gk_workspace_save_clone_target_named
+        .type   gk_workspace_save_clone_target_named,@function
+gk_workspace_save_clone_target_named:
+        cmpi.l  #0xff,%d0
+        bhi.w   .Lgk_workspace_save_clone_target_range
+        tst.l   %a0
+        beq.w   .Lgk_workspace_save_clone_target_invalid
+        lea     -32(%sp),%sp
+        movem.l %d2-%d7,(%sp)
+        move.l  %d0,%d4
+        move.l  (%a0),%d5
+        move.l  4(%a0),%d6
+        andi.l  #0xffffff00,%d6
+        move.l  %d5,__gk_ui_rename_name
+        move.l  %d6,__gk_ui_rename_name + 4
+        moveq   #0,%d3
+        move.b  __gk_workspace_descriptor,%d3
+        cmpi.l  #GK_DESCRIPTOR_COUNT - 1,%d3
+        bhi.s   .Lgk_workspace_save_clone_target_invalid_restore
+        move.l  %d3,%d0
+        move.l  %d4,%d1
+        moveq   #2,%d2
+        bsr.w   gk_descriptor_begin_promotion
+        tst.l   %d0
+        bne.s   .Lgk_workspace_save_clone_target_restore
+        move.l  __gk_workspace_name,%d0
+        move.l  %d0,24(%sp)
+        move.l  __gk_workspace_name + 4,%d0
+        move.l  %d0,28(%sp)
+        move.l  %d5,__gk_workspace_name
+        move.l  %d6,__gk_workspace_name + 4
+        move.l  %d3,%d0
+        jsr     gk_descriptor_copy_payload
+        tst.l   %d0
+        bne.s   .Lgk_workspace_save_clone_target_name_restore
+        move.l  %d3,%d0
+        move.l %d3,%d1
+        andi.l #0xff,%d1
+        lsl.l #4,%d1
+        lea __gk_descriptors,%a0
+        adda.l %d1,%a0
+        moveq   #0,%d1
+        move.b  GK_DESC_SPILL(%a0),%d1
+        bsr.w   gk_workspace_finish_promotion
+.Lgk_workspace_save_clone_target_name_restore:
+        move.l  %d0,%d2
+        move.l  24(%sp),%d5
+        move.l  %d5,__gk_workspace_name
+        move.l  28(%sp),%d7
+        move.l  %d7,__gk_workspace_name + 4
+        move.l  %d2,%d0
+.Lgk_workspace_save_clone_target_restore:
+        movem.l (%sp),%d2-%d7
+        lea     32(%sp),%sp
+        rts
+.Lgk_workspace_save_clone_target_invalid_restore:
+        moveq   #GK_ERR_INVALID,%d0
+        bra.s   .Lgk_workspace_save_clone_target_restore
+.Lgk_workspace_save_clone_target_invalid:
+        moveq   #GK_ERR_INVALID,%d0
+        rts
+.Lgk_workspace_save_clone_target_range:
+        moveq   #GK_ERR_RANGE,%d0
+        rts
+        .size   gk_workspace_save_clone_target_named,.-gk_workspace_save_clone_target_named
         .global gk_workspace_save_as
         .type   gk_workspace_save_as,@function
 gk_workspace_save_as:
@@ -707,6 +791,12 @@ gk_workspace_resume_promotion:
         move.b  GK_DESC_SPILL(%a2),%d0
         moveq   #0,%d1
         move.b  __gk_promotion_assign,%d1
+        cmpi.l  #2,%d1
+        bne.s   .Lgk_workspace_resume_ordinary
+        lea     __gk_ui_rename_name,%a0
+        bsr.w   gk_workspace_save_clone_target_named
+        bra.s   .Lgk_workspace_resume_restore
+.Lgk_workspace_resume_ordinary:
         bsr.w   .Lgk_workspace_save_mode
         bra.s   .Lgk_workspace_resume_restore
 .Lgk_workspace_resume_invalid:

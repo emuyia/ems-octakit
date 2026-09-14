@@ -931,16 +931,28 @@ gk_save_as_menu_confirm:
         bsr.w   gk_ui_mode_context_validate
         tst.l   %d0
         bmi.w   .Lgk_save_as_confirm_finish
+        move.l  %d0,%d3
+        move.l  %d2,%d0
+        jsr     gk_next_pattern_clone_save_route
+        tst.l   %d0
+        bmi.w   .Lgk_save_as_confirm_finish
+        move.l  %d0,%a2
         tst.l   %d4
         beq.s   .Lgk_save_as_confirm_named
-        move.l  %d0,%d3
         tst.b   __gk_workspace_bound
         beq.s   .Lgk_save_as_confirm_named
         tst.b   __gk_workspace_name
         beq.s   .Lgk_save_as_confirm_named
         move.l  %d2,%d0
         lea     __gk_workspace_name,%a0
+        move.l  %a2,%d1
+        tst.l   %d1
+        beq.s   .Lgk_save_as_confirm_quick_ordinary
+        bsr.w   gk_workspace_save_clone_target_named
+        bra.s   .Lgk_save_as_confirm_quick_saved
+.Lgk_save_as_confirm_quick_ordinary:
         bsr.w   gk_workspace_save_as_named
+.Lgk_save_as_confirm_quick_saved:
         tst.l   %d0
         bne.s   .Lgk_save_as_confirm_finish
         moveq   #1,%d0
@@ -1057,16 +1069,24 @@ gk_save_as_name_complete:
         cmpi.l  #GK_UI_MODE_SAVE_NAME,%d4
         beq.s   .Lgk_save_name_mode_valid_v3
         cmpi.l  #GK_UI_MODE_SAVE_AS_NAME,%d4
-        bne.s   .Lgk_save_name_invalid_v3
+        bne.w   .Lgk_save_name_invalid_v3
 .Lgk_save_name_mode_valid_v3:
         move.l  __gk_ui_selected_kit,%d2
         cmpi.l  #GK_KIT_COUNT - 1,%d2
-        bhi.s   .Lgk_save_name_range_v3
+        bhi.w   .Lgk_save_name_range_v3
         move.l  %d4,%d0
         bsr.w   gk_ui_mode_context_validate
         tst.l   %d0
-        bmi.s   .Lgk_save_name_finish_v3
+        bmi.w   .Lgk_save_name_finish_v3
         move.l  %d0,%d3
+        cmpi.l  #GK_UI_MODE_SAVE_AS_NAME,%d4
+        bne.s   .Lgk_save_name_guard_complete_v3
+        move.l  %d2,%d0
+        jsr     gk_next_pattern_clone_save_route
+        tst.l   %d0
+        bmi.s   .Lgk_save_name_finish_v3
+        move.l  %d0,%a2
+.Lgk_save_name_guard_complete_v3:
         cmpi.l  #GK_UI_MODE_SAVE_NAME,%d4
         bne.s   .Lgk_save_name_check_complete_v3
         moveq   #0,%d0
@@ -1084,7 +1104,16 @@ gk_save_as_name_complete:
         clr.b   __gk_ui_rename_name + GK_KIT_VISIBLE_NAME_SIZE
         move.l  %d2,%d0
         lea     __gk_ui_rename_name,%a0
+        cmpi.l  #GK_UI_MODE_SAVE_AS_NAME,%d4
+        bne.w   .Lgk_save_name_ordinary_v3
+        move.l  %a2,%d1
+        tst.l   %d1
+        beq.w   .Lgk_save_name_ordinary_v3
+        bsr.w   gk_workspace_save_clone_target_named
+        bra.s   .Lgk_save_name_saved_v3
+.Lgk_save_name_ordinary_v3:
         bsr.w   gk_workspace_save_as_named
+.Lgk_save_name_saved_v3:
         tst.l   %d0
         bne.s   .Lgk_save_name_finish_v3
         moveq   #1,%d0

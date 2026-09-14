@@ -374,8 +374,10 @@ SECTIONS
         . += 1 ? 1 : 0;
         __gk_next_pattern_clone_latch = .;
         . += 1 ? 1 : 0;
+        __gk_next_pattern_clone_target = .;
+        . += 1 ? 1 : 0;
         . += 1
-            ? (1 ? 1 : 2) : 0;
+            ? (1 ? 0 : 2) : 0;
         __gk_pattern_kit_state_end = .;
         __gk_ui_state_end = .;
 

@@ -316,7 +316,9 @@ gk_stock_staged_audio_handoff_validate:
         btst    #3,%d0
         beq.w gk_arranger_fatal_playback_exit_guard
         tst.w   GK_DESC_ROOTS(%a0)
-        beq.w gk_arranger_fatal_active_scene_release
+        bne.s   .Lgk_stock_staged_audio_roots_valid
+        jmp     gk_arranger_fatal_active_scene_release
+.Lgk_stock_staged_audio_roots_valid:
         tst.l   GK_DESC_CANDIDATE(%a0)
         bne.w gk_arranger_fatal_abort_owner
         moveq   #0,%d1
@@ -324,23 +326,32 @@ gk_stock_staged_audio_handoff_validate:
         move.l  %d1,%d0
         lsr.l   #2,%d0
         cmp.b   __gk_ui_transition_source_bank,%d0
-        bne.w gk_arranger_fatal_pattern_schedule_guard_enter
+        beq.s   .Lgk_stock_staged_audio_source_bank_valid
+        jmp     gk_arranger_fatal_pattern_schedule_guard_enter
+.Lgk_stock_staged_audio_source_bank_valid:
         andi.l  #3,%d1
         cmp.b   __gk_ui_transition_source_part,%d1
-        bne.w gk_arranger_fatal_notify_guard_exit
+        beq.s   .Lgk_stock_staged_audio_source_part_valid
+        jmp     gk_arranger_fatal_notify_guard_exit
+.Lgk_stock_staged_audio_source_part_valid:
         move.b  GK_DESC_KIT(%a0),%d0
         cmp.b   __gk_current_kit,%d0
-        bne.w gk_arranger_fatal_queued_publish
+        beq.s   .Lgk_stock_staged_audio_kit_valid
+        jmp     gk_arranger_fatal_queued_publish
+.Lgk_stock_staged_audio_kit_valid:
         moveq   #0,%d0
         move.b  GK_DESC_PHYSICAL(%a0),%d0
         jsr     gk_physical_validate
         cmp.l   %d2,%d0
-        bne.w gk_arranger_fatal_abort_matching
+        beq.s   .Lgk_stock_staged_audio_physical_valid
+        jmp     gk_arranger_fatal_abort_matching
+.Lgk_stock_staged_audio_physical_valid:
         move.b  GK_STOCK_CURRENT_PATTERN_PRIMARY,%d0
         cmp.b   __gk_current_pattern,%d0
         beq.s   .Lgk_stock_staged_audio_pattern_valid
         cmp.b   __gk_pending_pattern,%d0
-        bne.w gk_arranger_fatal_queued_pattern_range
+        beq.s   .Lgk_stock_staged_audio_pattern_valid
+        jmp     gk_arranger_fatal_queued_pattern_range
 .Lgk_stock_staged_audio_pattern_valid:
         moveq   #GK_OK,%d0
         bra.s   .Lgk_stock_staged_audio_restore

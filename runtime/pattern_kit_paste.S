@@ -610,6 +610,7 @@ gk_next_pattern_clone_assignment_v3_dirty_call:
         jsr     gk_persistence_snapshot_end
         tst.l   %d0
         bne.w   gk_next_pattern_clone_snapshot_end_report_fatal
+        move.b  %d7,__gk_next_pattern_clone_target
         moveq   #1,%d0
         move.b  %d0,__gk_next_pattern_clone_latch
         move.l  %d7,%d0
@@ -673,6 +674,84 @@ gk_next_pattern_clone_right_dispatch:
         .incbin "stock/0447.bin", 0, 4
         .size   gk_next_pattern_clone_right_dispatch,.-gk_next_pattern_clone_right_dispatch
         .align  4
+        .global gk_next_pattern_clone_save_route
+        .type   gk_next_pattern_clone_save_route,@function
+gk_next_pattern_clone_save_route:
+        lea     -16(%sp),%sp
+        movem.l %d2-%d4/%a0,(%sp)
+        move.l  %d0,%d4
+        moveq   #0,%d0
+        move.b  __gk_next_pattern_clone_latch,%d0
+        cmpi.l  #1,%d0
+        bhi.w   .Lgk_next_pattern_clone_save_route_latch_corrupt
+        beq.s   .Lgk_next_pattern_clone_save_route_active
+        bra.w   .Lgk_next_pattern_clone_save_route_ordinary
+.Lgk_next_pattern_clone_save_route_active:
+        moveq   #0,%d2
+        move.b  __gk_current_bank,%d2
+        cmpi.l  #15,%d2
+        bhi.w   .Lgk_next_pattern_clone_save_route_bank_corrupt
+        lsl.l   #4,%d2
+        moveq   #0,%d0
+        move.b  __gk_current_pattern,%d0
+        cmpi.l  #15,%d0
+        bhi.w   .Lgk_next_pattern_clone_save_route_pattern_corrupt
+        add.l   %d0,%d2
+        moveq   #0,%d3
+        move.b  __gk_next_pattern_clone_target,%d3
+        cmp.l   %d3,%d2
+        beq.s   .Lgk_next_pattern_clone_save_route_activated
+        moveq   #0,%d0
+        move.b  GK_STOCK_QUEUED_BANK,%d0
+        cmpi.l  #15,%d0
+        bhi.s   .Lgk_next_pattern_clone_save_route_stale
+        lsl.l   #4,%d0
+        moveq   #0,%d1
+        move.b  GK_STOCK_QUEUED_PATTERN,%d1
+        cmpi.l  #15,%d1
+        bhi.s   .Lgk_next_pattern_clone_save_route_stale
+        add.l   %d1,%d0
+        cmp.l   %d3,%d0
+        bne.s   .Lgk_next_pattern_clone_save_route_stale
+        move.l  %d3,%d0
+        move.l  %d3,%d1
+        lsr.l   #3,%d0
+        andi.l  #7,%d1
+        lea     __gk_pattern_assignment_valid,%a0
+        btst    %d1,(%a0,%d0.l)
+        beq.w   .Lgk_next_pattern_clone_save_route_valid_corrupt
+        lea     __gk_pattern_assignments,%a0
+        moveq   #0,%d0
+        move.b  (%a0,%d3.l),%d0
+        cmp.l   %d4,%d0
+        beq.s   .Lgk_next_pattern_clone_save_route_target
+        bra.s   .Lgk_next_pattern_clone_save_route_ordinary
+.Lgk_next_pattern_clone_save_route_activated:
+.Lgk_next_pattern_clone_save_route_stale:
+        clr.b   __gk_next_pattern_clone_latch
+.Lgk_next_pattern_clone_save_route_ordinary:
+        moveq   #GK_OK,%d0
+        bra.s   .Lgk_next_pattern_clone_save_route_finish
+.Lgk_next_pattern_clone_save_route_target:
+        moveq   #1,%d0
+.Lgk_next_pattern_clone_save_route_finish:
+        movem.l (%sp),%d2-%d4/%a0
+        lea     16(%sp),%sp
+        rts
+.Lgk_next_pattern_clone_save_route_latch_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+        bra.w   gk_next_pattern_clone_save_route_latch_report_fatal
+.Lgk_next_pattern_clone_save_route_bank_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+        bra.w   gk_next_pattern_clone_save_route_bank_report_fatal
+.Lgk_next_pattern_clone_save_route_pattern_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+        bra.w   gk_next_pattern_clone_save_route_pattern_report_fatal
+.Lgk_next_pattern_clone_save_route_valid_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+        bra.w   gk_next_pattern_clone_save_route_valid_report_fatal
+        .size   gk_next_pattern_clone_save_route,.-gk_next_pattern_clone_save_route
+        .align  4
 .Lgk_next_pattern_clone_message:
         .asciz  "PAT+KIT CLONED"
         .align  2
@@ -711,6 +790,26 @@ gk_next_pattern_clone_assignment_dirty_report_fatal:
 gk_next_pattern_clone_snapshot_end_report_fatal:
         illegal
         .size gk_next_pattern_clone_snapshot_end_report_fatal,.-gk_next_pattern_clone_snapshot_end_report_fatal
+        .global gk_next_pattern_clone_save_route_latch_report_fatal
+        .type gk_next_pattern_clone_save_route_latch_report_fatal,@function
+gk_next_pattern_clone_save_route_latch_report_fatal:
+        illegal
+        .size gk_next_pattern_clone_save_route_latch_report_fatal,.-gk_next_pattern_clone_save_route_latch_report_fatal
+        .global gk_next_pattern_clone_save_route_bank_report_fatal
+        .type gk_next_pattern_clone_save_route_bank_report_fatal,@function
+gk_next_pattern_clone_save_route_bank_report_fatal:
+        illegal
+        .size gk_next_pattern_clone_save_route_bank_report_fatal,.-gk_next_pattern_clone_save_route_bank_report_fatal
+        .global gk_next_pattern_clone_save_route_pattern_report_fatal
+        .type gk_next_pattern_clone_save_route_pattern_report_fatal,@function
+gk_next_pattern_clone_save_route_pattern_report_fatal:
+        illegal
+        .size gk_next_pattern_clone_save_route_pattern_report_fatal,.-gk_next_pattern_clone_save_route_pattern_report_fatal
+        .global gk_next_pattern_clone_save_route_valid_report_fatal
+        .type gk_next_pattern_clone_save_route_valid_report_fatal,@function
+gk_next_pattern_clone_save_route_valid_report_fatal:
+        illegal
+        .size gk_next_pattern_clone_save_route_valid_report_fatal,.-gk_next_pattern_clone_save_route_valid_report_fatal
         .global gk_next_pattern_clone_fatal
         .type   gk_next_pattern_clone_fatal,@function
 gk_next_pattern_clone_fatal:
