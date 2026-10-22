@@ -241,9 +241,11 @@ gk_stock_track_parameter_absolute:
         move.l  %d2,-(%sp)
         move.l  %d1,-(%sp)
         move.l  %d0,-(%sp)
+        move.b  %d2,__gk_tick_foreground_edit_owner
         .global gk_track_parameter_absolute_stock_call
 gk_track_parameter_absolute_stock_call:
         .incbin "stock/0293.bin", 0, 6
+        clr.b   __gk_tick_foreground_edit_owner
         move.l  %d0,60(%sp)
         move.l  12(%sp),%d0
         lea     16(%sp),%sp
@@ -286,9 +288,11 @@ gk_stock_track_parameter_relative:
         move.l  %d7,-(%sp)
         move.l  %d1,-(%sp)
         move.l  %d0,-(%sp)
+        move.b  %d1,__gk_tick_foreground_edit_owner
         .global gk_track_parameter_relative_stock_call
 gk_track_parameter_relative_stock_call:
         jsr     GK_STOCK_TRACK_PARAMETER_RELATIVE
+        clr.b   __gk_tick_foreground_edit_owner
         move.l  %d0,56(%sp)
         move.l  8(%sp),%d0
         lea     12(%sp),%sp

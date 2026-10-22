@@ -380,7 +380,7 @@ gk_stock_lfo_designer_rotate_operation:
         mulu.w  #GK_PART_PAYLOAD_SIZE,%d0
         move.l  %a3,%d1
         mulu.w  #0x24,%d1
-        .incbin "stock/0402.bin", 0, 6
+        .incbin "stock/0403.bin", 0, 6
         adda.l  #GK_STOCK_BANK_WORKING_OFFSET,%a0
         adda.l  %d0,%a0
         adda.l  %d1,%a0
@@ -420,6 +420,15 @@ gk_stock_lfo_designer_rotate_operation:
         bne.s   .Lgk_ldo_stock_direct_entry
         move.l  %a4,%d0
         movea.l %a4,%a1
+        move.l  GK_LDO_ARG1+28(%sp),%d2
+        cmpi.l  #2,%d2
+        beq.s   .Lgk_ldo_arp_tick_owner
+        cmpi.l  #5,%d2
+        bne.s   .Lgk_ldo_arp_tick_owner_ready
+.Lgk_ldo_arp_tick_owner:
+        move.b  %d2,__gk_tick_foreground_edit_owner
+.Lgk_ldo_arp_tick_owner_ready:
+        move.l  %a6,%d2
         bra.s   .Lgk_ldo_stock_entry_ready
 .Lgk_ldo_stock_direct_entry:
         move.l  GK_LDO_CALLBACK_KIND+28(%sp),%d2
@@ -439,6 +448,14 @@ gk_lfo_designer_operations_stock_call:
         move.l  %d1,GK_LDO_OUT_D1+28(%sp)
         move.l  %a0,GK_LDO_OUT_A0+28(%sp)
         move.l  %a1,GK_LDO_OUT_A1+28(%sp)
+        move.l  GK_LDO_ROUTE+28(%sp),%d2
+        cmpi.l  #GK_LDO_ROUTE_RELATIVE_ID2,%d2
+        beq.s   .Lgk_ldo_arp_tick_owner_clear
+        cmpi.l  #GK_LDO_ROUTE_RELATIVE_ID5,%d2
+        bne.s   .Lgk_ldo_arp_tick_owner_cleared
+.Lgk_ldo_arp_tick_owner_clear:
+        clr.b   __gk_tick_foreground_edit_owner
+.Lgk_ldo_arp_tick_owner_cleared:
         move.l  16(%sp),%d2
         cmp.l   GK_LDO_EXPECTED+28(%sp),%d2
         bne.w   gk_lfo_designer_operations_fatal_finish_count
@@ -672,14 +689,14 @@ gk_lfo_designer_operations_write_marker_d1:
         lea     64(%sp),%sp
         .global gk_lfo_designer_operations_stock_dirty_store_d1
 gk_lfo_designer_operations_stock_dirty_store_d1:
-        .incbin "stock/0403.bin", 0, 6
+        .incbin "stock/0404.bin", 0, 6
         rts
 .Lgk_ldo_marker_restore_d3:
         movem.l (%sp),%d0-%d7/%a0-%a6
         lea     64(%sp),%sp
         .global gk_lfo_designer_operations_stock_dirty_store_d3
 gk_lfo_designer_operations_stock_dirty_store_d3:
-        .incbin "stock/0404.bin", 0, 6
+        .incbin "stock/0405.bin", 0, 6
         rts
         .size   gk_lfo_designer_operations_write_marker_d1,.-gk_lfo_designer_operations_write_marker_d1
         .global gk_lfo_designer_operations_fatal_runtime_image

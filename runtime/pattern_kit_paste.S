@@ -12,8 +12,8 @@ gk_stock_pattern_copy_capture:
         .global gk_stock_pattern_copy_capture_trampoline
         .type   gk_stock_pattern_copy_capture_trampoline,@function
 gk_stock_pattern_copy_capture_trampoline:
-        .incbin "stock/0437.bin", 0, 4
-        .incbin "stock/0437.bin", 4, 6
+        .incbin "stock/0438.bin", 0, 4
+        .incbin "stock/0438.bin", 4, 6
         .global gk_stock_pattern_copy_capture_trampoline_jump
 gk_stock_pattern_copy_capture_trampoline_jump:
         jmp     GK_STOCK_PATTERN_COPY_CAPTURE_FIXED_CONTINUE
@@ -21,8 +21,8 @@ gk_stock_pattern_copy_capture_trampoline_jump:
         .global gk_pattern_kit_capture_workspace
         .type   gk_pattern_kit_capture_workspace,@function
 gk_pattern_kit_capture_workspace:
-        .incbin "stock/0438.bin", 0, 4
-        .incbin "stock/0438.bin", 4, 4
+        .incbin "stock/0439.bin", 0, 4
+        .incbin "stock/0439.bin", 4, 4
         moveq   #0,%d0
         move.b  __gk_current_bank,%d0
         lsl.l   #4,%d0
@@ -270,16 +270,16 @@ gk_pattern_kit_paste_dispatch:
         moveq   #1,%d0
         cmp.l   12(%sp),%d0
         bne.w   .Lgk_pattern_kit_paste_not_handled
-        .incbin "stock/0439.bin", 0, 4
-        .incbin "stock/0439.bin", 4, 4
+        .incbin "stock/0440.bin", 0, 4
+        .incbin "stock/0440.bin", 4, 4
         jsr     gk_function_map_active
         tst.l   %d0
         beq.w   .Lgk_pattern_kit_paste_not_handled_restore
-        .incbin "stock/0440.bin", 0, 4
-        .incbin "stock/0440.bin", 4, 6
-        .incbin "stock/0440.bin", 10, 2
-        .incbin "stock/0440.bin", 12, 2
-        .incbin "stock/0440.bin", 14, 2
+        .incbin "stock/0441.bin", 0, 4
+        .incbin "stock/0441.bin", 4, 6
+        .incbin "stock/0441.bin", 10, 2
+        .incbin "stock/0441.bin", 12, 2
+        .incbin "stock/0441.bin", 14, 2
         .byte 0x01,0x92
         pea     GK_STOCK_PASTE_PRESS_INPUT
         jsr     GK_STOCK_INPUT_RECORD_STATE
@@ -417,7 +417,7 @@ gk_pattern_kit_paste_dispatch:
         .align  4
 .Lgk_pattern_kit_paste_message:
         .byte 0x4b,0x49,0x54,0x20
-        .incbin "stock/0441.bin", 0, 5
+        .incbin "stock/0442.bin", 0, 5
         .byte 0x44,0x00
         .align  4
         .global gk_pattern_kit_mkii_part_dispatch
@@ -431,7 +431,7 @@ gk_pattern_kit_mkii_part_dispatch:
         moveq   #GK_QUICK_SAVE_INITIATOR_PART,%d0
         move.b  %d0,__gk_ui_state_pad + 2
         .byte 0x4e,0xf9
-        .incbin "stock/0442.bin", 0, 4
+        .incbin "stock/0443.bin", 0, 4
         .size   gk_pattern_kit_mkii_part_dispatch,.-gk_pattern_kit_mkii_part_dispatch
         .align  4
         .global gk_pattern_kit_mki_part_dispatch
@@ -443,7 +443,7 @@ gk_pattern_kit_mki_part_dispatch:
         rts
 .Lgk_pattern_kit_mki_part_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0443.bin", 0, 4
+        .incbin "stock/0444.bin", 0, 4
         .size   gk_pattern_kit_mki_part_dispatch,.-gk_pattern_kit_mki_part_dispatch
         .global gk_pattern_kit_mki_part_lifecycle_dispatch
         .type   gk_pattern_kit_mki_part_lifecycle_dispatch,@function
@@ -465,7 +465,7 @@ gk_next_pattern_clone_ptn_press:
         clr.b   __gk_inactive_pattern_target_trig
         clr.b   __gk_inactive_pattern_action_latch
         .byte 0x4e,0xf9
-        .incbin "stock/0444.bin", 0, 4
+        .incbin "stock/0445.bin", 0, 4
         .size   gk_next_pattern_clone_ptn_press,.-gk_next_pattern_clone_ptn_press
         .type   gk_next_pattern_clone_copy_image,@function
 gk_next_pattern_clone_copy_image:
@@ -479,8 +479,8 @@ gk_next_pattern_clone_copy_image:
         .global gk_next_pattern_clone_execute
         .type   gk_next_pattern_clone_execute,@function
 gk_next_pattern_clone_execute:
-        .incbin "stock/0445.bin", 0, 4
-        .incbin "stock/0445.bin", 4, 4
+        .incbin "stock/0446.bin", 0, 4
+        .incbin "stock/0446.bin", 4, 4
         moveq   #0,%d0
         move.b  __gk_current_bank,%d0
         cmpi.l  #15,%d0
@@ -648,11 +648,11 @@ gk_next_pattern_clone_right_dispatch:
         addq.l  #4,%sp
         tst.l   %d0
         beq.w   .Lgk_next_pattern_clone_right_stock
-        .incbin "stock/0446.bin", 0, 4
-        .incbin "stock/0446.bin", 4, 6
-        .incbin "stock/0446.bin", 10, 2
-        .incbin "stock/0446.bin", 12, 2
-        .incbin "stock/0446.bin", 14, 3
+        .incbin "stock/0447.bin", 0, 4
+        .incbin "stock/0447.bin", 4, 6
+        .incbin "stock/0447.bin", 10, 2
+        .incbin "stock/0447.bin", 12, 2
+        .incbin "stock/0447.bin", 14, 3
         .byte 0x3e
         tst.l   __gk_lifecycle_state
         bne.w   .Lgk_next_pattern_clone_right_stock
@@ -671,7 +671,7 @@ gk_next_pattern_clone_right_dispatch:
         rts
 .Lgk_next_pattern_clone_right_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0447.bin", 0, 4
+        .incbin "stock/0448.bin", 0, 4
         .size   gk_next_pattern_clone_right_dispatch,.-gk_next_pattern_clone_right_dispatch
         .align  4
         .global gk_next_pattern_clone_save_route
@@ -827,7 +827,7 @@ gk_inactive_pattern_bank_press:
         clr.b   __gk_inactive_pattern_action_latch
         clr.b   __gk_inactive_pattern_pending_notice
         .byte 0x4e,0xf9
-        .incbin "stock/0448.bin", 0, 4
+        .incbin "stock/0449.bin", 0, 4
         .size   gk_inactive_pattern_bank_press,.-gk_inactive_pattern_bank_press
         .align  4
         .global gk_inactive_pattern_bank_release
@@ -845,7 +845,7 @@ gk_inactive_pattern_bank_release:
         clr.b   __gk_inactive_pattern_target
         clr.b   __gk_inactive_pattern_target_trig
         .byte 0x4e,0xb9
-        .incbin "stock/0449.bin", 0, 4
+        .incbin "stock/0450.bin", 0, 4
         tst.b   __gk_inactive_pattern_action_latch
         beq.s   .Lgk_inactive_pattern_bank_release_hidden_done
         clr.b   __gk_inactive_pattern_action_latch
@@ -931,7 +931,7 @@ gk_inactive_pattern_ptn_trig_press:
         rts
 .Lgk_inactive_pattern_ptn_trig_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0450.bin", 0, 4
+        .incbin "stock/0451.bin", 0, 4
         .size   gk_inactive_pattern_ptn_trig_press,.-gk_inactive_pattern_ptn_trig_press
         .align  4
         .global gk_inactive_pattern_ptn_trig_release
@@ -950,7 +950,7 @@ gk_inactive_pattern_ptn_trig_release:
         rts
 .Lgk_inactive_pattern_ptn_trig_release_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0451.bin", 0, 4
+        .incbin "stock/0452.bin", 0, 4
         .size   gk_inactive_pattern_ptn_trig_release,.-gk_inactive_pattern_ptn_trig_release
         .align  4
         .global gk_inactive_pattern_bank_trig_press
@@ -961,7 +961,7 @@ gk_inactive_pattern_bank_trig_press:
         bne.s   .Lgk_inactive_pattern_bank_trig_target_candidate
         move.l  4(%sp),-(%sp)
         .byte 0x4e,0xb9
-        .incbin "stock/0452.bin", 0, 4
+        .incbin "stock/0453.bin", 0, 4
         addq.l  #4,%sp
         moveq   #1,%d0
         cmp.l   GK_STOCK_BANK_SELECT_STATE,%d0
@@ -1007,7 +1007,7 @@ gk_inactive_pattern_bank_trig_press:
         rts
 .Lgk_inactive_pattern_bank_trig_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0453.bin", 0, 4
+        .incbin "stock/0454.bin", 0, 4
         .size   gk_inactive_pattern_bank_trig_press,.-gk_inactive_pattern_bank_trig_press
         .align  4
         .global gk_inactive_pattern_bank_trig_release
@@ -1027,7 +1027,7 @@ gk_inactive_pattern_bank_trig_release:
         rts
 .Lgk_inactive_pattern_bank_trig_release_stock:
         .byte 0x4e,0xf9
-        .incbin "stock/0454.bin", 0, 4
+        .incbin "stock/0455.bin", 0, 4
         .size   gk_inactive_pattern_bank_trig_release,.-gk_inactive_pattern_bank_trig_release
         .type   gk_inactive_pattern_target_address,@function
 gk_inactive_pattern_target_address:
@@ -1342,8 +1342,8 @@ gk_inactive_pattern_assignment_v3_dirty_call:
         .size   gk_inactive_pattern_apply_assignment,.-gk_inactive_pattern_apply_assignment
         .type   gk_inactive_pattern_execute,@function
 gk_inactive_pattern_execute:
-        .incbin "stock/0455.bin", 0, 4
-        .incbin "stock/0455.bin", 4, 4
+        .incbin "stock/0456.bin", 0, 4
+        .incbin "stock/0456.bin", 4, 4
         move.l  %d0,%d6
         clr.l   %d4
         clr.b   __gk_inactive_pattern_reserved
@@ -1499,16 +1499,16 @@ gk_inactive_pattern_execute:
 .Lgk_inactive_pattern_invalid:
         moveq   #GK_ERR_INVALID,%d0
 .Lgk_inactive_pattern_execute_restore:
-        .incbin "stock/0456.bin", 0, 4
-        .incbin "stock/0456.bin", 4, 4
+        .incbin "stock/0457.bin", 0, 4
+        .incbin "stock/0457.bin", 4, 4
         rts
         .size   gk_inactive_pattern_execute,.-gk_inactive_pattern_execute
         .align  4
         .global gk_inactive_pattern_action_dispatch
         .type   gk_inactive_pattern_action_dispatch,@function
 gk_inactive_pattern_action_dispatch:
-        .incbin "stock/0457.bin", 0, 4
-        .incbin "stock/0457.bin", 4, 4
+        .incbin "stock/0458.bin", 0, 4
+        .incbin "stock/0458.bin", 4, 4
         move.l  %d0,%d4
         moveq   #1,%d0
         cmp.l   32(%sp),%d0
@@ -1520,11 +1520,11 @@ gk_inactive_pattern_action_dispatch:
         cmpi.l  #GK_INACTIVE_PATTERN_MODE_BANK_TARGET,%d2
         bne.w   .Lgk_inactive_pattern_action_stock
 .Lgk_inactive_pattern_action_owner_check:
-        .incbin "stock/0458.bin", 0, 4
-        .incbin "stock/0458.bin", 4, 6
-        .incbin "stock/0458.bin", 10, 2
-        .incbin "stock/0458.bin", 12, 2
-        .incbin "stock/0458.bin", 14, 2
+        .incbin "stock/0459.bin", 0, 4
+        .incbin "stock/0459.bin", 4, 6
+        .incbin "stock/0459.bin", 10, 2
+        .incbin "stock/0459.bin", 12, 2
+        .incbin "stock/0459.bin", 14, 2
         .byte 0x01,0x50
         moveq   #GK_STOCK_PATTERN_PRESS_INPUT,%d3
         cmpi.l  #GK_INACTIVE_PATTERN_MODE_PTN_TARGET,%d2

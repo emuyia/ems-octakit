@@ -7,6 +7,7 @@ gk_runtime_metadata_reset:
         clr.l   __gk_lifecycle_state
         .global gk_runtime_metadata_reset_preserve_lifecycle
 gk_runtime_metadata_reset_preserve_lifecycle:
+        clr.l   __gk_part_refresh_deferred
         lea     __gk_metadata_start,%a0
         moveq   #0,%d0
         move.l  #(GK_METADATA_SIZE / 4),%d1

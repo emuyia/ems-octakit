@@ -95,6 +95,91 @@ gk_selector_acquire_pair_reader_publication:
         lea     20(%sp),%sp
         rts
         .size   gk_selector_acquire_pair,.-gk_selector_acquire_pair
+        .global gk_sequencer_tick_engine_acquire_pair
+        .type   gk_sequencer_tick_engine_acquire_pair,@function
+gk_sequencer_tick_engine_acquire_pair:
+        lea     -24(%sp),%sp
+        movem.l %d2-%d4/%a1-%a2,(%sp)
+        move.l  %a0,20(%sp)
+        jsr     gk_selector_acquire_pair
+        cmpi.l  #GK_ERR_UPDATING,%d0
+        bne.w   .Lgk_tick_engine_pair_restore
+
+        move.w  %sr,%d4
+        move.w  #0x2700,%sr
+        movea.l 20(%sp),%a0
+
+        /* A real generation transition remains an ordinary missed tick. */
+        moveq   #0,%d2
+        move.w  (%a0),%d2
+        move.l  %d2,%d3
+        andi.l  #0xff,%d3
+        lsr.l   #8,%d2
+        andi.l  #0xff,%d2
+        cmp.l   %d3,%d2
+        bne.w   .Lgk_tick_engine_pair_mask_updating
+
+        /* Only an authenticated foreground editor may let the tick recheck
+         * a same-descriptor update.  Independent reloads and other writes
+         * must remain unavailable to the sequencer. */
+        tst.b   __gk_tick_foreground_edit_owner
+        beq.w   .Lgk_tick_engine_pair_mask_updating
+
+        jsr     gk_sequencer_engine_acquire
+        tst.l   %d0
+        bmi.s   .Lgk_tick_engine_pair_mask_restore
+        move.l  %d0,%d2
+
+        moveq   #0,%d3
+        move.b  GK_STOCK_ENGINE_BANK,%d3
+        cmpi.l  #GK_BANK_COUNT - 1,%d3
+        bhi.s   .Lgk_tick_engine_pair_release_corrupt
+        moveq   #0,%d1
+        move.b  __gk_current_bank,%d1
+        cmp.l   %d1,%d3
+        bne.s   .Lgk_tick_engine_pair_release_corrupt
+        moveq   #0,%d1
+        move.b  GK_STOCK_CURRENT_BANK_PRIMARY,%d1
+        cmp.l   %d1,%d3
+        bne.s   .Lgk_tick_engine_pair_release_corrupt
+        moveq   #0,%d1
+        move.b  GK_STOCK_CURRENT_BANK_MIRROR,%d1
+        cmp.l   %d1,%d3
+        bne.s   .Lgk_tick_engine_pair_release_corrupt
+
+        moveq   #0,%d1
+        move.b  GK_STOCK_ENGINE_PART,%d1
+        cmpi.l  #GK_PARTS_PER_BANK - 1,%d1
+        bhi.s   .Lgk_tick_engine_pair_release_corrupt
+        moveq   #0,%d0
+        move.b  GK_STOCK_CURRENT_PART_PRIMARY,%d0
+        cmp.l   %d0,%d1
+        bne.s   .Lgk_tick_engine_pair_release_corrupt
+        moveq   #0,%d0
+        move.b  GK_STOCK_CURRENT_PART_MIRROR,%d0
+        cmp.l   %d0,%d1
+        bne.s   .Lgk_tick_engine_pair_release_corrupt
+
+        lsl.l   #8,%d3
+        or.l    %d3,%d1
+        move.l  %d2,%d0
+        bra.s   .Lgk_tick_engine_pair_mask_restore
+
+.Lgk_tick_engine_pair_release_corrupt:
+        move.l  %d2,%d0
+        jsr     gk_descriptor_release
+        moveq   #GK_ERR_CORRUPT,%d0
+        bra.s   .Lgk_tick_engine_pair_mask_restore
+.Lgk_tick_engine_pair_mask_updating:
+        moveq   #GK_ERR_UPDATING,%d0
+.Lgk_tick_engine_pair_mask_restore:
+        move.w  %d4,%sr
+.Lgk_tick_engine_pair_restore:
+        movem.l (%sp),%d2-%d4/%a1-%a2
+        lea     24(%sp),%sp
+        rts
+        .size   gk_sequencer_tick_engine_acquire_pair,.-gk_sequencer_tick_engine_acquire_pair
+
         .global gk_selector_publish_pair_pinned
         .type   gk_selector_publish_pair_pinned,@function
 gk_selector_publish_pair_pinned:
@@ -253,7 +338,7 @@ gk_stock_sequencer_tick_engine_snapshot:
         lea     __gk_lease_sidecars + GK_SIDECAR_ENGINE_CURRENT_OFFSET,%a0
         lea     GK_STOCK_ENGINE_BANK,%a1
         lea     GK_STOCK_ENGINE_PART,%a2
-        jsr     gk_selector_acquire_pair
+        jsr     gk_sequencer_tick_engine_acquire_pair
         cmpi.l  #GK_ERR_INVALID,%d0
         beq.s   .Lgk_tick_engine_unavailable
         cmpi.l  #GK_ERR_UPDATING,%d0

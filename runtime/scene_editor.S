@@ -223,9 +223,16 @@ gk_stock_scene_b_encoder:
         move.l %d7,-(%sp)
         move.l %d1,-(%sp)
         move.l %d0,-(%sp)
+        tst.l 0x80000012
+        beq.w .Lgk_scene_b_encoder_no_tick_owner
+        moveq #1,%d0
+        move.b %d0,__gk_tick_foreground_edit_owner
+        move.l (%sp),%d0
+.Lgk_scene_b_encoder_no_tick_owner:
         .global gk_scene_b_encoder_stock_call
 gk_scene_b_encoder_stock_call:
         jsr GK_STOCK_SCENE_B_ENCODER
+        clr.b __gk_tick_foreground_edit_owner
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish
@@ -268,9 +275,16 @@ gk_stock_scene_a_encoder:
         move.l %d7,-(%sp)
         move.l %d1,-(%sp)
         move.l %d0,-(%sp)
+        tst.l 0x80000012
+        beq.w .Lgk_scene_a_encoder_no_tick_owner
+        moveq #1,%d0
+        move.b %d0,__gk_tick_foreground_edit_owner
+        move.l (%sp),%d0
+.Lgk_scene_a_encoder_no_tick_owner:
         .global gk_scene_a_encoder_stock_call
 gk_scene_a_encoder_stock_call:
         jsr GK_STOCK_SCENE_A_ENCODER
+        clr.b __gk_tick_foreground_edit_owner
         move.l 8(%sp),%d0
         lea 12(%sp),%sp
         bsr.w gk_scene_editor_finish

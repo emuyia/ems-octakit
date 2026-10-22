@@ -90,6 +90,22 @@ gk_stock_part_refresh_writer:
         bra.s   .Lgk_part_refresh_context_ok
 .Lgk_part_refresh_settled_context:
         jsr     gk_stock_current_context_validate
+        cmpi.l  #GK_ERR_BUSY,%d0
+        bne.s   .Lgk_part_refresh_context_result
+        move.l  68(%sp),%d1
+        cmpi.l  #GK_STOCK_PART_REFRESH_WRITER_RETURN_TRACK,%d1
+        bne.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
+        bsr.w   gk_part_refresh_handoff_defer
+        tst.l   %d0
+        beq.s   .Lgk_part_refresh_deferred_return
+        cmpi.l  #GK_ERR_BUSY,%d0
+        beq.s   .Lgk_part_refresh_settled_context
+        bra.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
+.Lgk_part_refresh_deferred_return:
+        movem.l (%sp),%d2-%d7/%a2-%a6
+        lea     68(%sp),%sp
+        rts
+.Lgk_part_refresh_context_result:
         tst.l   %d0
         bmi.w   gk_stock_part_refresh_writer_report_fatal_part_refresh_fatal_context
 .Lgk_part_refresh_context_ok:
@@ -228,6 +244,9 @@ gk_part_refresh_stock_call:
         tst.l   %d0
         bne.w   gk_part_refresh_stock_call_report_fatal_part_refresh_fatal_release
 .Lgk_part_refresh_restore:
+        .global gk_part_refresh_deferred_satisfied
+gk_part_refresh_deferred_satisfied:
+        clr.l   __gk_part_refresh_deferred
         move.l  44(%sp),%d0
         move.l  48(%sp),%d1
         movea.l 52(%sp),%a0
@@ -238,11 +257,46 @@ gk_part_refresh_stock_call:
         lea     68(%sp),%sp
         rts
         .size   gk_stock_part_refresh_writer,.-gk_stock_part_refresh_writer
+        .global gk_part_refresh_handoff_defer
+gk_part_refresh_handoff_defer:
+        move.l  %d2,-(%sp)
+        move.w  %sr,%d2
+        move.w  #0x2700,%sr
+        jsr     gk_stock_current_context_validate
+        tst.l   %d0
+        bpl.s   .Lgk_part_refresh_defer_retry
+        cmpi.l  #GK_ERR_BUSY,%d0
+        bne.s   .Lgk_part_refresh_defer_restore
+        jsr     gk_pattern_queue_audio_handoff_ready
+        tst.l   %d0
+        bmi.s   .Lgk_part_refresh_defer_restore
+        move.l  __gk_part_refresh_deferred,%d0
+        cmpi.l  #1,%d0
+        bhi.s   .Lgk_part_refresh_defer_corrupt
+        moveq   #1,%d0
+        .global gk_part_refresh_deferred_publication
+gk_part_refresh_deferred_publication:
+        move.l  %d0,__gk_part_refresh_deferred
+        moveq   #GK_OK,%d0
+        bra.s   .Lgk_part_refresh_defer_restore
+.Lgk_part_refresh_defer_retry:
+        moveq   #GK_ERR_BUSY,%d0
+        bra.s   .Lgk_part_refresh_defer_restore
+.Lgk_part_refresh_defer_corrupt:
+        moveq   #GK_ERR_CORRUPT,%d0
+.Lgk_part_refresh_defer_restore:
+        move.w  %d2,%sr
+        move.l  (%sp)+,%d2
+        rts
+        .align  4
+        .global __gk_part_refresh_deferred
+__gk_part_refresh_deferred:
+        .incbin "stock/0369.bin", 0, 4
         .global gk_stock_part_refresh_writer_trampoline
         .type   gk_stock_part_refresh_writer_trampoline,@function
 gk_stock_part_refresh_writer_trampoline:
-        .incbin "stock/0369.bin", 0, 4
-        .incbin "stock/0369.bin", 4, 4
+        .incbin "stock/0370.bin", 0, 4
+        .incbin "stock/0370.bin", 4, 4
         .global gk_stock_part_refresh_writer_trampoline_jump
 gk_stock_part_refresh_writer_trampoline_jump:
         jmp     GK_STOCK_PART_REFRESH_WRITER_CONTINUE
@@ -290,7 +344,7 @@ gk_part_refresh_write_marker:
         move.l  (%sp)+,%d1
         .global gk_part_refresh_stock_dirty_store
 gk_part_refresh_stock_dirty_store:
-        .incbin "stock/0370.bin", 0, 6
+        .incbin "stock/0371.bin", 0, 6
         rts
         .size   gk_part_refresh_write_marker,.-gk_part_refresh_write_marker
         .global gk_part_refresh_fatal_caller

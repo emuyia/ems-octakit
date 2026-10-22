@@ -202,6 +202,7 @@ SECTIONS
         __gk_workspace_name = .;
         . += 8;
         __gk_workspace_name_pad = .;
+        __gk_tick_foreground_edit_owner = .;
         . += 1;
         __gk_workspace_bound = .;
         . += 1;

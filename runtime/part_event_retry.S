@@ -48,7 +48,27 @@ gk_ui_transition_context_retry_ensure:
         cmpi.l  #1,%d0
         bhi.w   .Lgk_retry_corrupt
         tst.l   %d0
-        bne.s   .Lgk_retry_pending_ready
+        bne.w   .Lgk_retry_pending_ready
+        move.l  __gk_part_refresh_deferred,%d0
+        cmpi.l  #1,%d0
+        bhi.w   .Lgk_retry_corrupt
+        tst.l   %d0
+        beq.s   .Lgk_retry_no_part_refresh
+        move.l  __gk_lifecycle_state,%d0
+        beq.s   .Lgk_retry_part_refresh_active
+        cmpi.l  #GK_LIFECYCLE_QUIESCED,%d0
+        beq.w   .Lgk_retry_ok
+        bra.w   .Lgk_retry_corrupt
+.Lgk_retry_part_refresh_active:
+        tst.l   __gk_ui_transition_reserved
+        bne.s   .Lgk_retry_part_refresh_carried
+        moveq   #3,%d0
+        movea.l %d0,%a5
+        bra.w   .Lgk_retry_pending_ready
+.Lgk_retry_part_refresh_carried:
+        moveq   #1,%d0
+        movea.l %d0,%a5
+.Lgk_retry_no_part_refresh:
         tst.l   %a5
         beq.w   .Lgk_retry_ok
         move.l  __gk_ui_transition_reserved,%d0
@@ -266,6 +286,15 @@ gk_ui_transition_context_retry_ensure:
         bne.s   .Lgk_retry_corrupt
         bra.s   .Lgk_retry_ok
 .Lgk_retry_enqueue_pending:
+        cmpa.l  #3,%a5
+        bne.s   .Lgk_retry_enqueue_transition_pending
+        tst.l   %d0
+        bne.s   .Lgk_retry_corrupt
+        moveq   #1,%d0
+        cmp.l   __gk_part_refresh_deferred,%d0
+        bne.s   .Lgk_retry_corrupt
+        bra.s   .Lgk_retry_ok
+.Lgk_retry_enqueue_transition_pending:
         cmpi.l  #1,%d0
         bne.s   .Lgk_retry_corrupt
 .Lgk_retry_ok:

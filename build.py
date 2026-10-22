@@ -215,6 +215,16 @@ def build(stock_path: Path, out: Path, web: bool = False) -> dict:
     command(["m68k-elf-objcopy", "-O", "binary", "-j", ".runtime", elf, raw], cwd=work)
     runtime = raw.read_bytes()
     verify(runtime, spec["append"]["runtime"]["raw"], "rebuilt Octakit runtime")
+    raw_hash = 0
+    for byte in runtime:
+        raw_hash = (raw_hash * 33 + byte) & 0xffffffff
+    hash_helpers = [patch for patch in spec["patches"]
+                    if patch["name"] == "install-runtime-hash-helper"]
+    if len(hash_helpers) != 1 or len(hash_helpers[0]["writes"]) != 1:
+        raise ValueError("runtime hash helper patch is missing or ambiguous")
+    helper = bytes.fromhex(hash_helpers[0]["writes"][0]["data"])
+    if len(helper) != 38 or helper[-8:-2] != b"\x0c\x81" + raw_hash.to_bytes(4, "big"):
+        raise ValueError("runtime hash helper does not match the rebuilt runtime")
     for operation in spec["append"]["runtime"]["stock_operations"]:
         start = operation["target_offset"]
         if runtime[start:start + operation["target_length"]] != extract_stock(stock, operation):
@@ -230,6 +240,11 @@ def build(stock_path: Path, out: Path, web: bool = False) -> dict:
     rolling = 0
     for byte in packed:
         rolling = (rolling * 33 + byte) & 0xffffffff
+    post_clear = next((patch for patch in spec["patches"]
+                       if patch["name"] == "install-post-clear-relocation-wrapper"), None)
+    if post_clear is None or (patched[77586:77590] != len(packed).to_bytes(4, "big")
+                              or patched[77598:77602] != rolling.to_bytes(4, "big")):
+        raise ValueError("post-clear relocation does not match the packed runtime")
     command([*linker, "--defsym", f"GK_PACKED_RUNTIME_HASH={rolling}", "-o", elf, *objects, packed_object], cwd=work)
     append_path = work / "append.bin"
     command(["m68k-elf-objcopy", "-O", "binary", "-j", ".early", "-j", ".stage", elf, append_path], cwd=work)
